@@ -36,6 +36,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           title="Login"
           buttonStyle={styles.buttonStyle}
           titleStyle={styles.buttonTitleStyle}
+          onPress={() => navigation.navigate('HomeScreen')}
         />
         <Button
           title="Create account"
