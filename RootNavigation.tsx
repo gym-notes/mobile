@@ -4,6 +4,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
+import SelectWorkoutScreen from './screens/SelectWorkoutScreen';
 
 const RootNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -15,9 +16,26 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions}>
-        <Stack.Screen name="LoginScreen" component={LoginScreen} />
-        <Stack.Screen name="RegisterScreen" component={RegisterScreen} />
-        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="LoginScreen"
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="RegisterScreen"
+          component={RegisterScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="HomeScreen"
+          component={HomeScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="SelectWorkoutScreen"
+          component={SelectWorkoutScreen}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

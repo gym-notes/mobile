@@ -22,7 +22,7 @@ const Menu = () => {
           <Text
             style={{
               ...styles.menuTextStyle,
-              color: currentRoute === 'PlansScreen' ? '#D44E52' : 'white',
+              color: currentRoute === 'PlansScreen' ? '#D44E52' : '#BCBCC0',
             }}>
             Plans
           </Text>
@@ -36,7 +36,7 @@ const Menu = () => {
           <Text
             style={{
               ...styles.menuTextStyle,
-              color: currentRoute === 'HistoryScreen' ? '#D44E52' : 'white',
+              color: currentRoute === 'HistoryScreen' ? '#D44E52' : '#BCBCC0',
             }}>
             History
           </Text>
@@ -45,12 +45,19 @@ const Menu = () => {
           <FontAwesomeIcon
             name="dumbbell"
             size={35}
-            color={currentRoute === 'HomeScreen' ? '#D44E52' : '#BCBCC0'}
+            color={
+              currentRoute === 'HomeScreen' || currentRoute === 'SelectWorkoutScreen'
+                ? '#D44E52'
+                : '#BCBCC0'
+            }
           />
           <Text
             style={{
               ...styles.menuTextStyle,
-              color: currentRoute === 'HomeScreen' ? '#D44E52' : 'white',
+              color:
+                currentRoute === 'HomeScreen' || currentRoute === 'SelectWorkoutScreen'
+                  ? '#D44E52'
+                  : '#BCBCC0',
             }}>
             Workout
           </Text>
@@ -65,7 +72,7 @@ const Menu = () => {
           <Text
             style={{
               ...styles.menuTextStyle,
-              color: currentRoute === 'ProfileScreen' ? '#D44E52' : 'white',
+              color: currentRoute === 'ProfileScreen' ? '#D44E52' : '#BCBCC0',
             }}>
             Profile
           </Text>

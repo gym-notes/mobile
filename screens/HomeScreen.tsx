@@ -4,8 +4,13 @@ import { Button } from 'react-native-elements';
 import Logotype from '../components/Logotype';
 import Menu from '../components/Menu';
 import LastWorkoutPanel from '../components/LastWorkoutPanel';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-const HomeScreen = () => {
+interface Props {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+const HomeScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logotypeWrapper}>
@@ -19,6 +24,7 @@ const HomeScreen = () => {
             title="start workout"
             buttonStyle={styles.buttonStyle}
             titleStyle={styles.buttonTitleStyle}
+            onPress={() => navigation.navigate('SelectWorkoutScreen')}
           />
         </View>
         <Menu />
@@ -31,7 +37,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     backgroundColor: '#1B1A22',
-    height: '100%',
+    flex: 1,
   },
   logotypeWrapper: {
     flex: 1,
