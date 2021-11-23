@@ -1,13 +1,15 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface Props {
   title: string;
+  navigation: NavigationProp<ParamListBase>;
 }
 
-const WorkoutItem: React.FC<Props> = ({ title }) => {
+const WorkoutItem: React.FC<Props> = ({ title, navigation }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity onPress={() => navigation.navigate('WorkoutScreen')} style={styles.container}>
       <Text style={styles.textStyle}>{title}</Text>
     </TouchableOpacity>
   );

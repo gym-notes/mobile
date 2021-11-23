@@ -1,11 +1,11 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import FontAwesomeIcon from 'react-native-vector-icons/Ionicons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
   title: string;
   backgroundColor: string;
-  width?: number;
+  width?: number | string;
   height?: number;
   margin?: number;
   iconName?: string;
@@ -33,8 +33,10 @@ const Button: React.FC<Props> = ({
         alignItems: 'center',
         margin: margin ? margin : 0,
       }}>
-      {iconName && <FontAwesomeIcon name={iconName} size={19} color="white" />}
-      <Text style={{ color: textColor, fontWeight: 'bold' }}>{title}</Text>
+      {iconName && <Icon name={iconName} size={19} color="white" style={{ marginRight: 5 }} />}
+      <Text style={{ color: textColor, fontWeight: 'bold', textTransform: 'uppercase' }}>
+        {title}
+      </Text>
     </View>
   );
 };

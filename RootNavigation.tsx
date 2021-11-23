@@ -5,6 +5,7 @@ import LoginScreen from './screens/LoginScreen';
 import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 import SelectWorkoutScreen from './screens/SelectWorkoutScreen';
+import WorkoutScreen from './screens/WorkoutScreen';
 
 const RootNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -35,6 +36,11 @@ const RootNavigation = () => {
           options={{ animation: 'slide_from_right' }}
           name="SelectWorkoutScreen"
           component={SelectWorkoutScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="WorkoutScreen"
+          component={WorkoutScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

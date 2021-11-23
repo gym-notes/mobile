@@ -11,27 +11,27 @@ interface Props {
 
 const dummyData = [
   {
-    id: 1,
+    id: '1',
     title: 'fbw - a',
   },
   {
-    id: 2,
+    id: '2',
     title: 'fbw - b',
   },
   {
-    id: 3,
+    id: '3',
     title: 'push/pull - a',
   },
   {
-    id: 4,
+    id: '4',
     title: 'push/pull - b',
   },
   {
-    id: 5,
+    id: '5',
     title: 'split',
   },
   {
-    id: 6,
+    id: '6',
     title: 'legs',
   },
 ];
@@ -47,18 +47,16 @@ const SelectWorkoutScreen: React.FC<Props> = ({ navigation }) => {
             width={75}
             height={35}
             margin={20}
-            iconName="arrow-back"
+            iconName="arrow-left"
             textColor="white"
           />
         </TouchableOpacity>
         <Text style={styles.textStyle}>Select your workout</Text>
         <ScrollView>
           {dummyData.map((data) => (
-            <WorkoutItem key={data.id} title={data.title} />
+            <WorkoutItem key={data.id} title={data.title} navigation={navigation} />
           ))}
         </ScrollView>
-      </View>
-      <View style={styles.buttonWrapper}>
         <Menu />
       </View>
     </View>
@@ -72,15 +70,13 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     flex: 2,
+    paddingHorizontal: 15,
   },
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 18,
     alignSelf: 'center',
-  },
-  buttonWrapper: {
-    marginHorizontal: 15,
   },
 });
 
