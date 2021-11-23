@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StatusBar, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { Input, Button } from 'react-native-elements';
 import Logotype from '../components/Logotype';
@@ -12,7 +12,6 @@ interface Props {
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <StatusBar backgroundColor="#1B1A22" barStyle="light-content" />
       <View style={styles.logotypeWrapper}>
         <Logotype />
       </View>

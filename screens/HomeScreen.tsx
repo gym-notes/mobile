@@ -35,7 +35,6 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
     backgroundColor: '#1B1A22',
     flex: 1,
   },
@@ -46,6 +45,7 @@ const styles = StyleSheet.create({
   contentWrapper: {
     flex: 2,
     justifyContent: 'flex-end',
+    paddingHorizontal: 15,
   },
   textStyle: {
     alignSelf: 'flex-start',

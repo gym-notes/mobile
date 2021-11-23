@@ -46,7 +46,9 @@ const Menu = () => {
             name="dumbbell"
             size={35}
             color={
-              currentRoute === 'HomeScreen' || currentRoute === 'SelectWorkoutScreen'
+              currentRoute === 'HomeScreen' ||
+              currentRoute === 'SelectWorkoutScreen' ||
+              currentRoute === 'WorkoutScreen'
                 ? '#D44E52'
                 : '#BCBCC0'
             }
@@ -55,7 +57,9 @@ const Menu = () => {
             style={{
               ...styles.menuTextStyle,
               color:
-                currentRoute === 'HomeScreen' || currentRoute === 'SelectWorkoutScreen'
+                currentRoute === 'HomeScreen' ||
+                currentRoute === 'SelectWorkoutScreen' ||
+                currentRoute === 'WorkoutScreen'
                   ? '#D44E52'
                   : '#BCBCC0',
             }}>
