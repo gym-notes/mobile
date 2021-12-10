@@ -251,6 +251,8 @@ const styles = StyleSheet.create({
   },
   menuWrapper: {
     paddingHorizontal: 15,
+    flex: 1,
+    justifyContent: 'flex-end',
   },
 });
 

@@ -16,7 +16,7 @@ const Menu = () => {
         <TouchableOpacity style={styles.menuItem}>
           <MaterialIcon
             name="book"
-            size={35}
+            size={25}
             color={currentRoute === 'PlansScreen' ? '#D44E52' : '#BCBCC0'}
           />
           <Text
@@ -30,7 +30,7 @@ const Menu = () => {
         <TouchableOpacity style={styles.menuItem}>
           <FontAwesomeIcon
             name="calendar-alt"
-            size={35}
+            size={25}
             color={currentRoute === 'HistoryScreen' ? '#D44E52' : '#BCBCC0'}
           />
           <Text
@@ -44,7 +44,7 @@ const Menu = () => {
         <TouchableOpacity style={styles.menuItem}>
           <FontAwesomeIcon
             name="dumbbell"
-            size={35}
+            size={25}
             color={
               currentRoute === 'HomeScreen' ||
               currentRoute === 'SelectWorkoutScreen' ||
@@ -69,7 +69,7 @@ const Menu = () => {
         <TouchableOpacity style={styles.menuItem}>
           <FontAwesomeIcon
             name="user-circle"
-            size={35}
+            size={25}
             color={currentRoute === 'ProfileScreen' ? '#D44E52' : '#BCBCC0'}
             solid
           />
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   menuTextStyle: {
-    fontSize: 16,
+    fontSize: 14,
   },
 });
 
