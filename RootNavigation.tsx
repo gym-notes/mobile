@@ -19,6 +19,11 @@ const RootNavigation = () => {
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen
           options={{ animation: 'slide_from_right' }}
+          name="WorkoutScreen"
+          component={WorkoutScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
           name="LoginScreen"
           component={LoginScreen}
         />
@@ -36,11 +41,6 @@ const RootNavigation = () => {
           options={{ animation: 'slide_from_right' }}
           name="SelectWorkoutScreen"
           component={SelectWorkoutScreen}
-        />
-        <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
-          name="WorkoutScreen"
-          component={WorkoutScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

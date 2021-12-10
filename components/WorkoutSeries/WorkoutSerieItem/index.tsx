@@ -3,21 +3,20 @@ import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 import { CheckBox } from 'react-native-elements';
 
 interface Props {
+  index: number;
   seriesData: {
-    id: string;
-    series: string;
     rep: string;
     weight: string;
     isCompleted: boolean;
   };
 }
 
-const WorkoutSerieItem: React.FC<Props> = ({ seriesData }) => {
+const WorkoutSerieItem: React.FC<Props> = ({ seriesData, index }) => {
   const [isChecked, setIsChecked] = useState(false);
   const { width } = useWindowDimensions();
   return (
     <View style={{ ...styles.container, width }}>
-      <Text style={styles.textStyle}>{seriesData.series} series</Text>
+      <Text style={styles.textStyle}>{++index} series</Text>
       <Text style={styles.textStyle}>rep: {seriesData.rep}</Text>
       <Text style={styles.textStyle}>kg: {seriesData.weight}</Text>
       <CheckBox

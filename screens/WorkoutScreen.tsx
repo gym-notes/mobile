@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -12,86 +12,173 @@ import Button from '../components/Button';
 import WorkoutSeries from '../components/WorkoutSeries';
 import OptionsMenu from '../components/OptionsMenu';
 import Indicator from '../components/Indicator';
+import Modal from '../components/Modal';
 
-const dummyData = [
-  {
-    id: '1523',
-    exerciseName: 'Barbell Olympic Squat',
-    series: [
-      {
-        id: '1sdf23',
-        series: '1',
-        rep: '10',
-        weight: '120',
-        isCompleted: false,
-      },
-      {
-        id: '2sdg3',
-        series: '2',
-        rep: '10',
-        weight: '120',
-        isCompleted: false,
-      },
-      {
-        id: '3dfgdf3',
-        series: '3',
-        rep: '10',
-        weight: '120',
-        isCompleted: false,
-      },
-      {
-        id: '4dfg3',
-        series: '4',
-        rep: '10',
-        weight: '120',
-        isCompleted: false,
-      },
-    ],
-  },
-  {
-    id: '2hgh32d',
-    exerciseName: 'Brabell Bench Press',
-    series: [
-      {
-        id: '1',
-        series: '1',
-        rep: '10',
-        weight: '100',
-        isCompleted: false,
-      },
-      {
-        id: '2jss3d',
-        series: '2',
-        rep: '10',
-        weight: '100',
-        isCompleted: false,
-      },
-      {
-        id: '3hgds3',
-        series: '3',
-        rep: '8',
-        weight: '100',
-        isCompleted: false,
-      },
-      {
-        id: '4dhdf4s',
-        series: '4',
-        rep: '8',
-        weight: '100',
-        isCompleted: false,
-      },
-    ],
-  },
-];
+interface IWorkoutScreen {
+  viewableItems: Array<Type>;
+}
+
+interface Type {
+  index: number;
+  isViewable: boolean;
+  key: string;
+  item: object;
+}
 
 const WorkoutScreen = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width } = useWindowDimensions();
 
+  const [index, setIndex] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [exerciseName, setExerciseName] = useState('');
+  const [isAddExercise, setIsAddExercise] = useState(true);
+
+  const [dummyData, setDummyData] = useState([
+    {
+      exerciseName: 'Barbell Olympic Squat',
+      series: [
+        {
+          rep: '10',
+          weight: '120',
+          isCompleted: false,
+        },
+        {
+          rep: '10',
+          weight: '120',
+          isCompleted: false,
+        },
+        {
+          rep: '10',
+          weight: '120',
+          isCompleted: false,
+        },
+        {
+          rep: '10',
+          weight: '120',
+          isCompleted: false,
+        },
+      ],
+    },
+    {
+      exerciseName: 'Brabell Bench Press',
+      series: [
+        {
+          rep: '10',
+          weight: '100',
+          isCompleted: false,
+        },
+        {
+          rep: '10',
+          weight: '100',
+          isCompleted: false,
+        },
+        {
+          rep: '8',
+          weight: '100',
+          isCompleted: false,
+        },
+        {
+          rep: '8',
+          weight: '100',
+          isCompleted: false,
+        },
+      ],
+    },
+  ]);
+
+  const onViewableItemsChanged = ({ viewableItems }: IWorkoutScreen) => {
+    setIndex(viewableItems[0].index);
+  };
+
+  const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
+
+  const addSerie = () => {
+    const newData = [...dummyData];
+
+    const newElement = {
+      rep: '100',
+      weight: '500',
+      isCompleted: false,
+    };
+
+    newData[index].series.push(newElement);
+    setDummyData(newData);
+  };
+
+  const removeSerie = () => {
+    const newData = [...dummyData];
+    if (newData[index].series.length !== 1) {
+      newData[index].series.splice(-1);
+    }
+
+    setDummyData(newData);
+  };
+
+  const addExercise = () => {
+    const newElement = {
+      exerciseName: exerciseName,
+      series: [
+        {
+          id: '0001ef',
+          rep: '10',
+          weight: '120',
+          isCompleted: false,
+        },
+      ],
+    };
+
+    setDummyData((prevState) => [...prevState, newElement]);
+    setModalVisible(!modalVisible);
+    setExerciseName('');
+  };
+
+  const replaceExercise = () => {
+    const newData = [...dummyData];
+
+    const newElement = {
+      exerciseName: exerciseName,
+      series: [
+        {
+          rep: '0',
+          weight: '0',
+          isCompleted: false,
+        },
+      ],
+    };
+
+    newData[index] = newElement;
+
+    setDummyData(newData);
+    setModalVisible(!modalVisible);
+    setExerciseName('');
+  };
+
+  const deleteExercise = () => {
+    const newData = [...dummyData];
+    newData.splice(index, 1);
+
+    setDummyData(newData);
+  };
+
   return (
     <View style={styles.container}>
-      <OptionsMenu />
+      <OptionsMenu
+        deleteExercise={deleteExercise}
+        setModalVisible={setModalVisible}
+        modalVisible={modalVisible}
+        setIsAddExercise={setIsAddExercise}
+      />
       <View style={{ flex: 0.7 }}>
+        <Modal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          addExercise={addExercise}
+          exerciseName={exerciseName}
+          setExerciseName={setExerciseName}
+          replaceExercise={replaceExercise}
+          isAddExercise={isAddExercise}
+        />
         <FlatList
           data={dummyData}
           renderItem={({ item }) => (
@@ -105,14 +192,16 @@ const WorkoutScreen = () => {
           showsHorizontalScrollIndicator={false}
           pagingEnabled
           bounces={false}
-          keyExtractor={(item) => item.id}
+          keyExtractor={(item, index) => index.toString()}
+          // @ts-ignore:next-line
+          viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+          viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
         />
       </View>
-
       <View style={styles.bottomWrapper}>
         <Indicator scrollX={scrollX} width={width} dummyData={dummyData} />
         <View style={styles.seriesButtonsWrapper}>
-          <TouchableOpacity style={{ width: '48%' }}>
+          <TouchableOpacity onPress={() => addSerie()} style={{ width: '48%' }}>
             <Button
               title="add series"
               iconName="plus-circle-outline"
@@ -121,7 +210,7 @@ const WorkoutScreen = () => {
               width="100%"
             />
           </TouchableOpacity>
-          <TouchableOpacity style={{ width: '48%' }}>
+          <TouchableOpacity onPress={() => removeSerie()} style={{ width: '48%' }}>
             <Button
               title="remove series"
               iconName="minus-circle-outline"
