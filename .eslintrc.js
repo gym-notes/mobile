@@ -34,6 +34,7 @@ module.exports = {
         'react', 'react-hooks', '@typescript-eslint', 'prettier'
     ],
     rules: {
+        "@typescript-eslint/ban-ts-comment": "off",
         'prettier/prettier': 'error',
         indent: [
             'error',

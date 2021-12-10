@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import WorkoutSerieItem from './WorkoutSerieItem';
 
 interface Props {
@@ -8,21 +8,20 @@ interface Props {
 }
 
 interface Type {
-  id: string;
-  series: string;
   rep: string;
   weight: string;
   isCompleted: boolean;
 }
 
 const WorkoutSeries: React.FC<Props> = ({ exercisesData, exerciseName }) => {
+  const { width } = useWindowDimensions();
   return (
-    <View>
-      <Text style={styles.textStyle}>{exerciseName}</Text>
+    <View style={{ width }}>
+      <Text style={styles.textStyle}>{exerciseName.toLocaleUpperCase()}</Text>
       <FlatList
         data={exercisesData}
-        renderItem={({ item }) => <WorkoutSerieItem seriesData={item} />}
-        keyExtractor={(item) => item.id}
+        renderItem={({ item, index }) => <WorkoutSerieItem seriesData={item} index={index} />}
+        keyExtractor={(item, index) => index.toString()}
       />
     </View>
   );
