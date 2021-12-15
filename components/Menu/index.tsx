@@ -70,13 +70,20 @@ const Menu = () => {
           <FontAwesomeIcon
             name="user-circle"
             size={25}
-            color={currentRoute === 'ProfileScreen' ? '#D44E52' : '#BCBCC0'}
+            color={
+              currentRoute === 'ProfileScreen' || currentRoute === 'ProfileEdit'
+                ? '#D44E52'
+                : '#BCBCC0'
+            }
             solid
           />
           <Text
             style={{
               ...styles.menuTextStyle,
-              color: currentRoute === 'ProfileScreen' ? '#D44E52' : '#BCBCC0',
+              color:
+                currentRoute === 'ProfileScreen' || currentRoute === 'ProfileEdit'
+                  ? '#D44E52'
+                  : '#BCBCC0',
             }}>
             Profile
           </Text>
