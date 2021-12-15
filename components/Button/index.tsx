@@ -26,7 +26,7 @@ const Button: React.FC<Props> = ({
       style={{
         flexDirection: 'row',
         backgroundColor: backgroundColor,
-        borderRadius: 10,
+        borderRadius: 12,
         width: width ? width : 330,
         height: height ? height : 40,
         justifyContent: 'center',
