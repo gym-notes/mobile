@@ -7,7 +7,7 @@ import HomeScreen from './screens/HomeScreen';
 import SelectWorkoutScreen from './screens/SelectWorkoutScreen';
 import WorkoutScreen from './screens/WorkoutScreen';
 import ProfileScreen from './screens/ProfileScreen';
-import ProfileEdit from './screens/ProfileEdit';
+import ProfileEditScreen from './screens/ProfileEditScreen';
 import PlansScreen from './screens/PlansScreen';
 
 const RootNavigation = () => {
@@ -20,11 +20,6 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions}>
-        <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
-          name="PlansScreen"
-          component={PlansScreen}
-        />
         <Stack.Screen
           options={{ animation: 'slide_from_right' }}
           name="LoginScreen"
@@ -57,8 +52,13 @@ const RootNavigation = () => {
         />
         <Stack.Screen
           options={{ animation: 'slide_from_right' }}
-          name="ProfileEdit"
-          component={ProfileEdit}
+          name="ProfileEditScreen"
+          component={ProfileEditScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="PlansScreen"
+          component={PlansScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>
