@@ -12,33 +12,31 @@ const ProfileEdit = () => {
   const [valueCountry, setValueCountry] = useState(null);
 
   return (
-    <View style={{ flex: 1, backgroundColor: '#1B1A22' }}>
-      <View style={{ alignItems: 'center', padding: 15 }}>
-        <Text style={{ color: '#BCBCC0', fontWeight: 'bold', marginVertical: 15, fontSize: 16 }}>
-          Edit your profile
-        </Text>
+    <View style={styles.container}>
+      <View style={styles.wrapper}>
+        <Text style={styles.textStyle}>Edit your profile</Text>
         <Input
           placeholder="Type your name"
           label="First Name"
-          labelStyle={{ color: '#BCBCC0' }}
+          labelStyle={styles.inputLabelStyle}
           leftIcon={<FontAwesome5Icon name="user-alt" size={20} color="#BCBCC0" />}
         />
         <Input
           placeholder="Type your last name"
           label="Last Name"
-          labelStyle={{ color: '#BCBCC0' }}
+          labelStyle={styles.inputLabelStyle}
           leftIcon={<FontAwesome5Icon name="user-alt" size={20} color="#BCBCC0" />}
         />
         <Input
           placeholder="Type your weight"
           label="Weight in kg"
-          labelStyle={{ color: '#BCBCC0' }}
+          labelStyle={styles.inputLabelStyle}
           leftIcon={<FontAwesome5Icon name="weight-hanging" size={20} color="#BCBCC0" />}
         />
         <Input
           placeholder="Type your height"
           label="Height in cm"
-          labelStyle={{ color: '#BCBCC0' }}
+          labelStyle={styles.inputLabelStyle}
           leftIcon={<FontAwesome5Icon name="ruler-vertical" size={20} color="#BCBCC0" />}
         />
         <DropDownPickers
@@ -65,10 +63,27 @@ const ProfileEdit = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1B1A22',
+  },
+  wrapper: {
+    alignItems: 'center',
+    padding: 15,
+  },
   menuWrapper: {
     paddingHorizontal: 15,
     flex: 1,
     justifyContent: 'flex-end',
+  },
+  textStyle: {
+    color: '#BCBCC0',
+    fontWeight: 'bold',
+    marginVertical: 15,
+    fontSize: 16,
+  },
+  inputLabelStyle: {
+    color: '#BCBCC0',
   },
 });
 

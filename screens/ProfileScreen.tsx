@@ -6,59 +6,42 @@ import { Avatar, Divider } from 'react-native-elements';
 
 const ProfileScreen = () => {
   return (
-    <View style={{ flex: 1, backgroundColor: '#1B1A22' }}>
+    <View style={styles.container}>
       <OptionsMenu />
-      <View style={{ alignItems: 'center', padding: 15 }}>
+      <View style={styles.wrapper}>
         <Avatar
           rounded
           size="xlarge"
           title="KN"
           activeOpacity={0.5}
-          containerStyle={{ backgroundColor: '#2E2C39' }}
-          titleStyle={{ color: '#BCBCC0' }}
+          containerStyle={styles.avatarContainerStyle}
+          titleStyle={styles.avatarTextStyle}
         />
-        <Text
-          style={{
-            color: '#BCBCC0',
-            fontSize: 24,
-            fontWeight: 'bold',
-            textTransform: 'capitalize',
-            marginVertical: 10,
-          }}>
-          Kamil Nahotko
-        </Text>
-        <View style={{ flexDirection: 'row', justifyContent: 'space-evenly', width: '100%' }}>
+        <Text style={styles.headerTextStyle}>Kamil Nahotko</Text>
+        <View style={styles.informationsContainer}>
           <View>
-            <Text style={{ color: '#BCBCC0', fontSize: 18, fontWeight: 'bold' }}>
-              83<Text style={{ fontSize: 12, fontWeight: 'normal' }}>kg</Text>
+            <Text style={styles.informationsTextStyle}>
+              83<Text style={styles.informationsSubtextStyle}>kg</Text>
             </Text>
-            <Text style={{ color: '#BCBCC0' }}>Weight</Text>
+            <Text style={styles.textColorStyle}>Weight</Text>
           </View>
           <Divider orientation="vertical" width={3} color="#2E2C39" />
           <View>
-            <Text style={{ color: '#BCBCC0', fontSize: 18, fontWeight: 'bold' }}>
-              170<Text style={{ fontSize: 12, fontWeight: 'normal' }}>cm</Text>
+            <Text style={styles.informationsTextStyle}>
+              170<Text style={styles.informationsSubtextStyle}>cm</Text>
             </Text>
-            <Text style={{ color: '#BCBCC0' }}>Height</Text>
+            <Text style={styles.textColorStyle}>Height</Text>
           </View>
           <Divider orientation="vertical" width={3} color="#2E2C39" />
           <View>
-            <Text style={{ color: '#BCBCC0', fontSize: 18, fontWeight: 'bold' }}>
-              24<Text style={{ fontSize: 12, fontWeight: 'normal' }}>y.o</Text>
+            <Text style={styles.informationsTextStyle}>
+              24<Text style={styles.informationsSubtextStyle}>y.o</Text>
             </Text>
-            <Text style={{ color: '#BCBCC0' }}>Age</Text>
+            <Text style={styles.textColorStyle}>Age</Text>
           </View>
         </View>
-        <Text
-          style={{
-            fontSize: 16,
-            fontWeight: 'bold',
-            color: '#BCBCC0',
-            alignSelf: 'flex-start',
-            padding: 15,
-            marginVertical: 25,
-          }}>
-          Your BMI: <Text style={{ color: '#D44E52' }}>25.62</Text>
+        <Text style={styles.bmiTextStyle}>
+          Your BMI: <Text style={styles.BmiSubtextStyle}>25.62</Text>
         </Text>
       </View>
       <View style={styles.menuWrapper}>
@@ -69,6 +52,55 @@ const ProfileScreen = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#1B1A22',
+  },
+  wrapper: {
+    alignItems: 'center',
+    padding: 15,
+  },
+  avatarContainerStyle: {
+    backgroundColor: '#2E2C39',
+  },
+  avatarTextStyle: {
+    color: '#BCBCC0',
+  },
+  headerTextStyle: {
+    color: '#BCBCC0',
+    fontSize: 24,
+    fontWeight: 'bold',
+    textTransform: 'capitalize',
+    marginVertical: 10,
+  },
+  informationsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: '100%',
+  },
+  informationsTextStyle: {
+    color: '#BCBCC0',
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  informationsSubtextStyle: {
+    fontSize: 12,
+    fontWeight: 'normal',
+  },
+  textColorStyle: {
+    color: '#BCBCC0',
+  },
+  bmiTextStyle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#BCBCC0',
+    alignSelf: 'flex-start',
+    padding: 15,
+    marginVertical: 25,
+  },
+  BmiSubtextStyle: {
+    color: '#D44E52',
+  },
   menuWrapper: {
     paddingHorizontal: 15,
     flex: 1,
