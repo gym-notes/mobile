@@ -4,8 +4,13 @@ import { Divider } from 'react-native-elements';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigationState } from '@react-navigation/native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-const Menu = () => {
+interface Props {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+const Menu: React.FC<Props> = ({ navigation }) => {
   const routes = useNavigationState((state) => state.routes);
   const currentRoute = routes[routes.length - 1].name;
 
@@ -13,7 +18,9 @@ const Menu = () => {
     <>
       <Divider orientation="horizontal" width={1} style={styles.dividerStyle} />
       <View style={styles.container}>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('PlansScreen')}
+          style={styles.menuItem}>
           <MaterialIcon
             name="book"
             size={25}
@@ -27,7 +34,9 @@ const Menu = () => {
             Plans
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('HistoryScreen')}
+          style={styles.menuItem}>
           <FontAwesomeIcon
             name="calendar-alt"
             size={25}
@@ -41,7 +50,7 @@ const Menu = () => {
             History
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')} style={styles.menuItem}>
           <FontAwesomeIcon
             name="dumbbell"
             size={25}
@@ -66,7 +75,9 @@ const Menu = () => {
             Workout
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem}>
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ProfileScreen')}
+          style={styles.menuItem}>
           <FontAwesomeIcon
             name="user-circle"
             size={25}

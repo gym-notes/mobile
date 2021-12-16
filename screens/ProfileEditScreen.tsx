@@ -5,8 +5,13 @@ import { Input } from 'react-native-elements';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
 import Button from '../components/Button';
 import DropDownPickers from '../components/DropDownPickers';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-const ProfileEdit = () => {
+interface Props {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+const ProfileEdit: React.FC<Props> = ({ navigation }) => {
   const [valueDate, setValueDate] = useState(null);
   const [valueGender, setValueGender] = useState(null);
   const [valueCountry, setValueCountry] = useState(null);
@@ -56,7 +61,7 @@ const ProfileEdit = () => {
         />
       </View>
       <View style={styles.menuWrapper}>
-        <Menu />
+        <Menu navigation={navigation} />
       </View>
     </View>
   );

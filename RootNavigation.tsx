@@ -23,11 +23,6 @@ const RootNavigation = () => {
       <Stack.Navigator screenOptions={screenOptions}>
         <Stack.Screen
           options={{ animation: 'slide_from_right' }}
-          name="HistoryScreen"
-          component={HistoryScreen}
-        />
-        <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
           name="LoginScreen"
           component={LoginScreen}
         />
@@ -62,9 +57,14 @@ const RootNavigation = () => {
           component={ProfileEditScreen}
         />
         <Stack.Screen
-          options={{ animation: 'slide_from_right' }}
+          options={{ animation: 'slide_from_left' }}
           name="PlansScreen"
           component={PlansScreen}
+        />
+        <Stack.Screen
+          options={{ animation: 'slide_from_left' }}
+          name="HistoryScreen"
+          component={HistoryScreen}
         />
       </Stack.Navigator>
     </NavigationContainer>

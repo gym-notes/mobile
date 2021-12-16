@@ -3,8 +3,13 @@ import { View, Text, StyleSheet } from 'react-native';
 import Menu from '../components/Menu';
 import OptionsMenu from '../components/OptionsMenu';
 import { Avatar, Divider } from 'react-native-elements';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-const ProfileScreen = () => {
+interface Props {
+  navigation: NavigationProp<ParamListBase>;
+}
+
+const ProfileScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <OptionsMenu />
@@ -45,7 +50,7 @@ const ProfileScreen = () => {
         </Text>
       </View>
       <View style={styles.menuWrapper}>
-        <Menu />
+        <Menu navigation={navigation} />
       </View>
     </View>
   );
