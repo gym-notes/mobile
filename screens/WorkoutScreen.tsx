@@ -13,9 +13,11 @@ import WorkoutSeries from '../components/WorkoutSeries';
 import OptionsMenu from '../components/OptionsMenu';
 import Indicator from '../components/Indicator';
 import Modal from '../components/Modal';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
 interface IWorkoutScreen {
   viewableItems: Array<Type>;
+  navigation: NavigationProp<ParamListBase>;
 }
 
 interface Type {
@@ -25,7 +27,7 @@ interface Type {
   item: object;
 }
 
-const WorkoutScreen = () => {
+const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width } = useWindowDimensions();
 
@@ -224,7 +226,7 @@ const WorkoutScreen = () => {
           <Button title="finish" backgroundColor="#D44E52" textColor="white" width="100%" />
         </TouchableOpacity>
         <View style={styles.menuWrapper}>
-          <Menu />
+          <Menu navigation={navigation} />
         </View>
       </View>
     </View>

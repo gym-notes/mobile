@@ -27,7 +27,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             onPress={() => navigation.navigate('SelectWorkoutScreen')}
           />
         </View>
-        <Menu />
+        <Menu navigation={navigation} />
       </View>
     </View>
   );

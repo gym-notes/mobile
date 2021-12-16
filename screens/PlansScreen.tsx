@@ -3,6 +3,11 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import Button from '../components/Button';
 import Menu from '../components/Menu';
 import PlanItem from '../components/PlanItem';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
+
+interface Props {
+  navigation: NavigationProp<ParamListBase>;
+}
 
 const dummyData = [
   {
@@ -31,7 +36,7 @@ const dummyData = [
   },
 ];
 
-const PlansScreen = () => {
+const PlansScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -48,7 +53,7 @@ const PlansScreen = () => {
         </View>
       </View>
       <View style={styles.menuWrapper}>
-        <Menu />
+        <Menu navigation={navigation} />
       </View>
     </View>
   );

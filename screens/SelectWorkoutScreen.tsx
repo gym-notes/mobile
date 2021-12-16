@@ -57,7 +57,7 @@ const SelectWorkoutScreen: React.FC<Props> = ({ navigation }) => {
             <WorkoutItem key={data.id} title={data.title} navigation={navigation} />
           ))}
         </ScrollView>
-        <Menu />
+        <Menu navigation={navigation} />
       </View>
     </View>
   );

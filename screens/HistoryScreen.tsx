@@ -2,8 +2,12 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Menu from '../components/Menu';
 import HistoryItem from '../components/HistoryItem';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-const HistoryScreen = () => {
+interface Props {
+  navigation: NavigationProp<ParamListBase>;
+}
+const HistoryScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
@@ -11,7 +15,7 @@ const HistoryScreen = () => {
         <HistoryItem />
       </View>
       <View style={styles.menuWrapper}>
-        <Menu />
+        <Menu navigation={navigation} />
       </View>
     </View>
   );
