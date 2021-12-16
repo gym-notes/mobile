@@ -9,6 +9,7 @@ import WorkoutScreen from './screens/WorkoutScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import ProfileEditScreen from './screens/ProfileEditScreen';
 import PlansScreen from './screens/PlansScreen';
+import HistoryScreen from './screens/HistoryScreen';
 
 const RootNavigation = () => {
   const Stack = createNativeStackNavigator();
@@ -20,6 +21,11 @@ const RootNavigation = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={screenOptions}>
+        <Stack.Screen
+          options={{ animation: 'slide_from_right' }}
+          name="HistoryScreen"
+          component={HistoryScreen}
+        />
         <Stack.Screen
           options={{ animation: 'slide_from_right' }}
           name="LoginScreen"
