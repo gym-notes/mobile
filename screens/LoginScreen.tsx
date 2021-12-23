@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { Input } from 'react-native-elements';
@@ -7,20 +7,38 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { useAuthDispatch } from '../contexts/AuthContext';
 import { loginUser } from '../actions/AuthAction';
 import Button from '../components/Button';
+import { useForm, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
 
+type FormData = {
+  email: string;
+  password: string;
+};
+
+const schema = yup
+  .object({
+    email: yup.string().email().required(),
+    password: yup.string().min(8).required(),
+  })
+  .required();
+
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormData>({ resolver: yupResolver(schema) });
+
+  const onSubmit = handleSubmit((data) =>
+    loginUser(dispatch, { email: data.email, password: data.password }),
+  );
 
   const dispatch = useAuthDispatch();
-
-  const handleLogin = async () => {
-    await loginUser(dispatch, { email, password });
-  };
 
   return (
     <View style={styles.container}>
@@ -28,27 +46,49 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
         <Logotype />
       </View>
       <View style={styles.formWrapper}>
-        <Input
-          containerStyle={styles.inputContainerStyle}
-          placeholder="email@address.com"
-          label="Your Email Address"
-          leftIcon={<MaterialIcon name="email" size={30} color="#BCBCC0" />}
-          inputStyle={styles.inputStyle}
-          onChangeText={(value) => setEmail(value)}
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder="email@address.com"
+              label="Your Email Address"
+              leftIcon={<MaterialIcon name="email" size={30} color="#BCBCC0" />}
+              inputStyle={styles.inputStyle}
+              onChangeText={onChange}
+              value={value}
+              errorMessage={errors.email?.message}
+            />
+          )}
+          name="email"
         />
-        <Input
-          containerStyle={styles.inputContainerStyle}
-          placeholder="Password"
-          label="Type your Password"
-          leftIcon={<MaterialIcon name="lock" size={30} color="#BCBCC0" />}
-          inputStyle={styles.inputStyle}
-          secureTextEntry={true}
-          onChangeText={(value) => setPassword(value)}
+
+        <Controller
+          control={control}
+          rules={{
+            required: true,
+          }}
+          render={({ field: { onChange, value } }) => (
+            <Input
+              containerStyle={styles.inputContainerStyle}
+              placeholder="Password"
+              label="Type your Password"
+              leftIcon={<MaterialIcon name="lock" size={30} color="#BCBCC0" />}
+              inputStyle={styles.inputStyle}
+              secureTextEntry={true}
+              onChangeText={onChange}
+              value={value}
+              errorMessage={errors.password?.message}
+            />
+          )}
+          name="password"
         />
-        <TouchableOpacity style={styles.buttonStyle} onPress={() => handleLogin()}>
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => onSubmit()}>
           <Button title="Login" backgroundColor="#2E2C39" textColor="#BCBCC0" />
         </TouchableOpacity>
-
         <TouchableOpacity
           style={styles.buttonStyle}
           onPress={() => navigation.navigate('RegisterScreen')}>
