@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
@@ -10,6 +10,7 @@ interface Props {
   margin?: number;
   iconName?: string;
   textColor: string;
+  loading?: boolean;
 }
 
 const Button: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const Button: React.FC<Props> = ({
   margin,
   iconName,
   textColor,
+  loading,
 }) => {
   return (
     <View
@@ -34,9 +36,13 @@ const Button: React.FC<Props> = ({
         margin: margin ? margin : 0,
       }}>
       {iconName && <Icon name={iconName} size={19} color="white" style={{ marginRight: 5 }} />}
-      <Text style={{ color: textColor, fontWeight: 'bold', textTransform: 'uppercase' }}>
-        {title}
-      </Text>
+      {loading ? (
+        <ActivityIndicator size={28} color="#BCBCC0" />
+      ) : (
+        <Text style={{ color: textColor, fontWeight: 'bold', textTransform: 'uppercase' }}>
+          {title}
+        </Text>
+      )}
     </View>
   );
 };

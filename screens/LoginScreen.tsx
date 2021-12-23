@@ -1,15 +1,27 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet, TouchableOpacity } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
-import { Input, Button } from 'react-native-elements';
+import { Input } from 'react-native-elements';
 import Logotype from '../components/Logotype';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { useAuthDispatch } from '../contexts/AuthContext';
+import { loginUser } from '../actions/AuthAction';
+import Button from '../components/Button';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
 
 const LoginScreen: React.FC<Props> = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const dispatch = useAuthDispatch();
+
+  const handleLogin = async () => {
+    await loginUser(dispatch, { email, password });
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.logotypeWrapper}>
@@ -22,6 +34,7 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           label="Your Email Address"
           leftIcon={<MaterialIcon name="email" size={30} color="#BCBCC0" />}
           inputStyle={styles.inputStyle}
+          onChangeText={(value) => setEmail(value)}
         />
         <Input
           containerStyle={styles.inputContainerStyle}
@@ -30,19 +43,17 @@ const LoginScreen: React.FC<Props> = ({ navigation }) => {
           leftIcon={<MaterialIcon name="lock" size={30} color="#BCBCC0" />}
           inputStyle={styles.inputStyle}
           secureTextEntry={true}
+          onChangeText={(value) => setPassword(value)}
         />
-        <Button
-          title="Login"
-          buttonStyle={styles.buttonStyle}
-          titleStyle={styles.buttonTitleStyle}
-          onPress={() => navigation.navigate('HomeScreen')}
-        />
-        <Button
-          title="Create account"
-          buttonStyle={styles.buttonStyle}
-          titleStyle={styles.buttonTitleStyle}
-          onPress={() => navigation.navigate('RegisterScreen')}
-        />
+        <TouchableOpacity style={styles.buttonStyle} onPress={() => handleLogin()}>
+          <Button title="Login" backgroundColor="#2E2C39" textColor="#BCBCC0" />
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.buttonStyle}
+          onPress={() => navigation.navigate('RegisterScreen')}>
+          <Button title="Create account" backgroundColor="#2E2C39" textColor="#BCBCC0" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -70,13 +81,7 @@ const styles = StyleSheet.create({
     color: '#BCBCC0',
   },
   buttonStyle: {
-    minWidth: '90%',
-    backgroundColor: '#2E2C39',
     marginVertical: 5,
-  },
-  buttonTitleStyle: {
-    fontSize: 16,
-    textTransform: 'uppercase',
   },
 });
 
