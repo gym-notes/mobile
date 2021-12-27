@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   logotypeWrapper: {
     alignItems: 'center',
-    flex: 1,
+    flex: 0.5,
     paddingVertical: 30,
   },
 });

@@ -1,6 +1,6 @@
 export interface IState {
   token?: string | null;
-  loading?: boolean;
+  loading: boolean;
   message?: string | null;
 }
 

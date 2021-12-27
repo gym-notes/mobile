@@ -10,6 +10,7 @@ interface ILoginPayload {
 
 interface IServerError {
   message: string;
+  loading: boolean;
 }
 
 export const loginUser = async (dispatch: Dispatch, loginPayload: ILoginPayload) => {
