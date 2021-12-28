@@ -1,55 +1,23 @@
-import React from 'react';
-import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Input, Button } from 'react-native-elements';
-import Logotype from '../components/Logotype';
-import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
+import React, { useState } from 'react';
+import { View, StyleSheet, Text } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import RegisterIndicator from '../components/RegisterIndicator';
+import RegisterForm from '../components/RegisterForm';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const RegisterScreen: React.FC<Props> = ({ navigation }) => {
+const RegisterScreen: React.FC<Props> = () => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const steps = ['Login details', 'User Profile', 'User Profile'];
+
   return (
     <View style={styles.container}>
-      <View style={styles.logotypeWrapper}>
-        <Logotype />
-      </View>
-      <View style={styles.formWrapper}>
-        <Input
-          containerStyle={styles.inputContainerStyle}
-          placeholder="email@address.com"
-          label="Your Email Address"
-          leftIcon={<MaterialIcon name="email" size={30} color="#BCBCC0" />}
-          inputStyle={styles.inputStyle}
-        />
-        <Input
-          containerStyle={styles.inputContainerStyle}
-          placeholder="Password"
-          label="Type your Password"
-          leftIcon={<MaterialIcon name="lock" size={30} color="#BCBCC0" />}
-          inputStyle={styles.inputStyle}
-          secureTextEntry={true}
-        />
-        <Input
-          containerStyle={styles.inputContainerStyle}
-          placeholder="Password"
-          label="Repeat your Password"
-          leftIcon={<MaterialIcon name="lock" size={30} color="#BCBCC0" />}
-          inputStyle={styles.inputStyle}
-          secureTextEntry={true}
-        />
-        <Button
-          title="Create Account"
-          buttonStyle={styles.buttonStyle}
-          titleStyle={styles.buttonTitleStyle}
-        />
-        <TouchableOpacity onPress={() => navigation.navigate('LoginScreen')}>
-          <Text style={{ color: 'white', marginVertical: 10 }}>
-            Already have an account?{' '}
-            <Text style={{ fontWeight: 'bold', color: '#D44E52' }}>Log In</Text>
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.wrapper}>
+        <Text style={styles.headerText}>Sign Up</Text>
+        <RegisterIndicator currentStep={currentStep} steps={steps} />
+        <RegisterForm steps={steps} setCurrentStep={setCurrentStep} currentStep={currentStep} />
       </View>
     </View>
   );
@@ -61,30 +29,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#1B1A22',
   },
-  logotypeWrapper: {
-    alignItems: 'center',
+  wrapper: {
     flex: 1,
-    paddingVertical: 30,
+    width: '100%',
+    padding: 15,
   },
-  formWrapper: {
-    alignItems: 'center',
-    flex: 2,
-    justifyContent: 'flex-end',
-  },
-  inputContainerStyle: {
-    minWidth: '90%',
-  },
-  inputStyle: {
+  headerText: {
     color: '#BCBCC0',
-  },
-  buttonStyle: {
-    minWidth: '90%',
-    backgroundColor: '#2E2C39',
-    marginVertical: 5,
-  },
-  buttonTitleStyle: {
-    fontSize: 16,
-    textTransform: 'uppercase',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginTop: 25,
+    alignSelf: 'center',
   },
 });
 
