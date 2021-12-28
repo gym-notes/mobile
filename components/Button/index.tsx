@@ -11,6 +11,7 @@ interface Props {
   iconName?: string;
   textColor: string;
   loading?: boolean;
+  iconRight?: boolean;
 }
 
 const Button: React.FC<Props> = ({
@@ -22,6 +23,7 @@ const Button: React.FC<Props> = ({
   iconName,
   textColor,
   loading,
+  iconRight,
 }) => {
   return (
     <View
@@ -35,13 +37,18 @@ const Button: React.FC<Props> = ({
         alignItems: 'center',
         margin: margin ? margin : 0,
       }}>
-      {iconName && <Icon name={iconName} size={19} color="white" style={{ marginRight: 5 }} />}
+      {iconName && !iconRight && (
+        <Icon name={iconName} size={19} color="white" style={{ marginRight: 5 }} />
+      )}
       {loading ? (
         <ActivityIndicator size={28} color="#BCBCC0" />
       ) : (
         <Text style={{ color: textColor, fontWeight: 'bold', textTransform: 'uppercase' }}>
           {title}
         </Text>
+      )}
+      {iconRight && iconName && (
+        <Icon name={iconName} size={19} color="white" style={{ marginLeft: 5 }} />
       )}
     </View>
   );
