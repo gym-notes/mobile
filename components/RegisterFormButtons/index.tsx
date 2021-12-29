@@ -6,12 +6,14 @@ interface IRegisterFormButtons {
   steps: Array<string>;
   currentStep: number;
   setCurrentStep: (arg: number) => void;
+  onSubmit: () => void;
 }
 
 const RegisterFormButtons: React.FC<IRegisterFormButtons> = ({
   currentStep,
   setCurrentStep,
   steps,
+  onSubmit,
 }) => {
   return (
     <View style={styles.buttonsWrapper}>
@@ -74,7 +76,7 @@ const RegisterFormButtons: React.FC<IRegisterFormButtons> = ({
             },
           ]}
           onPress={() => {
-            console.log('Finish');
+            onSubmit();
           }}>
           <Button title="Finish" textColor="#BCBCC0" backgroundColor="#2E2C39" width={100} />
         </TouchableOpacity>

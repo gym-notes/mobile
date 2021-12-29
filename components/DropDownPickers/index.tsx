@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { countryList } from '../../helpers/CountryList';
+import { Controller, Control, FieldErrors } from 'react-hook-form';
+import { IFormData } from '../RegisterForm';
 
-interface Props {
-  valueDate: number | null;
-  setValueDate: (arg: null) => void;
-  valueGender: string | null;
-  setValueGender: (arg: null) => void;
-  valueCountry: string | null;
-  setValueCountry: (arg: null) => void;
+interface IDropDownPickers {
+  control: Control<IFormData>;
+  errors: FieldErrors<IFormData>;
 }
 
-const DropDownPickers: React.FC<Props> = ({
-  valueDate,
-  setValueDate,
-  valueGender,
-  setValueGender,
-  valueCountry,
-  setValueCountry,
-}) => {
+const DropDownPickers: React.FC<IDropDownPickers> = ({ control, errors }) => {
   const [openDate, setOpenDate] = useState(false);
   const [itemsDate, setItemsDate] = useState<Array<object>>([]);
   const [openGender, setOpenGender] = useState(false);
@@ -51,54 +42,87 @@ const DropDownPickers: React.FC<Props> = ({
 
   return (
     <>
-      <DropDownPicker
-        open={openDate}
-        value={valueDate}
-        items={itemsDate}
-        setOpen={setOpenDate}
-        setValue={setValueDate}
-        setItems={setItemsDate}
-        dropDownDirection="BOTTOM"
-        theme="DARK"
-        labelStyle={styles.labelStyle}
-        textStyle={styles.textStyle}
-        containerStyle={styles.containerStyle}
-        style={styles.DropDownPickerStyle}
-        dropDownContainerStyle={styles.dropDownContainerStyle}
-        placeholder="Date of birth"
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value } }) => (
+          <DropDownPicker
+            onChangeValue={onChange}
+            open={openDate}
+            value={value}
+            items={itemsDate}
+            setOpen={setOpenDate}
+            setValue={onChange}
+            setItems={setItemsDate}
+            dropDownDirection="BOTTOM"
+            theme="DARK"
+            labelStyle={styles.labelStyle}
+            textStyle={styles.textStyle}
+            containerStyle={styles.containerStyle}
+            style={styles.DropDownPickerStyle}
+            dropDownContainerStyle={styles.dropDownContainerStyle}
+            placeholder="Date of birth"
+          />
+        )}
+        name="birthDate"
       />
-      <DropDownPicker
-        open={openGender}
-        value={valueGender}
-        items={itemsGender}
-        setOpen={setOpenGender}
-        setValue={setValueGender}
-        setItems={setItemsGender}
-        dropDownDirection="BOTTOM"
-        theme="DARK"
-        labelStyle={styles.labelStyle}
-        textStyle={styles.textStyle}
-        containerStyle={styles.containerStyle}
-        style={styles.DropDownPickerStyle}
-        dropDownContainerStyle={styles.dropDownContainerStyle}
-        placeholder="Gender"
+      <Text style={styles.textError}>{errors.birthDate?.message}</Text>
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value } }) => (
+          <DropDownPicker
+            onChangeValue={onChange}
+            setValue={onChange}
+            open={openGender}
+            value={value}
+            items={itemsGender}
+            setOpen={setOpenGender}
+            setItems={setItemsGender}
+            dropDownDirection="BOTTOM"
+            theme="DARK"
+            labelStyle={styles.labelStyle}
+            textStyle={styles.textStyle}
+            containerStyle={styles.containerStyle}
+            style={styles.DropDownPickerStyle}
+            dropDownContainerStyle={styles.dropDownContainerStyle}
+            placeholder="Gender"
+          />
+        )}
+        name="gender"
       />
-      <DropDownPicker
-        open={openCountry}
-        value={valueCountry}
-        items={itemsCountry}
-        setOpen={setOpenCountry}
-        setValue={setValueCountry}
-        setItems={setItemsCountry}
-        dropDownDirection="BOTTOM"
-        theme="DARK"
-        labelStyle={styles.labelStyle}
-        textStyle={styles.textStyle}
-        containerStyle={styles.containerStyle}
-        style={styles.DropDownPickerStyle}
-        dropDownContainerStyle={styles.dropDownContainerStyle}
-        placeholder="Country"
+      <Text style={styles.textError}>{errors.gender?.message}</Text>
+      <Controller
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field: { onChange, value } }) => (
+          <DropDownPicker
+            onChangeValue={onChange}
+            open={openCountry}
+            value={value}
+            items={itemsCountry}
+            setOpen={setOpenCountry}
+            setValue={onChange}
+            setItems={setItemsCountry}
+            dropDownDirection="BOTTOM"
+            theme="DARK"
+            labelStyle={styles.labelStyle}
+            textStyle={styles.textStyle}
+            containerStyle={styles.containerStyle}
+            style={styles.DropDownPickerStyle}
+            dropDownContainerStyle={styles.dropDownContainerStyle}
+            placeholder="Country"
+          />
+        )}
+        name="country"
       />
+      <Text style={styles.textError}>{errors.country?.message}</Text>
     </>
   );
 };
@@ -126,6 +150,12 @@ const styles = StyleSheet.create({
   dropDownContainerStyle: {
     elevation: 1000,
     zIndex: 100000,
+  },
+  textError: {
+    color: 'red',
+    fontSize: 12,
+    paddingTop: 5,
+    paddingLeft: 10,
   },
 });
 
