@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { Input } from 'react-native-elements';
@@ -9,6 +9,8 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import ErrorMessage from '../ErrorMessage';
+import { useAuthDispatch, useAuthState } from '../../contexts/AuthContext';
+import { registerUser, cleanErrorMessage } from '../../actions/AuthAction';
 
 interface IRegisterForm {
   currentStep: number;
@@ -31,7 +33,13 @@ export interface IFormData {
 const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentStep }) => {
   const schema = yup.object({
     email: yup.string().email().required(),
-    password: yup.string().min(8).required(),
+    password: yup
+      .string()
+      .matches(
+        /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/,
+        'Must Contain 8 Characters, One Uppercase, One Lowercase, One Number and one special case Character',
+      )
+      .required(),
     confirmPassword: yup
       .string()
       .required('Confirm Password is required')
@@ -39,9 +47,18 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
     firstName: yup
       .string()
       .required('First Name is required')
+      .min(2)
       .matches(/^[aA-zZ\s]+$/, 'Only alphabets are allowed for this field '),
-    height: yup.number().typeError('You must specify a number').required('Height is required'),
-    weight: yup.number().typeError('You must specify a number').required('Weight is required'),
+    height: yup
+      .number()
+      .typeError('You must specify a number')
+      .required('Height is required')
+      .min(50, 'Must be more than 50'),
+    weight: yup
+      .number()
+      .typeError('You must specify a number')
+      .required('Weight is required')
+      .min(20, 'Must be more than 20'),
     gender: yup.string().required('Gender is required'),
     birthDate: yup.string().required('Date of birth is required').nullable(),
     country: yup.string().required('Country is required').nullable(),
@@ -55,7 +72,38 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const dispatch = useAuthDispatch();
+  const { message } = useAuthState();
+
+  const [isVisible, setIsVisible] = useState(false);
+
+  const onSubmit = handleSubmit((data) =>
+    registerUser(dispatch, {
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      firstName: data.firstName,
+      weight: data.weight,
+      height: data.height,
+      birthDate: data.birthDate,
+      gender: data.gender,
+      country: data.country,
+    }),
+  );
+
+  useEffect(() => {
+    if (!message) {
+      setIsVisible(false);
+      return;
+    }
+    setIsVisible(true);
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      cleanErrorMessage(dispatch);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [message, dispatch]);
+
   return (
     <>
       {currentStep == 0 && (
@@ -169,8 +217,8 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
             render={({ field: { onChange, value } }) => (
               <Input
                 containerStyle={styles.inputContainerStyle}
-                placeholder="Type your height"
-                label="Height in cm"
+                placeholder="Type your weight"
+                label="Weight in cm"
                 leftIcon={<FontAwesome5Icon name="ruler-vertical" size={20} color="#BCBCC0" />}
                 inputStyle={styles.inputStyle}
                 onChangeText={onChange}
@@ -187,6 +235,7 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
           {Object.keys(errors).length !== 0 && (
             <ErrorMessage message="The form was completed incorrectly." />
           )}
+          {message && isVisible && <ErrorMessage message={message} />}
           <DropDownPickers control={control} errors={errors} />
         </View>
       )}
