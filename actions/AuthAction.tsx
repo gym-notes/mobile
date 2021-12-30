@@ -1,11 +1,23 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ActionType, IState, Dispatch } from '../interfaces/AuthInterface';
 
-const API_URL = 'http://10.0.2.2:3000/api/auth/login';
+const API_URL = 'http://10.0.2.2:3000/api/auth/';
 
 interface ILoginPayload {
   email: string;
   password: string;
+}
+
+interface IRegisterPayload {
+  email: string;
+  password: string;
+  confirmPassword: string;
+  firstName: string;
+  weight: string;
+  height: string;
+  birthDate: string;
+  gender: string;
+  country: string;
 }
 
 interface IServerError {
@@ -16,7 +28,9 @@ interface IServerError {
 export const loginUser = async (dispatch: Dispatch, loginPayload: ILoginPayload) => {
   try {
     dispatch({ type: ActionType.REQUEST_LOGIN });
-    const response: AxiosResponse<IState> = await axios.post(API_URL, { ...loginPayload });
+    const response: AxiosResponse<IState> = await axios.post(API_URL + 'login', {
+      ...loginPayload,
+    });
     const data = response.data;
 
     if (data.token) {
@@ -30,4 +44,27 @@ export const loginUser = async (dispatch: Dispatch, loginPayload: ILoginPayload)
       dispatch({ type: ActionType.LOGIN_ERROR, payload: serverMessages });
     }
   }
+};
+
+export const registerUser = async (dispatch: Dispatch, registerPayload: IRegisterPayload) => {
+  try {
+    dispatch({ type: ActionType.REQUEST_REGISTER });
+    const response: AxiosResponse<IState> = await axios.post(API_URL + 'register', {
+      ...registerPayload,
+    });
+    const data = response.data;
+    if (data.token) {
+      dispatch({ type: ActionType.REGISTER_SUCCESS, payload: data });
+    }
+  } catch (err: unknown) {
+    const error = err as AxiosError<IServerError>;
+    if (error.response) {
+      const serverMessages = error.response.data;
+      dispatch({ type: ActionType.REGISTER_ERROR, payload: serverMessages });
+    }
+  }
+};
+
+export const cleanErrorMessage = (dispatch: Dispatch) => {
+  dispatch({ type: ActionType.CLEAN_ERROR });
 };

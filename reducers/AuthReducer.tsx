@@ -12,6 +12,7 @@ export const AuthReducer = (initialState: IState, action: ActionTypes): IState =
       return {
         ...initialState,
         loading: true,
+        message: null,
       };
     case ActionType.LOGIN_SUCCESS:
       return {
@@ -29,6 +30,30 @@ export const AuthReducer = (initialState: IState, action: ActionTypes): IState =
         ...initialState,
         loading: false,
         message: action.payload.message,
+      };
+    case ActionType.REQUEST_REGISTER:
+      return {
+        ...initialState,
+        loading: true,
+        message: null,
+      };
+    case ActionType.REGISTER_SUCCESS:
+      return {
+        ...initialState,
+        token: action.payload.token,
+        loading: false,
+      };
+    case ActionType.REGISTER_ERROR:
+      return {
+        ...initialState,
+        loading: false,
+        message: action.payload.message,
+      };
+    case ActionType.CLEAN_ERROR:
+      return {
+        ...initialState,
+        loading: false,
+        message: null,
       };
 
     default:
