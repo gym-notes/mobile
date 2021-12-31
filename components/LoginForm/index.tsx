@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import Button from '../Button';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
@@ -7,11 +7,11 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useAuthDispatch, useAuthState } from '../../contexts/AuthContext';
-import { loginUser } from '../../actions/AuthAction';
+import { loginUser, cleanErrorMessage } from '../../actions/AuthAction';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import ErrorMessage from '../ErrorMessage';
 
-interface Props {
+interface ILoginForm {
   navigation: NavigationProp<ParamListBase>;
 }
 
@@ -27,7 +27,7 @@ const schema = yup
   })
   .required();
 
-const LoginForm: React.FC<Props> = ({ navigation }) => {
+const LoginForm: React.FC<ILoginForm> = ({ navigation }) => {
   const {
     control,
     handleSubmit,
@@ -40,9 +40,23 @@ const LoginForm: React.FC<Props> = ({ navigation }) => {
   const { message } = useAuthState();
 
   const dispatch = useAuthDispatch();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!message) {
+      setIsVisible(false);
+      return;
+    }
+    setIsVisible(true);
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      cleanErrorMessage(dispatch);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [message, dispatch]);
   return (
     <>
-      {message && <ErrorMessage message={message} />}
+      {message && isVisible && <ErrorMessage message={message} />}
       <View style={styles.formWrapper}>
         <Controller
           control={control}
