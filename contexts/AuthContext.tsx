@@ -1,6 +1,7 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 import { AuthReducer, initialState } from '../reducers/AuthReducer';
 import { IState, Dispatch } from '../interfaces/AuthInterface';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const AuthStateContext = createContext<IState>(initialState);
 const AuthDispatchContext = createContext<Dispatch | undefined>(undefined);
@@ -23,6 +24,20 @@ export const useAuthDispatch = () => {
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [user, dispatch] = useReducer(AuthReducer, initialState);
+
+  useEffect(() => {
+    const setToken = async () => {
+      try {
+        if (user.token) {
+          await AsyncStorage.setItem('token', user.token);
+        }
+      } catch (error) {
+        await Promise.reject(error);
+      }
+    };
+
+    void setToken();
+  }, [user.token]);
 
   return (
     <AuthStateContext.Provider value={user}>
