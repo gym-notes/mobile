@@ -13,11 +13,12 @@ import WorkoutSeries from '../components/WorkoutSeries';
 import OptionsMenu from '../components/OptionsMenu';
 import Indicator from '../components/Indicator';
 import Modal from '../components/Modal';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
 
 interface IWorkoutScreen {
   viewableItems: Array<Type>;
   navigation: NavigationProp<ParamListBase>;
+  route: RouteProp<{ params: { id: string } }>;
 }
 
 interface Type {
@@ -27,7 +28,7 @@ interface Type {
   item: object;
 }
 
-const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
+const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width } = useWindowDimensions();
 
@@ -35,6 +36,8 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [exerciseName, setExerciseName] = useState('');
   const [isAddExercise, setIsAddExercise] = useState(true);
+
+  const { id } = route.params;
 
   const [dummyData, setDummyData] = useState([
     {

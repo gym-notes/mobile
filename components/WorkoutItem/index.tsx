@@ -5,11 +5,14 @@ import { NavigationProp, ParamListBase } from '@react-navigation/native';
 interface Props {
   title: string;
   navigation: NavigationProp<ParamListBase>;
+  id: string;
 }
 
-const WorkoutItem: React.FC<Props> = ({ title, navigation }) => {
+const WorkoutItem: React.FC<Props> = ({ title, navigation, id }) => {
   return (
-    <TouchableOpacity onPress={() => navigation.navigate('WorkoutScreen')} style={styles.container}>
+    <TouchableOpacity
+      onPress={() => navigation.navigate('WorkoutScreen', { id })}
+      style={styles.container}>
       <Text style={styles.textStyle}>{title}</Text>
     </TouchableOpacity>
   );
