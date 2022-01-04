@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ActionType, IState, Dispatch } from '../interfaces/AuthInterface';
-
-const API_URL = 'http://10.0.2.2:3000/api/auth/';
+import { LOGIN_URL, REGISTER_URL } from '../helpers/AxiosInterceptors';
 
 interface ILoginPayload {
   email: string;
@@ -28,7 +27,7 @@ interface IServerError {
 export const loginUser = async (dispatch: Dispatch, loginPayload: ILoginPayload) => {
   try {
     dispatch({ type: ActionType.REQUEST_LOGIN });
-    const response: AxiosResponse<IState> = await axios.post(API_URL + 'login', {
+    const response: AxiosResponse<IState> = await axios.post(LOGIN_URL, {
       ...loginPayload,
     });
     const data = response.data;
@@ -49,7 +48,7 @@ export const loginUser = async (dispatch: Dispatch, loginPayload: ILoginPayload)
 export const registerUser = async (dispatch: Dispatch, registerPayload: IRegisterPayload) => {
   try {
     dispatch({ type: ActionType.REQUEST_REGISTER });
-    const response: AxiosResponse<IState> = await axios.post(API_URL + 'register', {
+    const response: AxiosResponse<IState> = await axios.post(REGISTER_URL, {
       ...registerPayload,
     });
     const data = response.data;
