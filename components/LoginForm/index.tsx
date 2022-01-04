@@ -37,6 +37,7 @@ const LoginForm: React.FC<ILoginForm> = ({ navigation }) => {
   const onSubmit = handleSubmit((data) =>
     loginUser(dispatch, { email: data.email, password: data.password }),
   );
+
   const { message } = useAuthState();
 
   const dispatch = useAuthDispatch();
