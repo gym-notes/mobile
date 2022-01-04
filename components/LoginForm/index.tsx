@@ -38,7 +38,7 @@ const LoginForm: React.FC<ILoginForm> = ({ navigation }) => {
     loginUser(dispatch, { email: data.email, password: data.password }),
   );
 
-  const { message } = useAuthState();
+  const { message, isLoading } = useAuthState();
 
   const dispatch = useAuthDispatch();
   const [isVisible, setIsVisible] = useState(false);
@@ -99,8 +99,11 @@ const LoginForm: React.FC<ILoginForm> = ({ navigation }) => {
           )}
           name="password"
         />
-        <TouchableOpacity style={styles.buttonStyle} onPress={() => onSubmit()}>
-          <Button title="Login" backgroundColor="#2E2C39" textColor="#BCBCC0" />
+        <TouchableOpacity
+          disabled={isLoading}
+          style={styles.buttonStyle}
+          onPress={() => onSubmit()}>
+          <Button loading={isLoading} title="Login" backgroundColor="#2E2C39" textColor="#BCBCC0" />
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.buttonStyle}

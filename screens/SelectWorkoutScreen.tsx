@@ -6,6 +6,7 @@ import WorkoutItem from '../components/WorkoutItem';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { getMyPlans } from '../actions/PlansAction';
 import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -14,7 +15,8 @@ interface Props {
 const SelectWorkoutScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = usePlansDispatch();
 
-  const { plans } = usePlansState();
+  const { plans, isLoading } = usePlansState();
+  console.log(isLoading);
 
   useEffect(() => {
     void getMyPlans(dispatch);
@@ -36,7 +38,9 @@ const SelectWorkoutScreen: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
         <Text style={styles.headerText}>Select your workout</Text>
         <ScrollView>
-          {plans ? (
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : plans ? (
             plans.map((data) => (
               <WorkoutItem key={data.id} id={data.id} title={data.name} navigation={navigation} />
             ))

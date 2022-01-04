@@ -21,7 +21,7 @@ interface IRegisterPayload {
 
 interface IServerError {
   message: string;
-  loading: boolean;
+  isLoading: boolean;
 }
 
 export const loginUser = async (dispatch: Dispatch, loginPayload: ILoginPayload) => {

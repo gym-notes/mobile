@@ -73,7 +73,7 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
   });
 
   const dispatch = useAuthDispatch();
-  const { message } = useAuthState();
+  const { message, isLoading } = useAuthState();
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -244,6 +244,7 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
         currentStep={currentStep}
         setCurrentStep={setCurrentStep}
         onSubmit={onSubmit}
+        isLoading={isLoading}
       />
     </>
   );

@@ -5,7 +5,7 @@ const API_URL = 'http://10.0.2.2:3000/api/plans/';
 
 interface IServerError {
   message: string;
-  loading: boolean;
+  isLoading: boolean;
 }
 
 export const getMyPlans = async (dispatch: Dispatch) => {
