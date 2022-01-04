@@ -2,7 +2,7 @@ import { IState, ActionTypes, ActionType } from '../interfaces/AuthInterface';
 
 export const initialState: IState = {
   token: '',
-  loading: false,
+  isLoading: false,
   message: null,
 };
 
@@ -11,14 +11,14 @@ export const AuthReducer = (initialState: IState, action: ActionTypes): IState =
     case ActionType.REQUEST_LOGIN:
       return {
         ...initialState,
-        loading: true,
+        isLoading: true,
         message: null,
       };
     case ActionType.LOGIN_SUCCESS:
       return {
         ...initialState,
         token: action.payload.token,
-        loading: false,
+        isLoading: false,
       };
     case ActionType.LOGOUT:
       return {
@@ -28,31 +28,31 @@ export const AuthReducer = (initialState: IState, action: ActionTypes): IState =
     case ActionType.LOGIN_ERROR:
       return {
         ...initialState,
-        loading: false,
+        isLoading: false,
         message: action.payload.message,
       };
     case ActionType.REQUEST_REGISTER:
       return {
         ...initialState,
-        loading: true,
+        isLoading: true,
         message: null,
       };
     case ActionType.REGISTER_SUCCESS:
       return {
         ...initialState,
         token: action.payload.token,
-        loading: false,
+        isLoading: false,
       };
     case ActionType.REGISTER_ERROR:
       return {
         ...initialState,
-        loading: false,
+        isLoading: false,
         message: action.payload.message,
       };
     case ActionType.CLEAN_ERROR:
       return {
         ...initialState,
-        loading: false,
+        isLoading: false,
         message: null,
       };
 

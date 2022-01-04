@@ -2,7 +2,7 @@ import { IState, ActionTypes, ActionType } from '../interfaces/PlansInterface';
 
 export const initialState: IState = {
   plans: null,
-  loading: false,
+  isLoading: false,
 };
 
 export const AuthReducer = (initialState: IState, action: ActionTypes): IState => {
@@ -10,25 +10,25 @@ export const AuthReducer = (initialState: IState, action: ActionTypes): IState =
     case ActionType.REQUEST_GET_MY_PLANS:
       return {
         ...initialState,
-        loading: true,
+        isLoading: true,
         message: null,
       };
     case ActionType.GET_MY_PLANS_SUCCESS:
       return {
         ...initialState,
         plans: action.payload.plans,
-        loading: false,
+        isLoading: false,
       };
     case ActionType.GET_MY_PLANS_ERROR:
       return {
         ...initialState,
-        loading: false,
+        isLoading: false,
         message: action.payload.message,
       };
     case ActionType.CLEAN_ERROR:
       return {
         ...initialState,
-        loading: false,
+        isLoading: false,
         message: null,
       };
 

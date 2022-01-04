@@ -7,6 +7,7 @@ interface IRegisterFormButtons {
   currentStep: number;
   setCurrentStep: (arg: number) => void;
   onSubmit: () => void;
+  isLoading: boolean;
 }
 
 const RegisterFormButtons: React.FC<IRegisterFormButtons> = ({
@@ -14,6 +15,7 @@ const RegisterFormButtons: React.FC<IRegisterFormButtons> = ({
   setCurrentStep,
   steps,
   onSubmit,
+  isLoading,
 }) => {
   return (
     <View style={styles.buttonsWrapper}>
@@ -68,6 +70,7 @@ const RegisterFormButtons: React.FC<IRegisterFormButtons> = ({
       )}
       {currentStep + 1 == steps.length && (
         <TouchableOpacity
+          disabled={isLoading}
           style={[
             styles.centerElement,
             {
@@ -78,7 +81,13 @@ const RegisterFormButtons: React.FC<IRegisterFormButtons> = ({
           onPress={() => {
             onSubmit();
           }}>
-          <Button title="Finish" textColor="#BCBCC0" backgroundColor="#2E2C39" width={100} />
+          <Button
+            loading={isLoading}
+            title="Finish"
+            textColor="#BCBCC0"
+            backgroundColor="#2E2C39"
+            width={100}
+          />
         </TouchableOpacity>
       )}
     </View>
