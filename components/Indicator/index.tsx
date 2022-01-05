@@ -2,15 +2,15 @@ import React from 'react';
 import { View, Animated } from 'react-native';
 
 interface Props {
-  dummyData: Array<object>;
+  ExerciseData: Array<object>;
   width: number;
   scrollX: Animated.Value;
 }
 
-const Indicator: React.FC<Props> = ({ scrollX, width, dummyData }) => {
+const Indicator: React.FC<Props> = ({ scrollX, width, ExerciseData }) => {
   return (
     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-      {dummyData.map((_, i) => {
+      {ExerciseData.map((_, i) => {
         const inputRange = [(i - 1) * width, i * width, (i + 1) * width];
         const scale = scrollX.interpolate({
           inputRange,
