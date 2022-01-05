@@ -5,9 +5,8 @@ import { CheckBox } from 'react-native-elements';
 interface Props {
   index: number;
   seriesData: {
-    rep: string;
-    weight: string;
-    isCompleted: boolean;
+    reps: number;
+    weight: number;
   };
 }
 
@@ -17,7 +16,7 @@ const WorkoutSerieItem: React.FC<Props> = ({ seriesData, index }) => {
   return (
     <View style={{ ...styles.container, width }}>
       <Text style={styles.textStyle}>{++index} series</Text>
-      <Text style={styles.textStyle}>rep: {seriesData.rep}</Text>
+      <Text style={styles.textStyle}>rep: {seriesData.reps}</Text>
       <Text style={styles.textStyle}>kg: {seriesData.weight}</Text>
       <CheckBox
         containerStyle={styles.CheckBoxContainerStyle}
