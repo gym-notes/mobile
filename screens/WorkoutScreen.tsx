@@ -16,7 +16,10 @@ import Modal from '../components/Modal';
 import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
 import { getMyPlan } from '../actions/PlansAction';
 import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
+import { useWorkoutDispatch } from '../contexts/WorkoutContext';
+import { createWorkout } from '../actions/WorkoutAction';
 import LoadingSpinner from '../components/LoadingSpinner';
+import { IWorkoutPayload } from '../interfaces/WorkoutInterface';
 
 interface IWorkoutScreen {
   viewableItems: Array<IViewableItems>;
@@ -31,8 +34,9 @@ interface IViewableItems {
   item: object;
 }
 
-interface IMyPlanData {
-  exerciseName: string;
+interface IExerciseData {
+  exerciseName: string | undefined;
+  exerciseId?: string;
   sets: Array<ISeries>;
 }
 
@@ -49,15 +53,16 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [exerciseName, setExerciseName] = useState('');
   const [isAddExercise, setIsAddExercise] = useState(true);
-  const [myPlanData, setMyPlanData] = useState<IMyPlanData[]>([]);
+  const [ExerciseData, setExerciseData] = useState<IExerciseData[]>([]);
 
-  const dispatch = usePlansDispatch();
+  const plansDispatch = usePlansDispatch();
+  const workoutDispatch = useWorkoutDispatch();
   const { myPlan, isLoading } = usePlansState();
   const { id } = route.params;
 
   useEffect(() => {
-    void getMyPlan(dispatch, id);
-  }, [id, dispatch]);
+    void getMyPlan(plansDispatch, id);
+  }, [id, plansDispatch]);
 
   useEffect(() => {
     const formatedMyPlan = myPlan?.exercises.map((exercise) => ({
@@ -70,7 +75,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
     }));
 
     if (formatedMyPlan) {
-      setMyPlanData(formatedMyPlan);
+      setExerciseData(formatedMyPlan);
     }
   }, [myPlan]);
 
@@ -81,7 +86,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
 
   const addSerie = () => {
-    const newData = [...myPlanData];
+    const newData = [...ExerciseData];
 
     const newElement = {
       reps: 0,
@@ -89,16 +94,16 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
     };
 
     newData[index].sets.push(newElement);
-    setMyPlanData(newData);
+    setExerciseData(newData);
   };
 
   const removeSerie = () => {
-    const newData = [...myPlanData];
+    const newData = [...ExerciseData];
     if (newData[index].sets.length !== 1) {
       newData[index].sets.splice(-1);
     }
 
-    setMyPlanData(newData);
+    setExerciseData(newData);
   };
 
   const addExercise = () => {
@@ -106,20 +111,19 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
       exerciseName: exerciseName,
       sets: [
         {
-          id: '0001ef',
           reps: 0,
           weight: 0,
         },
       ],
     };
 
-    setMyPlanData((prevState) => [...prevState, newElement]);
+    setExerciseData((prevState) => [...prevState, newElement]);
     setModalVisible(!modalVisible);
     setExerciseName('');
   };
 
   const replaceExercise = () => {
-    const newData = [...myPlanData];
+    const newData = [...ExerciseData];
 
     const newElement = {
       exerciseName: exerciseName,
@@ -133,16 +137,25 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
 
     newData[index] = newElement;
 
-    setMyPlanData(newData);
+    setExerciseData(newData);
     setModalVisible(!modalVisible);
     setExerciseName('');
   };
 
   const deleteExercise = () => {
-    const newData = [...myPlanData];
+    const newData = [...ExerciseData];
     newData.splice(index, 1);
 
-    setMyPlanData(newData);
+    setExerciseData(newData);
+  };
+
+  const handleSubmit = () => {
+    const newData: IWorkoutPayload = {
+      planId: id,
+      duration: 100,
+      exercises: ExerciseData.filter((item) => delete item.exerciseName),
+    };
+    return createWorkout(workoutDispatch, newData);
   };
 
   return (
@@ -167,7 +180,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
           <LoadingSpinner />
         ) : (
           <FlatList
-            data={myPlanData}
+            data={ExerciseData}
             renderItem={({ item }) => (
               <WorkoutSeries exercisesData={item.sets} exerciseName={item.exerciseName} />
             )}
@@ -187,7 +200,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
         )}
       </View>
       <View style={styles.bottomWrapper}>
-        <Indicator scrollX={scrollX} width={width} dummyData={myPlanData} />
+        <Indicator scrollX={scrollX} width={width} ExerciseData={ExerciseData} />
         <View style={styles.seriesButtonsWrapper}>
           <TouchableOpacity onPress={() => addSerie()} style={{ width: '48%' }}>
             <Button
@@ -208,7 +221,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
             />
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.finishButtonWrapper}>
+        <TouchableOpacity onPress={() => handleSubmit()} style={styles.finishButtonWrapper}>
           <Button title="finish" backgroundColor="#D44E52" textColor="white" width="100%" />
         </TouchableOpacity>
         <View style={styles.menuWrapper}>

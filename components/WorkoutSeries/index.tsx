@@ -3,7 +3,7 @@ import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-nat
 import WorkoutSerieItem from './WorkoutSerieItem';
 
 interface Props {
-  exerciseName: string;
+  exerciseName: string | undefined;
   exercisesData: Array<Type>;
 }
 
@@ -16,7 +16,7 @@ const WorkoutSeries: React.FC<Props> = ({ exercisesData, exerciseName }) => {
   const { width } = useWindowDimensions();
   return (
     <View style={{ width }}>
-      <Text style={styles.textStyle}>{exerciseName.toLocaleUpperCase()}</Text>
+      <Text style={styles.textStyle}>{exerciseName?.toLocaleUpperCase()}</Text>
       <FlatList
         data={exercisesData}
         renderItem={({ item, index }) => <WorkoutSerieItem seriesData={item} index={index} />}

@@ -1,7 +1,6 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ActionType, IState, Dispatch, IResponseMyPlan } from '../interfaces/PlansInterface';
-
-const API_URL = 'http://10.0.2.2:3000/api/plans/';
+import { GET_MY_PLAN_URL, GET_ALL_PLANS_URL } from '../helpers/AxiosInterceptors';
 
 interface IServerError {
   message: string;
@@ -11,7 +10,7 @@ interface IServerError {
 export const getAllPlans = async (dispatch: Dispatch) => {
   try {
     dispatch({ type: ActionType.REQUEST_GET_ALL_PLANS });
-    const response: AxiosResponse<IState> = await axios.get(API_URL + 'my');
+    const response: AxiosResponse<IState> = await axios.get(GET_ALL_PLANS_URL);
     const data = response.data;
 
     if (data.plans) {
@@ -30,7 +29,7 @@ export const getAllPlans = async (dispatch: Dispatch) => {
 export const getMyPlan = async (dispatch: Dispatch, id: string) => {
   try {
     dispatch({ type: ActionType.REQUEST_GET_MY_PLAN });
-    const response: AxiosResponse<IResponseMyPlan> = await axios.get(API_URL + id);
+    const response: AxiosResponse<IResponseMyPlan> = await axios.get(GET_MY_PLAN_URL + id);
     const data = response.data;
 
     if (data) {
