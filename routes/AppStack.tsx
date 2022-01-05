@@ -7,6 +7,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import ProfileEditScreen from '../screens/ProfileEditScreen';
 import PlansScreen from '../screens/PlansScreen';
 import HistoryScreen from '../screens/HistoryScreen';
+import WorkoutSummary from '../screens/WorkoutSummary';
 import { PlansProvider } from '../contexts/PlansContext';
 import { WorkoutProvider } from '../contexts/WorkoutContext';
 
@@ -55,6 +56,11 @@ export const AppStack = () => {
             options={{ animation: 'slide_from_left' }}
             name="HistoryScreen"
             component={HistoryScreen}
+          />
+          <Stack.Screen
+            options={{ animation: 'slide_from_right' }}
+            name="WorkoutSummary"
+            component={WorkoutSummary}
           />
         </Stack.Navigator>
       </WorkoutProvider>
