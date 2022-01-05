@@ -8,9 +8,8 @@ interface Props {
 }
 
 interface Type {
-  rep: string;
-  weight: string;
-  isCompleted: boolean;
+  reps: number;
+  weight: number;
 }
 
 const WorkoutSeries: React.FC<Props> = ({ exercisesData, exerciseName }) => {

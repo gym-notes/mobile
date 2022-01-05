@@ -4,7 +4,7 @@ import Button from '../components/Button';
 import Menu from '../components/Menu';
 import WorkoutItem from '../components/WorkoutItem';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-import { getMyPlans } from '../actions/PlansAction';
+import { getAllPlans } from '../actions/PlansAction';
 import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
 import LoadingSpinner from '../components/LoadingSpinner';
 
@@ -16,10 +16,9 @@ const SelectWorkoutScreen: React.FC<Props> = ({ navigation }) => {
   const dispatch = usePlansDispatch();
 
   const { plans, isLoading } = usePlansState();
-  console.log(isLoading);
 
   useEffect(() => {
-    void getMyPlans(dispatch);
+    void getAllPlans(dispatch);
   }, [dispatch]);
 
   return (

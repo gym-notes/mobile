@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -14,18 +14,31 @@ import OptionsMenu from '../components/OptionsMenu';
 import Indicator from '../components/Indicator';
 import Modal from '../components/Modal';
 import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
+import { getMyPlan } from '../actions/PlansAction';
+import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 interface IWorkoutScreen {
-  viewableItems: Array<Type>;
+  viewableItems: Array<IViewableItems>;
   navigation: NavigationProp<ParamListBase>;
   route: RouteProp<{ params: { id: string } }>;
 }
 
-interface Type {
+interface IViewableItems {
   index: number;
   isViewable: boolean;
   key: string;
   item: object;
+}
+
+interface IMyPlanData {
+  exerciseName: string;
+  sets: Array<ISeries>;
+}
+
+interface ISeries {
+  reps: number;
+  weight: number;
 }
 
 const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
@@ -36,61 +49,30 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [exerciseName, setExerciseName] = useState('');
   const [isAddExercise, setIsAddExercise] = useState(true);
+  const [myPlanData, setMyPlanData] = useState<IMyPlanData[]>([]);
 
+  const dispatch = usePlansDispatch();
+  const { myPlan, isLoading } = usePlansState();
   const { id } = route.params;
 
-  const [dummyData, setDummyData] = useState([
-    {
-      exerciseName: 'Barbell Olympic Squat',
-      series: [
-        {
-          rep: '10',
-          weight: '120',
-          isCompleted: false,
-        },
-        {
-          rep: '10',
-          weight: '120',
-          isCompleted: false,
-        },
-        {
-          rep: '10',
-          weight: '120',
-          isCompleted: false,
-        },
-        {
-          rep: '10',
-          weight: '120',
-          isCompleted: false,
-        },
-      ],
-    },
-    {
-      exerciseName: 'Brabell Bench Press',
-      series: [
-        {
-          rep: '10',
-          weight: '100',
-          isCompleted: false,
-        },
-        {
-          rep: '10',
-          weight: '100',
-          isCompleted: false,
-        },
-        {
-          rep: '8',
-          weight: '100',
-          isCompleted: false,
-        },
-        {
-          rep: '8',
-          weight: '100',
-          isCompleted: false,
-        },
-      ],
-    },
-  ]);
+  useEffect(() => {
+    void getMyPlan(dispatch, id);
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    const formatedMyPlan = myPlan?.exercises.map((exercise) => ({
+      exerciseName: exercise.name,
+      exerciseId: exercise.exerciseId,
+      sets: Array.from({ length: exercise.series }, () => ({
+        reps: exercise.reps,
+        weight: exercise.weight,
+      })),
+    }));
+
+    if (formatedMyPlan) {
+      setMyPlanData(formatedMyPlan);
+    }
+  }, [myPlan]);
 
   const onViewableItemsChanged = ({ viewableItems }: IWorkoutScreen) => {
     setIndex(viewableItems[0].index);
@@ -99,71 +81,68 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const viewabilityConfigCallbackPairs = useRef([{ onViewableItemsChanged }]);
 
   const addSerie = () => {
-    const newData = [...dummyData];
+    const newData = [...myPlanData];
 
     const newElement = {
-      rep: '100',
-      weight: '500',
-      isCompleted: false,
+      reps: 0,
+      weight: 0,
     };
 
-    newData[index].series.push(newElement);
-    setDummyData(newData);
+    newData[index].sets.push(newElement);
+    setMyPlanData(newData);
   };
 
   const removeSerie = () => {
-    const newData = [...dummyData];
-    if (newData[index].series.length !== 1) {
-      newData[index].series.splice(-1);
+    const newData = [...myPlanData];
+    if (newData[index].sets.length !== 1) {
+      newData[index].sets.splice(-1);
     }
 
-    setDummyData(newData);
+    setMyPlanData(newData);
   };
 
   const addExercise = () => {
     const newElement = {
       exerciseName: exerciseName,
-      series: [
+      sets: [
         {
           id: '0001ef',
-          rep: '10',
-          weight: '120',
-          isCompleted: false,
+          reps: 0,
+          weight: 0,
         },
       ],
     };
 
-    setDummyData((prevState) => [...prevState, newElement]);
+    setMyPlanData((prevState) => [...prevState, newElement]);
     setModalVisible(!modalVisible);
     setExerciseName('');
   };
 
   const replaceExercise = () => {
-    const newData = [...dummyData];
+    const newData = [...myPlanData];
 
     const newElement = {
       exerciseName: exerciseName,
-      series: [
+      sets: [
         {
-          rep: '0',
-          weight: '0',
-          isCompleted: false,
+          reps: 0,
+          weight: 0,
         },
       ],
     };
 
     newData[index] = newElement;
 
-    setDummyData(newData);
+    setMyPlanData(newData);
     setModalVisible(!modalVisible);
     setExerciseName('');
   };
 
   const deleteExercise = () => {
-    const newData = [...dummyData];
+    const newData = [...myPlanData];
     newData.splice(index, 1);
 
-    setDummyData(newData);
+    setMyPlanData(newData);
   };
 
   return (
@@ -184,27 +163,31 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
           replaceExercise={replaceExercise}
           isAddExercise={isAddExercise}
         />
-        <FlatList
-          data={dummyData}
-          renderItem={({ item }) => (
-            <WorkoutSeries exercisesData={item.series} exerciseName={item.exerciseName} />
-          )}
-          horizontal
-          scrollEventThrottle={32}
-          onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
-            useNativeDriver: false,
-          })}
-          showsHorizontalScrollIndicator={false}
-          pagingEnabled
-          bounces={false}
-          keyExtractor={(item, index) => index.toString()}
-          // @ts-ignore:next-line
-          viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-          viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
-        />
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <FlatList
+            data={myPlanData}
+            renderItem={({ item }) => (
+              <WorkoutSeries exercisesData={item.sets} exerciseName={item.exerciseName} />
+            )}
+            horizontal
+            scrollEventThrottle={32}
+            onScroll={Animated.event([{ nativeEvent: { contentOffset: { x: scrollX } } }], {
+              useNativeDriver: false,
+            })}
+            showsHorizontalScrollIndicator={false}
+            pagingEnabled
+            bounces={false}
+            keyExtractor={(item, index) => index.toString()}
+            // @ts-ignore:next-line
+            viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+            viewabilityConfig={{ itemVisiblePercentThreshold: 50 }}
+          />
+        )}
       </View>
       <View style={styles.bottomWrapper}>
-        <Indicator scrollX={scrollX} width={width} dummyData={dummyData} />
+        <Indicator scrollX={scrollX} width={width} dummyData={myPlanData} />
         <View style={styles.seriesButtonsWrapper}>
           <TouchableOpacity onPress={() => addSerie()} style={{ width: '48%' }}>
             <Button
