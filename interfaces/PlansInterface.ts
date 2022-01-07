@@ -15,8 +15,8 @@ interface IExercises {
   exerciseId: string;
   name: string;
   series: number;
-  reps: number;
-  weight: number;
+  reps: string;
+  weight: string;
 }
 
 export interface IResponseMyPlan {

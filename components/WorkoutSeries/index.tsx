@@ -2,25 +2,41 @@ import React from 'react';
 import { FlatList, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import WorkoutSerieItem from './WorkoutSerieItem';
 
-interface Props {
+interface IWorkoutSeries {
   exerciseName: string | undefined;
   exercisesData: Array<Type>;
+  updateRep: (arg1: number, arg2: string) => void;
+  updateWeight: (arg1: number, arg2: string) => void;
 }
 
 interface Type {
-  reps: number;
-  weight: number;
+  reps: string;
+  weight: string;
 }
 
-const WorkoutSeries: React.FC<Props> = ({ exercisesData, exerciseName }) => {
+const WorkoutSeries: React.FC<IWorkoutSeries> = ({
+  exercisesData,
+  exerciseName,
+  updateRep,
+  updateWeight,
+}) => {
   const { width } = useWindowDimensions();
+
   return (
     <View style={{ width }}>
       <Text style={styles.textStyle}>{exerciseName?.toLocaleUpperCase()}</Text>
       <FlatList
         data={exercisesData}
-        renderItem={({ item, index }) => <WorkoutSerieItem seriesData={item} index={index} />}
+        renderItem={({ item, index }) => (
+          <WorkoutSerieItem
+            seriesData={item}
+            index={index}
+            updateRep={updateRep}
+            updateWeight={updateWeight}
+          />
+        )}
         keyExtractor={(item, index) => index.toString()}
+        removeClippedSubviews={false}
       />
     </View>
   );

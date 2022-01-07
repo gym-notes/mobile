@@ -1,15 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import Menu from '../components/Menu';
-import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
 import WorkoutSummaryHeader from '../components/WorkoutSummaryHeader';
 import WorkoutSummaryExercises from '../components/WorkoutSummaryExercises';
 
 interface IWorkoutSummary {
   navigation: NavigationProp<ParamListBase>;
+  route: RouteProp<{ params: { workoutId: string } }>;
 }
 
-const WorkoutSummary: React.FC<IWorkoutSummary> = ({ navigation }) => {
+const WorkoutSummary: React.FC<IWorkoutSummary> = ({ navigation, route }) => {
+  const { workoutId } = route.params;
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
