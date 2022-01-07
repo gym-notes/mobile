@@ -16,8 +16,8 @@ export interface IExercises {
 }
 
 export interface ISets {
-  reps: number;
-  weight: number;
+  reps: string;
+  weight: string;
 }
 
 export enum ActionType {

@@ -16,7 +16,7 @@ import Modal from '../components/Modal';
 import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
 import { getMyPlan } from '../actions/PlansAction';
 import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
-import { useWorkoutDispatch } from '../contexts/WorkoutContext';
+import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext';
 import { createWorkout } from '../actions/WorkoutAction';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { IWorkoutPayload } from '../interfaces/WorkoutInterface';
@@ -41,8 +41,8 @@ interface IExerciseData {
 }
 
 interface ISeries {
-  reps: number;
-  weight: number;
+  reps: string;
+  weight: string;
 }
 
 const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
@@ -58,6 +58,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const plansDispatch = usePlansDispatch();
   const workoutDispatch = useWorkoutDispatch();
   const { myPlan, isLoading } = usePlansState();
+  const { workoutId } = useWorkoutState();
   const { id } = route.params;
 
   useEffect(() => {
@@ -79,6 +80,14 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
     }
   }, [myPlan]);
 
+  useEffect(() => {
+    if (workoutId) {
+      navigation.navigate('WorkoutSummary', {
+        workoutId,
+      });
+    }
+  }, [workoutId, navigation]);
+
   const onViewableItemsChanged = ({ viewableItems }: IWorkoutScreen) => {
     setIndex(viewableItems[0].index);
   };
@@ -89,8 +98,8 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
     const newData = [...ExerciseData];
 
     const newElement = {
-      reps: 0,
-      weight: 0,
+      reps: '0',
+      weight: '0',
     };
 
     newData[index].sets.push(newElement);
@@ -109,10 +118,11 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const addExercise = () => {
     const newElement = {
       exerciseName: exerciseName,
+      exerciseId: 'exerciseID',
       sets: [
         {
-          reps: 0,
-          weight: 0,
+          reps: '0',
+          weight: '0',
         },
       ],
     };
@@ -127,10 +137,11 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
 
     const newElement = {
       exerciseName: exerciseName,
+      exerciseId: 'exerciseID',
       sets: [
         {
-          reps: 0,
-          weight: 0,
+          reps: '0',
+          weight: '0',
         },
       ],
     };
@@ -149,13 +160,43 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
     setExerciseData(newData);
   };
 
+  const updateRep = (seriesIndex: number, rep: string) => {
+    const newData = [...ExerciseData];
+
+    const newElement = {
+      reps: rep,
+      weight: newData[index].sets[seriesIndex].weight,
+    };
+
+    newData[index].sets[seriesIndex] = newElement;
+    setExerciseData(newData);
+  };
+
+  const updateWeight = (seriesIndex: number, weight: string) => {
+    const newData = [...ExerciseData];
+
+    const newElement = {
+      reps: newData[index].sets[seriesIndex].reps,
+      weight: weight,
+    };
+
+    newData[index].sets[seriesIndex] = newElement;
+    setExerciseData(newData);
+  };
+
   const handleSubmit = () => {
-    const newData: IWorkoutPayload = {
+    const newExercisesData = ExerciseData.map((item) => ({
+      exerciseId: item.exerciseId,
+      sets: item.sets.filter((item) => item.reps > '0' && item.weight > '0'),
+    }));
+
+    const workoutData: IWorkoutPayload = {
       planId: id,
       duration: 100,
-      exercises: ExerciseData.filter((item) => delete item.exerciseName),
+      exercises: newExercisesData.filter((item) => item.sets.length > 0),
     };
-    return createWorkout(workoutDispatch, newData);
+
+    return createWorkout(workoutDispatch, workoutData);
   };
 
   return (
@@ -182,7 +223,12 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
           <FlatList
             data={ExerciseData}
             renderItem={({ item }) => (
-              <WorkoutSeries exercisesData={item.sets} exerciseName={item.exerciseName} />
+              <WorkoutSeries
+                updateRep={updateRep}
+                updateWeight={updateWeight}
+                exercisesData={item.sets}
+                exerciseName={item.exerciseName}
+              />
             )}
             horizontal
             scrollEventThrottle={32}
@@ -254,6 +300,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     flex: 1,
     justifyContent: 'flex-end',
+    minHeight: 90,
   },
 });
 
