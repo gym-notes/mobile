@@ -1,9 +1,12 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import Menu from '../components/Menu';
 import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
 import WorkoutSummaryHeader from '../components/WorkoutSummaryHeader';
 import WorkoutSummaryExercises from '../components/WorkoutSummaryExercises';
+import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext';
+import { getWorkoutById } from '../actions/WorkoutAction';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 interface IWorkoutSummary {
   navigation: NavigationProp<ParamListBase>;
@@ -12,14 +15,31 @@ interface IWorkoutSummary {
 
 const WorkoutSummary: React.FC<IWorkoutSummary> = ({ navigation, route }) => {
   const { workoutId } = route.params;
+  const { workoutData, isLoading } = useWorkoutState();
+
+  const dispatch = useWorkoutDispatch();
+
+  useEffect(() => {
+    void getWorkoutById(dispatch, workoutId);
+  }, [dispatch, workoutId]);
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <WorkoutSummaryHeader />
-        <Text style={styles.headerText}>Exercies</Text>
-        <ScrollView>
-          <WorkoutSummaryExercises />
-        </ScrollView>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <WorkoutSummaryHeader workoutData={workoutData} />
+            <Text style={styles.headerText}>Exercies</Text>
+            <FlatList
+              nestedScrollEnabled
+              data={workoutData?.exercises}
+              renderItem={({ item }) => <WorkoutSummaryExercises exercisesData={item} />}
+              keyExtractor={(item) => item.id}
+            />
+          </>
+        )}
       </View>
       <View style={styles.menuWrapper}>
         <Menu navigation={navigation} />
@@ -36,6 +56,7 @@ const styles = StyleSheet.create({
   wrapper: {
     padding: 15,
     marginTop: 25,
+    flex: 1,
   },
   summaryWrapper: {
     backgroundColor: '#2E2C39',
@@ -44,7 +65,6 @@ const styles = StyleSheet.create({
   },
   menuWrapper: {
     paddingHorizontal: 15,
-    flex: 1,
     justifyContent: 'flex-end',
   },
   headerText: {

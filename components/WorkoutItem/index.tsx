@@ -1,6 +1,8 @@
 import React from 'react';
 import { TouchableOpacity, Text, StyleSheet } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { setPlanId } from '../../actions/PlansAction';
+import { usePlansDispatch } from '../../contexts/PlansContext';
 
 interface Props {
   title: string;
@@ -9,9 +11,12 @@ interface Props {
 }
 
 const WorkoutItem: React.FC<Props> = ({ title, navigation, id }) => {
+  const dispatch = usePlansDispatch();
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate('WorkoutScreen', { id })}
+      onPress={() => {
+        navigation.navigate('WorkoutScreen', { id }), setPlanId(dispatch, id);
+      }}
       style={styles.container}>
       <Text style={styles.textStyle}>{title}</Text>
     </TouchableOpacity>
