@@ -19,7 +19,7 @@ import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
 import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext';
 import { createWorkout } from '../actions/WorkoutAction';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { IWorkoutPayload } from '../interfaces/WorkoutInterface';
+import { ICreateWorkoutPayload } from '../interfaces/WorkoutInterface';
 
 interface IWorkoutScreen {
   viewableItems: Array<IViewableItems>;
@@ -57,13 +57,14 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
 
   const plansDispatch = usePlansDispatch();
   const workoutDispatch = useWorkoutDispatch();
-  const { myPlan, isLoading } = usePlansState();
+  const { myPlan, isLoading, planId } = usePlansState();
   const { workoutId } = useWorkoutState();
-  const { id } = route.params;
 
   useEffect(() => {
-    void getMyPlan(plansDispatch, id);
-  }, [id, plansDispatch]);
+    if (route.params) {
+      void getMyPlan(plansDispatch, route.params.id);
+    }
+  }, [plansDispatch, route.params]);
 
   useEffect(() => {
     const formatedMyPlan = myPlan?.exercises.map((exercise) => ({
@@ -190,8 +191,8 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
       sets: item.sets.filter((item) => item.reps > '0' && item.weight > '0'),
     }));
 
-    const workoutData: IWorkoutPayload = {
-      planId: id,
+    const workoutData: ICreateWorkoutPayload = {
+      planId: planId,
       duration: 100,
       exercises: newExercisesData.filter((item) => item.sets.length > 0),
     };

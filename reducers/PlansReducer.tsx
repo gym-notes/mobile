@@ -4,6 +4,7 @@ export const initialState: IState = {
   plans: null,
   isLoading: false,
   myPlan: null,
+  planId: '',
 };
 
 export const PlansReducer = (initialState: IState, action: ActionTypes): IState => {
@@ -49,6 +50,11 @@ export const PlansReducer = (initialState: IState, action: ActionTypes): IState 
         ...initialState,
         isLoading: false,
         message: null,
+      };
+    case ActionType.SET_PLAN_ID:
+      return {
+        ...initialState,
+        planId: action.payload,
       };
 
     default:

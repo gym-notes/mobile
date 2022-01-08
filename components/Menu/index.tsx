@@ -5,6 +5,7 @@ import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import { useNavigationState } from '@react-navigation/native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { usePlansState } from '../../contexts/PlansContext';
 
 interface Props {
   navigation: NavigationProp<ParamListBase>;
@@ -13,6 +14,8 @@ interface Props {
 const Menu: React.FC<Props> = ({ navigation }) => {
   const routes = useNavigationState((state) => state.routes);
   const currentRoute = routes[routes.length - 1].name;
+
+  const { myPlan } = usePlansState();
 
   return (
     <>
@@ -50,13 +53,18 @@ const Menu: React.FC<Props> = ({ navigation }) => {
             History
           </Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')} style={styles.menuItem}>
+        <TouchableOpacity
+          onPress={() =>
+            myPlan ? navigation.navigate('WorkoutScreen') : navigation.navigate('HomeScreen')
+          }
+          style={styles.menuItem}>
           <FontAwesomeIcon
             name="dumbbell"
             size={25}
             color={
               currentRoute === 'HomeScreen' ||
               currentRoute === 'SelectWorkoutScreen' ||
+              currentRoute === 'WorkoutSummaryScreen' ||
               currentRoute === 'WorkoutScreen'
                 ? '#D44E52'
                 : '#BCBCC0'
@@ -68,6 +76,7 @@ const Menu: React.FC<Props> = ({ navigation }) => {
               color:
                 currentRoute === 'HomeScreen' ||
                 currentRoute === 'SelectWorkoutScreen' ||
+                currentRoute === 'WorkoutSummaryScreen' ||
                 currentRoute === 'WorkoutScreen'
                   ? '#D44E52'
                   : '#BCBCC0',

@@ -3,6 +3,7 @@ export interface IState {
   isLoading: boolean;
   message?: string | null;
   myPlan?: { id: string; name: string; exercises: Array<IExercises> } | null;
+  planId: string;
 }
 
 interface IMyPlans {
@@ -33,6 +34,7 @@ export enum ActionType {
   REQUEST_GET_MY_PLAN = 'REQUEST_GET_MY_PLAN',
   GET_MY_PLAN_SUCCESS = ' GET_MY_PLAN_SUCCESS',
   GET_MY_PLAN_ERROR = 'GET_MY_PLAN_ERROR',
+  SET_PLAN_ID = 'SET_PLAN_ID ',
 }
 
 export interface REQUEST_GET_ALL_PLANS {
@@ -67,6 +69,11 @@ export interface CLEAN_ERROR {
   type: ActionType.CLEAN_ERROR;
 }
 
+export interface SET_PLAN_ID {
+  type: ActionType.SET_PLAN_ID;
+  payload: string;
+}
+
 export type ActionTypes =
   | REQUEST_GET_ALL_PLANS
   | GET_ALL_PLANS_SUCCESS
@@ -74,6 +81,7 @@ export type ActionTypes =
   | REQUEST_GET_MY_PLAN
   | GET_MY_PLAN_SUCCESS
   | GET_MY_PLAN_ERROR
-  | CLEAN_ERROR;
+  | CLEAN_ERROR
+  | SET_PLAN_ID;
 
 export type Dispatch = (action: ActionTypes) => void;

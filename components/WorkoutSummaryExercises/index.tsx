@@ -1,21 +1,24 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { Divider } from 'react-native-elements/dist/divider/Divider';
+import { View, StyleSheet, Text, FlatList } from 'react-native';
+import { IExercisesById } from '../../interfaces/WorkoutInterface';
+import WorkoutSummarySetsItem from '../WorkoutSummarySetsItem';
 
-const WorkoutSummaryExercises = () => {
+interface IWorkoutSummaryExercises {
+  exercisesData: IExercisesById;
+}
+
+const WorkoutSummaryExercises: React.FC<IWorkoutSummaryExercises> = ({ exercisesData }) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerTextWrapper}>
-        <Text style={styles.headerText}>Deadlift</Text>
+        <Text style={styles.headerText}>{exercisesData.name.toUpperCase()}</Text>
       </View>
-      <View style={styles.wrapper}>
-        <View style={styles.center}>
-          <Text>1 series</Text>
-          <Text>load: 120kg</Text>
-          <Text>repeats: 6</Text>
-        </View>
-        <Divider width={1} />
-      </View>
+      <FlatList
+        nestedScrollEnabled
+        data={exercisesData?.sets}
+        renderItem={({ item }) => <WorkoutSummarySetsItem setsData={item} />}
+        keyExtractor={(item, index) => index.toString()}
+      />
     </View>
   );
 };

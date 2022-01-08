@@ -5,6 +5,7 @@ import { GET_MY_PLAN_URL, GET_ALL_PLANS_URL } from '../helpers/AxiosInterceptors
 interface IServerError {
   message: string;
   isLoading: boolean;
+  planId: string;
 }
 
 export const getAllPlans = async (dispatch: Dispatch) => {
@@ -48,4 +49,8 @@ export const getMyPlan = async (dispatch: Dispatch, id: string) => {
 
 export const cleanErrorMessage = (dispatch: Dispatch) => {
   dispatch({ type: ActionType.CLEAN_ERROR });
+};
+
+export const setPlanId = (dispatch: Dispatch, planId: string) => {
+  dispatch({ type: ActionType.SET_PLAN_ID, payload: planId });
 };
