@@ -1,64 +1,38 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Menu from '../components/Menu';
-import { Input } from 'react-native-elements';
-import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import Button from '../components/Button';
-import DropDownPickers from '../components/DropDownPickers';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import ProfileForm from '../components/ProfileForm';
+import { useProfileState } from '../contexts/ProfileContext';
 
-interface Props {
+interface IProfileEdit {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const ProfileEdit: React.FC<Props> = ({ navigation }) => {
-  const [valueDate, setValueDate] = useState(null);
-  const [valueGender, setValueGender] = useState(null);
-  const [valueCountry, setValueCountry] = useState(null);
+export interface IFormData {
+  firstName: string;
+  height: string;
+  weight: string;
+  gender: string;
+  birthDate: string;
+  country: string;
+}
 
+const ProfileEdit: React.FC<IProfileEdit> = ({ navigation }) => {
+  const { isSuccess } = useProfileState();
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
-        <Text style={styles.textStyle}>Edit your profile</Text>
-        <Input
-          placeholder="Type your name"
-          label="First Name"
-          labelStyle={styles.inputLabelStyle}
-          leftIcon={<FontAwesome5Icon name="user-alt" size={20} color="#BCBCC0" />}
-        />
-        <Input
-          placeholder="Type your last name"
-          label="Last Name"
-          labelStyle={styles.inputLabelStyle}
-          leftIcon={<FontAwesome5Icon name="user-alt" size={20} color="#BCBCC0" />}
-        />
-        <Input
-          placeholder="Type your weight"
-          label="Weight in kg"
-          labelStyle={styles.inputLabelStyle}
-          leftIcon={<FontAwesome5Icon name="weight-hanging" size={20} color="#BCBCC0" />}
-        />
-        <Input
-          placeholder="Type your height"
-          label="Height in cm"
-          labelStyle={styles.inputLabelStyle}
-          leftIcon={<FontAwesome5Icon name="ruler-vertical" size={20} color="#BCBCC0" />}
-        />
-        <DropDownPickers
-          valueDate={valueDate}
-          setValueDate={setValueDate}
-          valueGender={valueGender}
-          setValueGender={setValueGender}
-          valueCountry={valueCountry}
-          setValueCountry={setValueCountry}
-        />
-        <Button
-          title="Update"
-          backgroundColor="#D44E52"
-          textColor="white"
-          margin={25}
-          iconName="account-edit"
-        />
+        {isSuccess ? (
+          <View style={styles.textWrapper}>
+            <Text style={styles.text}>Your profile has been updated successfully.</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+              <Text style={styles.subText}>Get back</Text>
+            </TouchableOpacity>
+          </View>
+        ) : (
+          <ProfileForm />
+        )}
       </View>
       <View style={styles.menuWrapper}>
         <Menu navigation={navigation} />
@@ -81,14 +55,20 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  textStyle: {
-    color: '#BCBCC0',
+  text: {
+    color: 'green',
     fontWeight: 'bold',
-    marginVertical: 15,
-    fontSize: 16,
+    fontSize: 15,
   },
-  inputLabelStyle: {
-    color: '#BCBCC0',
+  subText: {
+    fontWeight: 'bold',
+    color: '#D44E52',
+    fontSize: 15,
+  },
+  textWrapper: {
+    marginVertical: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

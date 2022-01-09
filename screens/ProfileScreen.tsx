@@ -30,7 +30,7 @@ const ProfileScreen: React.FC<IProfile> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <OptionsMenu />
+      <OptionsMenu navigation={navigation} />
       <View style={styles.wrapper}>
         {isLoading ? (
           <LoadingSpinner />
@@ -39,7 +39,7 @@ const ProfileScreen: React.FC<IProfile> = ({ navigation }) => {
             <Avatar
               rounded
               size="xlarge"
-              title="KN"
+              title={firstName.substring(0, 1)}
               activeOpacity={0.5}
               containerStyle={styles.avatarContainerStyle}
               titleStyle={styles.avatarTextStyle}

@@ -5,12 +5,12 @@ import { countryList } from '../../helpers/CountryList';
 import { Controller, Control, FieldErrors } from 'react-hook-form';
 import { IFormData } from '../RegisterForm';
 
-interface IDropDownPickers {
+interface IRegisterDropDownPickers {
   control: Control<IFormData>;
   errors: FieldErrors<IFormData>;
 }
 
-const DropDownPickers: React.FC<IDropDownPickers> = ({ control, errors }) => {
+const RegisterDropDownPickers: React.FC<IRegisterDropDownPickers> = ({ control, errors }) => {
   const [openDate, setOpenDate] = useState(false);
   const [itemsDate, setItemsDate] = useState<Array<object>>([]);
   const [openGender, setOpenGender] = useState(false);
@@ -159,4 +159,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DropDownPickers;
+export default RegisterDropDownPickers;
