@@ -24,3 +24,4 @@ export const GET_ALL_PLANS_URL = `${BASE_URL}plans/my`;
 export const GET_MY_PLAN_URL = `${BASE_URL}plans/`;
 export const CREATE_WORKOUT = `${BASE_URL}workouts`;
 export const GET_WORKOUT_BY_ID = `${BASE_URL}workouts/`;
+export const GET_EXERCISES = `${BASE_URL}exercises/my`;

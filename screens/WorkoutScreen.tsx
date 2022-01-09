@@ -51,6 +51,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   const [index, setIndex] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [exerciseName, setExerciseName] = useState('');
+  const [exerciseId, setExerciseId] = useState('');
   const [isAddExercise, setIsAddExercise] = useState(true);
   const [ExerciseData, setExerciseData] = useState<IExerciseData[]>([]);
 
@@ -129,7 +130,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   const addExercise = () => {
     const newElement = {
       exerciseName: exerciseName,
-      exerciseId: 'exerciseID',
+      exerciseId: exerciseId,
       sets: [
         {
           reps: '0',
@@ -148,7 +149,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
 
     const newElement = {
       exerciseName: exerciseName,
-      exerciseId: 'exerciseID',
+      exerciseId: exerciseId,
       sets: [
         {
           reps: '0',
@@ -226,6 +227,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
           addExercise={addExercise}
           exerciseName={exerciseName}
           setExerciseName={setExerciseName}
+          setExerciseId={setExerciseId}
           replaceExercise={replaceExercise}
           isAddExercise={isAddExercise}
         />
