@@ -3,19 +3,22 @@ import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
 import EntypoIcon from 'react-native-vector-icons/Entypo';
 import { useNavigationState } from '@react-navigation/native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 
-interface Props {
+interface IOptionsMenu {
   deleteExercise?: () => void;
   modalVisible?: boolean;
   setModalVisible?: (arg: boolean) => void;
   setIsAddExercise?: (arg: boolean) => void;
+  navigation: NavigationProp<ParamListBase>;
 }
 
-const OptionsMenu: React.FC<Props> = ({
+const OptionsMenu: React.FC<IOptionsMenu> = ({
   deleteExercise,
   modalVisible,
   setModalVisible,
   setIsAddExercise,
+  navigation,
 }) => {
   const [visible, setVisible] = useState(false);
   const hideMenu = () => setVisible(false);
@@ -34,7 +37,7 @@ const OptionsMenu: React.FC<Props> = ({
           </TouchableOpacity>
         }
         onRequestClose={hideMenu}>
-        {currentRoute !== 'ProfileScreen' ? (
+        {currentRoute !== 'ProfileEditScreen' && currentRoute !== 'ProfileScreen' ? (
           <>
             <MenuItem
               onPress={() => {
@@ -64,7 +67,9 @@ const OptionsMenu: React.FC<Props> = ({
           </>
         ) : (
           <>
-            <MenuItem>Edit Profile</MenuItem>
+            <MenuItem onPress={() => navigation.navigate('ProfileEditScreen')}>
+              Edit Profile
+            </MenuItem>
           </>
         )}
       </Menu>

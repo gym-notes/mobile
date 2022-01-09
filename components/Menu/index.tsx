@@ -91,7 +91,7 @@ const Menu: React.FC<Props> = ({ navigation }) => {
             name="user-circle"
             size={25}
             color={
-              currentRoute === 'ProfileScreen' || currentRoute === 'ProfileEdit'
+              currentRoute === 'ProfileScreen' || currentRoute === 'ProfileEditScreen'
                 ? '#D44E52'
                 : '#BCBCC0'
             }
@@ -101,7 +101,7 @@ const Menu: React.FC<Props> = ({ navigation }) => {
             style={{
               ...styles.menuTextStyle,
               color:
-                currentRoute === 'ProfileScreen' || currentRoute === 'ProfileEdit'
+                currentRoute === 'ProfileScreen' || currentRoute === 'ProfileEditScreen'
                   ? '#D44E52'
                   : '#BCBCC0',
             }}>

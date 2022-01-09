@@ -3,7 +3,7 @@ import { View, StyleSheet } from 'react-native';
 import MaterialIcon from 'react-native-vector-icons/MaterialIcons';
 import { Input } from 'react-native-elements';
 import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
-import DropDownPickers from '../DropDownPickers';
+import RegisterDropDownPickers from '../RegisterDropDownPickers';
 import RegisterFormButtons from '../RegisterFormButtons';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -217,7 +217,7 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
             render={({ field: { onChange, value } }) => (
               <Input
                 containerStyle={styles.inputContainerStyle}
-                placeholder="Type your weight"
+                placeholder="Type your height"
                 label="Weight in cm"
                 leftIcon={<FontAwesome5Icon name="ruler-vertical" size={20} color="#BCBCC0" />}
                 inputStyle={styles.inputStyle}
@@ -236,7 +236,7 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
             <ErrorMessage message="The form was completed incorrectly." />
           )}
           {message && isVisible && <ErrorMessage message={message} />}
-          <DropDownPickers control={control} errors={errors} />
+          <RegisterDropDownPickers control={control} errors={errors} />
         </View>
       )}
       <RegisterFormButtons
