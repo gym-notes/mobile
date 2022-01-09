@@ -5,7 +5,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import { IGetWorkoutById } from '../../interfaces/WorkoutInterface';
 
 interface IWorkoutSummaryHeader {
-  workoutData?: IGetWorkoutById;
+  workoutData: IGetWorkoutById;
 }
 
 const WorkoutSummaryHeader: React.FC<IWorkoutSummaryHeader> = ({ workoutData }) => {
@@ -20,6 +20,14 @@ const WorkoutSummaryHeader: React.FC<IWorkoutSummaryHeader> = ({ workoutData }) 
     return exerciesValue;
   };
 
+  const convertSeconds = (seconds: number) => {
+    if (seconds) {
+      const convertedSeconds = new Date(seconds * 1000).toISOString().substr(11, 8);
+      return convertedSeconds;
+    }
+    return 0;
+  };
+
   const sets = getSumOfSets();
   const exercises = getSumOfExercises();
 
@@ -28,7 +36,7 @@ const WorkoutSummaryHeader: React.FC<IWorkoutSummaryHeader> = ({ workoutData }) 
       <Text style={styles.headerText}>Workout summary</Text>
       <View style={styles.summaryContainer}>
         <Text style={styles.dateText}>
-          {workoutData?.name} - {workoutData?.date}
+          {workoutData.name} - {workoutData?.date}
         </Text>
         <View style={styles.summaryWrapper}>
           <View>
@@ -36,7 +44,7 @@ const WorkoutSummaryHeader: React.FC<IWorkoutSummaryHeader> = ({ workoutData }) 
               <MaterialCommunityIcons name="timer" size={30} color="#BCBCC0" />
               <View style={{ paddingHorizontal: 10 }}>
                 <Text style={styles.titleText}>DURACTION</Text>
-                <Text style={styles.subTitleText}>01:04:25</Text>
+                <Text style={styles.subTitleText}>{convertSeconds(workoutData.duration)}</Text>
               </View>
             </View>
             <View style={styles.center}>

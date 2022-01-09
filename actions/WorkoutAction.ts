@@ -8,11 +8,6 @@ import {
 } from '../interfaces/WorkoutInterface';
 import { CREATE_WORKOUT, GET_WORKOUT_BY_ID } from '../helpers/AxiosInterceptors';
 
-interface IServerError {
-  message: string;
-  isLoading: boolean;
-}
-
 export const createWorkout = async (dispatch: Dispatch, workoutPayload: ICreateWorkoutPayload) => {
   try {
     dispatch({ type: ActionType.REQUEST_CREATE_WORKOUT });
@@ -23,7 +18,7 @@ export const createWorkout = async (dispatch: Dispatch, workoutPayload: ICreateW
       dispatch({ type: ActionType.CREATE_WORKOUT_SUCCESS, payload: data });
     }
   } catch (err: unknown) {
-    const error = err as AxiosError<IServerError>;
+    const error = err as AxiosError<IState>;
 
     if (error.response) {
       const serverMessages = error.response.data;
@@ -42,7 +37,7 @@ export const getWorkoutById = async (dispatch: Dispatch, id: string) => {
       dispatch({ type: ActionType.GET_WORKOUT_BY_ID_SUCCESS, payload: data });
     }
   } catch (err: unknown) {
-    const error = err as AxiosError<IServerError>;
+    const error = err as AxiosError<IState>;
 
     if (error.response) {
       const serverMessages = error.response.data;

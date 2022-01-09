@@ -5,7 +5,7 @@ export const initialState: IState = {
   isLoading: false,
   message: null,
   workoutData: {
-    duraction: 0,
+    duration: 0,
     date: '',
     id: '',
     name: '',
