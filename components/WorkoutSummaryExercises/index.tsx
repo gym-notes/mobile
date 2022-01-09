@@ -16,7 +16,7 @@ const WorkoutSummaryExercises: React.FC<IWorkoutSummaryExercises> = ({ exercises
       <FlatList
         nestedScrollEnabled
         data={exercisesData?.sets}
-        renderItem={({ item }) => <WorkoutSummarySetsItem setsData={item} />}
+        renderItem={({ item, index }) => <WorkoutSummarySetsItem setsData={item} index={index} />}
         keyExtractor={(item, index) => index.toString()}
       />
     </View>

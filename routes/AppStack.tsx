@@ -10,6 +10,7 @@ import HistoryScreen from '../screens/HistoryScreen';
 import WorkoutSummaryScreen from '../screens/WorkoutSummaryScreen';
 import { PlansProvider } from '../contexts/PlansContext';
 import { WorkoutProvider } from '../contexts/WorkoutContext';
+import { ExerciseProvider } from '../contexts/ExerciseContext';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,48 +22,50 @@ export const AppStack = () => {
   return (
     <PlansProvider>
       <WorkoutProvider>
-        <Stack.Navigator screenOptions={screenOptions}>
-          <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
-            name="HomeScreen"
-            component={HomeScreen}
-          />
-          <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
-            name="SelectWorkoutScreen"
-            component={SelectWorkoutScreen}
-          />
-          <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
-            name="WorkoutScreen"
-            component={WorkoutScreen}
-          />
-          <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
-            name="ProfileScreen"
-            component={ProfileScreen}
-          />
-          <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
-            name="ProfileEditScreen"
-            component={ProfileEditScreen}
-          />
-          <Stack.Screen
-            options={{ animation: 'slide_from_left' }}
-            name="PlansScreen"
-            component={PlansScreen}
-          />
-          <Stack.Screen
-            options={{ animation: 'slide_from_left' }}
-            name="HistoryScreen"
-            component={HistoryScreen}
-          />
-          <Stack.Screen
-            options={{ animation: 'slide_from_right' }}
-            name="WorkoutSummaryScreen"
-            component={WorkoutSummaryScreen}
-          />
-        </Stack.Navigator>
+        <ExerciseProvider>
+          <Stack.Navigator screenOptions={screenOptions}>
+            <Stack.Screen
+              options={{ animation: 'slide_from_right' }}
+              name="HomeScreen"
+              component={HomeScreen}
+            />
+            <Stack.Screen
+              options={{ animation: 'slide_from_right' }}
+              name="SelectWorkoutScreen"
+              component={SelectWorkoutScreen}
+            />
+            <Stack.Screen
+              options={{ animation: 'slide_from_right' }}
+              name="WorkoutScreen"
+              component={WorkoutScreen}
+            />
+            <Stack.Screen
+              options={{ animation: 'slide_from_right' }}
+              name="ProfileScreen"
+              component={ProfileScreen}
+            />
+            <Stack.Screen
+              options={{ animation: 'slide_from_right' }}
+              name="ProfileEditScreen"
+              component={ProfileEditScreen}
+            />
+            <Stack.Screen
+              options={{ animation: 'slide_from_left' }}
+              name="PlansScreen"
+              component={PlansScreen}
+            />
+            <Stack.Screen
+              options={{ animation: 'slide_from_left' }}
+              name="HistoryScreen"
+              component={HistoryScreen}
+            />
+            <Stack.Screen
+              options={{ animation: 'slide_from_right' }}
+              name="WorkoutSummaryScreen"
+              component={WorkoutSummaryScreen}
+            />
+          </Stack.Navigator>
+        </ExerciseProvider>
       </WorkoutProvider>
     </PlansProvider>
   );

@@ -2,20 +2,27 @@ import React from 'react';
 import { View, FlatList } from 'react-native';
 import AutocompleteItems from './AutocompleteItems';
 
-interface Props {
+interface IAutocomplete {
   setExerciseName: (arg: string) => void;
   setFilteredData: (arg: Array<Exercises>) => void;
   filteredData: Array<Exercises>;
+  setExerciseId: (aeg: string) => void;
 }
 
 type Exercises = {
   name: string;
-  id: number;
+  id: string;
 };
 
-const Autocomplete: React.FC<Props> = ({ setExerciseName, setFilteredData, filteredData }) => {
-  const handleExerciseName = (item: { id: number; name: string }) => {
+const Autocomplete: React.FC<IAutocomplete> = ({
+  setExerciseName,
+  setFilteredData,
+  filteredData,
+  setExerciseId,
+}) => {
+  const handleExerciseName = (item: { id: string; name: string }) => {
     setExerciseName(item.name);
+    setExerciseId(item.id);
     setFilteredData([]);
   };
 
@@ -32,7 +39,7 @@ const Autocomplete: React.FC<Props> = ({ setExerciseName, setFilteredData, filte
         renderItem={({ item }) => (
           <AutocompleteItems item={item} handleExerciseName={handleExerciseName} />
         )}
-        keyExtractor={(item, index) => index.toString()}
+        keyExtractor={(item) => item.id}
         showsVerticalScrollIndicator={false}
       />
     </View>

@@ -1,54 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Modal as NativeModal, StyleSheet, TouchableOpacity } from 'react-native';
 import { Input } from 'react-native-elements';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome5';
 import Autocomplete from '../Autocomplete';
 import Button from '../Button';
+import { getExercises } from '../../actions/ExerciseAtion';
+import { useExerciseDispatch, useExerciseState } from '../../contexts/ExerciseContext';
 
-const dummyData = [
-  {
-    id: 1,
-    name: 'deadlift',
-  },
-  {
-    id: 2,
-    name: 'chest press',
-  },
-  {
-    id: 3,
-    name: 'Barbell Bench Press',
-  },
-  {
-    id: 4,
-    name: 'Dumbbell Bench Press',
-  },
-  {
-    id: 5,
-    name: 'Incline Bench Press',
-  },
-  {
-    id: 6,
-    name: 'Decline Press',
-  },
-  {
-    id: 7,
-    name: 'Dip',
-  },
-  {
-    id: 8,
-    name: 'Push-Up',
-  },
-  {
-    id: 9,
-    name: 'Step-Up',
-  },
-  {
-    id: 10,
-    name: 'Hack Squat',
-  },
-];
-
-interface Props {
+interface IModal {
   modalVisible: boolean;
   setModalVisible: (arg: boolean) => void;
   addExercise: () => void;
@@ -57,14 +16,15 @@ interface Props {
   replaceExercise: () => void;
   index?: number;
   isAddExercise: boolean;
+  setExerciseId: (arg: string) => void;
 }
 
 type Exercises = {
   name: string;
-  id: number;
+  id: string;
 };
 
-const Modal: React.FC<Props> = ({
+const Modal: React.FC<IModal> = ({
   modalVisible,
   setModalVisible,
   addExercise,
@@ -72,14 +32,17 @@ const Modal: React.FC<Props> = ({
   setExerciseName,
   replaceExercise,
   isAddExercise,
+  setExerciseId,
 }) => {
+  const dispatch = useExerciseDispatch();
+  const { exercises } = useExerciseState();
   const [filteredData, setFilteredData] = useState<Array<Exercises>>([]);
 
   const handleFilter = (value: string) => {
     const searchWord = value;
     setExerciseName(searchWord);
 
-    const newFilter = dummyData.filter((item) => {
+    const newFilter = exercises.filter((item) => {
       return item.name.toLowerCase().includes(exerciseName.toLowerCase());
     });
 
@@ -89,6 +52,10 @@ const Modal: React.FC<Props> = ({
       setFilteredData(newFilter);
     }
   };
+
+  useEffect(() => {
+    void getExercises(dispatch);
+  }, [dispatch]);
 
   return (
     <NativeModal
@@ -124,6 +91,7 @@ const Modal: React.FC<Props> = ({
               setExerciseName={setExerciseName}
               setFilteredData={setFilteredData}
               filteredData={filteredData}
+              setExerciseId={setExerciseId}
             />
           )}
           <View style={{ position: 'absolute', bottom: 15 }}>

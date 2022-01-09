@@ -5,13 +5,14 @@ import { ISetsById } from '../../interfaces/WorkoutInterface';
 
 interface IWorkoutSummarySetsItem {
   setsData: ISetsById;
+  index: number;
 }
 
-const WorkoutSummarySetsItem: React.FC<IWorkoutSummarySetsItem> = ({ setsData }) => {
+const WorkoutSummarySetsItem: React.FC<IWorkoutSummarySetsItem> = ({ setsData, index }) => {
   return (
     <View style={styles.wrapper}>
       <View style={styles.center}>
-        <Text>1 series</Text>
+        <Text>{++index} series</Text>
         <Text>load: {setsData.weight}</Text>
         <Text>repeats: {setsData.reps}</Text>
       </View>

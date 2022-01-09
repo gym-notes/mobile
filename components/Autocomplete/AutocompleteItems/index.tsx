@@ -4,7 +4,7 @@ import { Divider } from 'react-native-elements/dist/divider/Divider';
 
 type Exercises = {
   name: string;
-  id: number;
+  id: string;
 };
 
 interface Props {
