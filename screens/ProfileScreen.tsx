@@ -1,53 +1,80 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Menu from '../components/Menu';
 import OptionsMenu from '../components/OptionsMenu';
 import { Avatar, Divider } from 'react-native-elements';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { useProfileDispatch, useProfileState } from '../contexts/ProfileContext';
+import { getProfile } from '../actions/ProfileAction';
+import LoadingSpinner from '../components/LoadingSpinner';
 
-interface Props {
+interface IProfile {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const ProfileScreen: React.FC<Props> = ({ navigation }) => {
+const ProfileScreen: React.FC<IProfile> = ({ navigation }) => {
+  const dispatch = useProfileDispatch();
+  const { profileInformation, isLoading } = useProfileState();
+
+  useEffect(() => {
+    void getProfile(dispatch);
+  }, [dispatch]);
+
+  const { firstName, height, weight, birthDate } = profileInformation.data;
+
+  const getAge = (birthDate: string) =>
+    Math.floor((new Date().getTime() - new Date(birthDate).getTime()) / 3.15576e10);
+
+  const getBMI = (weight: number, height: number) =>
+    (weight / ((height * height) / 10000)).toFixed(2);
+
   return (
     <View style={styles.container}>
       <OptionsMenu />
       <View style={styles.wrapper}>
-        <Avatar
-          rounded
-          size="xlarge"
-          title="KN"
-          activeOpacity={0.5}
-          containerStyle={styles.avatarContainerStyle}
-          titleStyle={styles.avatarTextStyle}
-        />
-        <Text style={styles.headerTextStyle}>Kamil Nahotko</Text>
-        <View style={styles.informationsContainer}>
-          <View>
-            <Text style={styles.informationsTextStyle}>
-              83<Text style={styles.informationsSubtextStyle}>kg</Text>
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <>
+            <Avatar
+              rounded
+              size="xlarge"
+              title="KN"
+              activeOpacity={0.5}
+              containerStyle={styles.avatarContainerStyle}
+              titleStyle={styles.avatarTextStyle}
+            />
+            <Text style={styles.headerTextStyle}>{firstName}</Text>
+            <View style={styles.informationsContainer}>
+              <View>
+                <Text style={styles.informationsTextStyle}>
+                  {weight}
+                  <Text style={styles.informationsSubtextStyle}>kg</Text>
+                </Text>
+                <Text style={styles.textColorStyle}>Weight</Text>
+              </View>
+              <Divider orientation="vertical" width={3} color="#2E2C39" />
+              <View>
+                <Text style={styles.informationsTextStyle}>
+                  {height}
+                  <Text style={styles.informationsSubtextStyle}>cm</Text>
+                </Text>
+                <Text style={styles.textColorStyle}>Height</Text>
+              </View>
+              <Divider orientation="vertical" width={3} color="#2E2C39" />
+              <View>
+                <Text style={styles.informationsTextStyle}>
+                  {getAge(birthDate)}
+                  <Text style={styles.informationsSubtextStyle}>y.o</Text>
+                </Text>
+                <Text style={styles.textColorStyle}>Age</Text>
+              </View>
+            </View>
+            <Text style={styles.bmiTextStyle}>
+              Your BMI: <Text style={styles.BmiSubtextStyle}>{getBMI(weight, height)}</Text>
             </Text>
-            <Text style={styles.textColorStyle}>Weight</Text>
-          </View>
-          <Divider orientation="vertical" width={3} color="#2E2C39" />
-          <View>
-            <Text style={styles.informationsTextStyle}>
-              170<Text style={styles.informationsSubtextStyle}>cm</Text>
-            </Text>
-            <Text style={styles.textColorStyle}>Height</Text>
-          </View>
-          <Divider orientation="vertical" width={3} color="#2E2C39" />
-          <View>
-            <Text style={styles.informationsTextStyle}>
-              24<Text style={styles.informationsSubtextStyle}>y.o</Text>
-            </Text>
-            <Text style={styles.textColorStyle}>Age</Text>
-          </View>
-        </View>
-        <Text style={styles.bmiTextStyle}>
-          Your BMI: <Text style={styles.BmiSubtextStyle}>25.62</Text>
-        </Text>
+          </>
+        )}
       </View>
       <View style={styles.menuWrapper}>
         <Menu navigation={navigation} />
