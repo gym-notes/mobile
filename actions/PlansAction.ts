@@ -2,12 +2,6 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { ActionType, IState, Dispatch, IResponseMyPlan } from '../interfaces/PlansInterface';
 import { GET_MY_PLAN_URL, GET_ALL_PLANS_URL } from '../helpers/AxiosInterceptors';
 
-interface IServerError {
-  message: string;
-  isLoading: boolean;
-  planId: string;
-}
-
 export const getAllPlans = async (dispatch: Dispatch) => {
   try {
     dispatch({ type: ActionType.REQUEST_GET_ALL_PLANS });
@@ -18,7 +12,7 @@ export const getAllPlans = async (dispatch: Dispatch) => {
       dispatch({ type: ActionType.GET_ALL_PLANS_SUCCESS, payload: data });
     }
   } catch (err: unknown) {
-    const error = err as AxiosError<IServerError>;
+    const error = err as AxiosError<IState>;
 
     if (error.response) {
       const serverMessages = error.response.data;
@@ -38,7 +32,7 @@ export const getMyPlan = async (dispatch: Dispatch, id: string) => {
     }
     return;
   } catch (err: unknown) {
-    const error = err as AxiosError<IServerError>;
+    const error = err as AxiosError<IState>;
 
     if (error.response) {
       const serverMessages = error.response.data;

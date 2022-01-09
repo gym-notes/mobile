@@ -2,8 +2,8 @@ export interface IState {
   workoutId?: string;
   isLoading: boolean;
   message?: string | null;
-  workoutData?: {
-    duraction: number;
+  workoutData: {
+    duration: number;
     date: string;
     id: string;
     name: string;
@@ -12,7 +12,7 @@ export interface IState {
 }
 
 export interface IGetWorkoutById {
-  duraction: number;
+  duration: number;
   date: string;
   id: string;
   name: string;

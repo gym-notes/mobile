@@ -15,7 +15,7 @@ const WorkoutItem: React.FC<Props> = ({ title, navigation, id }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        navigation.navigate('WorkoutScreen', { id }), setPlanId(dispatch, id);
+        navigation.navigate('WorkoutScreen'), setPlanId(dispatch, id);
       }}
       style={styles.container}>
       <Text style={styles.textStyle}>{title}</Text>

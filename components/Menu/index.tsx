@@ -15,7 +15,7 @@ const Menu: React.FC<Props> = ({ navigation }) => {
   const routes = useNavigationState((state) => state.routes);
   const currentRoute = routes[routes.length - 1].name;
 
-  const { myPlan } = usePlansState();
+  const { planId } = usePlansState();
 
   return (
     <>
@@ -55,7 +55,7 @@ const Menu: React.FC<Props> = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() =>
-            myPlan ? navigation.navigate('WorkoutScreen') : navigation.navigate('HomeScreen')
+            planId ? navigation.navigate('WorkoutScreen') : navigation.navigate('HomeScreen')
           }
           style={styles.menuItem}>
           <FontAwesomeIcon

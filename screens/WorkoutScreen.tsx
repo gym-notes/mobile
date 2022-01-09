@@ -13,7 +13,7 @@ import WorkoutSeries from '../components/WorkoutSeries';
 import OptionsMenu from '../components/OptionsMenu';
 import Indicator from '../components/Indicator';
 import Modal from '../components/Modal';
-import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
+import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { getMyPlan } from '../actions/PlansAction';
 import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
 import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext';
@@ -24,7 +24,6 @@ import { ICreateWorkoutPayload } from '../interfaces/WorkoutInterface';
 interface IWorkoutScreen {
   viewableItems: Array<IViewableItems>;
   navigation: NavigationProp<ParamListBase>;
-  route: RouteProp<{ params: { id: string } }>;
 }
 
 interface IViewableItems {
@@ -45,7 +44,7 @@ interface ISeries {
   weight: string;
 }
 
-const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
+const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const { width } = useWindowDimensions();
 
@@ -59,12 +58,23 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   const workoutDispatch = useWorkoutDispatch();
   const { myPlan, isLoading, planId } = usePlansState();
   const { workoutId } = useWorkoutState();
+  const [counter, setCounter] = useState(0);
+  const [startTimer, setStartTimer] = useState(true);
 
   useEffect(() => {
-    if (route.params) {
-      void getMyPlan(plansDispatch, route.params.id);
+    if (startTimer) {
+      if (counter >= 0) {
+        const timer = setTimeout(() => setCounter(counter + 1), 1000);
+        return () => clearInterval(timer);
+      }
     }
-  }, [plansDispatch, route.params]);
+  }, [counter, startTimer]);
+
+  useEffect(() => {
+    if (planId) {
+      void getMyPlan(plansDispatch, planId);
+    }
+  }, [plansDispatch, planId]);
 
   useEffect(() => {
     const formatedMyPlan = myPlan?.exercises.map((exercise) => ({
@@ -83,7 +93,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
 
   useEffect(() => {
     if (workoutId) {
-      navigation.navigate('WorkoutSummary', {
+      navigation.navigate('WorkoutSummaryScreen', {
         workoutId,
       });
     }
@@ -186,6 +196,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
   };
 
   const handleSubmit = () => {
+    setStartTimer(false);
     const newExercisesData = ExerciseData.map((item) => ({
       exerciseId: item.exerciseId,
       sets: item.sets.filter((item) => item.reps > '0' && item.weight > '0'),
@@ -193,7 +204,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation, route }) => {
 
     const workoutData: ICreateWorkoutPayload = {
       planId: planId,
-      duration: 100,
+      duration: counter,
       exercises: newExercisesData.filter((item) => item.sets.length > 0),
     };
 

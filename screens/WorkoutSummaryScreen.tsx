@@ -1,11 +1,13 @@
 import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, FlatList } from 'react-native';
+import { View, Text, StyleSheet, FlatList, BackHandler } from 'react-native';
 import Menu from '../components/Menu';
-import { NavigationProp, ParamListBase, RouteProp } from '@react-navigation/native';
+import { NavigationProp, ParamListBase, RouteProp, useFocusEffect } from '@react-navigation/native';
 import WorkoutSummaryHeader from '../components/WorkoutSummaryHeader';
 import WorkoutSummaryExercises from '../components/WorkoutSummaryExercises';
 import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext';
+import { usePlansDispatch } from '../contexts/PlansContext';
 import { getWorkoutById } from '../actions/WorkoutAction';
+import { setPlanId } from '../actions/PlansAction';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 interface IWorkoutSummary {
@@ -17,11 +19,26 @@ const WorkoutSummary: React.FC<IWorkoutSummary> = ({ navigation, route }) => {
   const { workoutId } = route.params;
   const { workoutData, isLoading } = useWorkoutState();
 
-  const dispatch = useWorkoutDispatch();
+  const workoutDispatch = useWorkoutDispatch();
+  const palnsDispatch = usePlansDispatch();
 
   useEffect(() => {
-    void getWorkoutById(dispatch, workoutId);
-  }, [dispatch, workoutId]);
+    void getWorkoutById(workoutDispatch, workoutId);
+  }, [workoutDispatch, workoutId]);
+
+  useEffect(() => {
+    void setPlanId(palnsDispatch, '');
+  }, [palnsDispatch]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const onBackPress = () => {
+        return true;
+      };
+      BackHandler.addEventListener('hardwareBackPress', onBackPress);
+      return () => BackHandler.removeEventListener('hardwareBackPress', onBackPress);
+    }, []),
+  );
 
   return (
     <View style={styles.container}>
