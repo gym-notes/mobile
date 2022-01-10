@@ -12,6 +12,7 @@ import { PlansProvider } from '../contexts/PlansContext';
 import { WorkoutProvider } from '../contexts/WorkoutContext';
 import { ExerciseProvider } from '../contexts/ExerciseContext';
 import { ProfileProvider } from '../contexts/ProfileContext';
+import CreatePlanScreen from '../screens/CreatePlanScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -65,6 +66,11 @@ export const AppStack = () => {
                 options={{ animation: 'slide_from_right' }}
                 name="WorkoutSummaryScreen"
                 component={WorkoutSummaryScreen}
+              />
+              <Stack.Screen
+                options={{ animation: 'slide_from_right' }}
+                name="CreatePlanScreen"
+                component={CreatePlanScreen}
               />
             </Stack.Navigator>
           </ProfileProvider>

@@ -10,7 +10,7 @@ interface IOptionsMenu {
   modalVisible?: boolean;
   setModalVisible?: (arg: boolean) => void;
   setIsAddExercise?: (arg: boolean) => void;
-  navigation: NavigationProp<ParamListBase>;
+  navigation?: NavigationProp<ParamListBase>;
 }
 
 const OptionsMenu: React.FC<IOptionsMenu> = ({
@@ -67,7 +67,7 @@ const OptionsMenu: React.FC<IOptionsMenu> = ({
           </>
         ) : (
           <>
-            <MenuItem onPress={() => navigation.navigate('ProfileEditScreen')}>
+            <MenuItem onPress={() => navigation?.navigate('ProfileEditScreen')}>
               Edit Profile
             </MenuItem>
           </>
