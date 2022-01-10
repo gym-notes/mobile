@@ -32,7 +32,7 @@ const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
           )}
         </ScrollView>
         <View style={styles.buttonWrapper}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={() => navigation.navigate('CreatePlanScreen')}>
             <Button title="Create new plan" backgroundColor="#D44E52" textColor="white" />
           </TouchableOpacity>
         </View>
