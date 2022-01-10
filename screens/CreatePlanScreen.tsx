@@ -6,20 +6,39 @@ import Menu from '../components/Menu';
 import OptionsMenu from '../components/OptionsMenu';
 import PlanExercise from '../components/PlanExercise';
 import PlanInput from '../components/PlanInput';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+
+export interface IFormData {
+  PlanName: string;
+}
+
+const schema = yup.object({
+  PlanName: yup.string().required().min(3).max(35),
+});
 
 interface ICreatePlanScreen {
   navigation: NavigationProp<ParamListBase>;
 }
 
 const CreatePlanScreen: React.FC<ICreatePlanScreen> = ({ navigation }) => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IFormData>({ resolver: yupResolver(schema), mode: 'onChange' });
+
+  const onSubmit = handleSubmit((data) => console.log(data));
+
   return (
     <View style={styles.container}>
       <OptionsMenu />
-      <PlanInput />
+      <PlanInput control={control} errors={errors} />
       <View style={styles.wrapper}>
         <PlanExercise />
       </View>
-      <TouchableOpacity style={styles.buttonwrapper}>
+      <TouchableOpacity onPress={() => onSubmit()} style={styles.buttonwrapper}>
         <Button title="Add Plan" textColor="white" backgroundColor="#D44E52" />
       </TouchableOpacity>
       <View style={styles.menuWrapper}>
