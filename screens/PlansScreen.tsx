@@ -1,50 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Button from '../components/Button';
 import Menu from '../components/Menu';
 import PlanItem from '../components/PlanItem';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { getAllPlans } from '../actions/PlansAction';
+import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 
-interface Props {
+interface IPlansScreen {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const dummyData = [
-  {
-    id: 1,
-    name: 'FBW - A',
-  },
-  {
-    id: 2,
-    name: 'FBW - B',
-  },
-  {
-    id: 3,
-    name: 'PUSH/PULL',
-  },
-  {
-    id: 4,
-    name: 'FBW - A',
-  },
-  {
-    id: 5,
-    name: 'FBW - B',
-  },
-  {
-    id: 6,
-    name: 'PUSH/PULL',
-  },
-];
+const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
+  const dispatch = usePlansDispatch();
+  const { plans, isLoading } = usePlansState();
 
-const PlansScreen: React.FC<Props> = ({ navigation }) => {
+  useEffect(() => {
+    void getAllPlans(dispatch);
+  }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.textStyle}>Your Plans</Text>
         <ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%' }}>
-          {dummyData.map((item) => (
-            <PlanItem key={item.id} name={item.name} />
-          ))}
+          {isLoading ? (
+            <LoadingSpinner />
+          ) : (
+            plans?.map((item) => <PlanItem key={item.id} name={item.name} />)
+          )}
         </ScrollView>
         <View style={styles.buttonWrapper}>
           <TouchableOpacity>

@@ -1,7 +1,7 @@
 import { IState, ActionTypes, ActionType } from '../interfaces/PlansInterface';
 
 export const initialState: IState = {
-  plans: null,
+  plans: [],
   isLoading: false,
   myPlan: null,
   planId: '',
