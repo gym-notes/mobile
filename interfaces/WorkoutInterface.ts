@@ -9,6 +9,20 @@ export interface IState {
     name: string;
     exercises: Array<IExercisesById>;
   };
+  workoutsHistory: Array<IWorkoutsHistoryPayload>;
+}
+
+export interface IWorkoutsHistoryPayload {
+  year: number;
+  month: number;
+  workouts: Array<IWorkoutsHistory>;
+}
+
+interface IWorkoutsHistory {
+  id: string;
+  planName: string;
+  duration: number;
+  exercisesNumber: number;
 }
 
 export interface IGetWorkoutById {
@@ -54,6 +68,9 @@ export enum ActionType {
   REQUEST_GET_WORKOUT_BY_ID = 'REQUEST_GET_WORKOUT_BY_ID',
   GET_WORKOUT_BY_ID_SUCCESS = 'GET_WORKOUT_BY_ID_SUCCESS',
   GET_WORKOUT_BY_ID_ERROR = 'GET_WORKOUT_BY_ID_ERROR',
+  REQUEST_GET_WORKOUTS_HISTORY = 'REQUEST_GET_WORKOUTS_HISTORY',
+  GET_WORKOUTS_HISTORY_SUCCESS = 'GET_WORKOUTS_HISTORY_SUCCESS',
+  GET_WORKOUTS_HISTORY_ERROR = 'GET_WORKOUTS_HISTORY_ERROR',
 }
 
 export interface REQUEST_CREATE_WORKOUT {
@@ -84,6 +101,20 @@ export interface GET_WORKOUT_BY_ID_ERROR {
   payload: IState;
 }
 
+export interface REQUEST_GET_WORKOUTS_HISTORY {
+  type: ActionType.REQUEST_GET_WORKOUTS_HISTORY;
+}
+
+export interface GET_WORKOUTS_HISTORY_SUCCESS {
+  type: ActionType.GET_WORKOUTS_HISTORY_SUCCESS;
+  payload: Array<IWorkoutsHistoryPayload>;
+}
+
+export interface GET_WORKOUTS_HISTORY_ERROR {
+  type: ActionType.GET_WORKOUTS_HISTORY_ERROR;
+  payload: IState;
+}
+
 export interface CLEAN_ERROR {
   type: ActionType.CLEAN_ERROR;
 }
@@ -95,6 +126,9 @@ export type ActionTypes =
   | REQUEST_GET_WORKOUT_BY_ID
   | GET_WORKOUT_BY_ID_SUCCESS
   | GET_WORKOUT_BY_ID_ERROR
+  | REQUEST_GET_WORKOUTS_HISTORY
+  | GET_WORKOUTS_HISTORY_SUCCESS
+  | GET_WORKOUTS_HISTORY_ERROR
   | CLEAN_ERROR;
 
 export type Dispatch = (action: ActionTypes) => void;

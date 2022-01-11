@@ -1,18 +1,39 @@
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import Menu from '../components/Menu';
 import HistoryItem from '../components/HistoryItem';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+import { getWorkoutsHistory } from '../actions/WorkoutAction';
+import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext';
 
-interface Props {
+interface IHistoryScreen {
   navigation: NavigationProp<ParamListBase>;
 }
-const HistoryScreen: React.FC<Props> = ({ navigation }) => {
+
+const HistoryScreen: React.FC<IHistoryScreen> = ({ navigation }) => {
+  const dispatch = useWorkoutDispatch();
+  const { workoutsHistory } = useWorkoutState();
+
+  useEffect(() => {
+    void getWorkoutsHistory(dispatch);
+  }, [dispatch]);
+
   return (
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.textStyle}>History</Text>
-        <HistoryItem />
+        <FlatList
+          data={workoutsHistory}
+          renderItem={({ item }) => (
+            <HistoryItem
+              workouts={item.workouts}
+              month={item.month}
+              year={item.year}
+              navigation={navigation}
+            />
+          )}
+          keyExtractor={(item, index) => index.toString()}
+        />
       </View>
       <View style={styles.menuWrapper}>
         <Menu navigation={navigation} />

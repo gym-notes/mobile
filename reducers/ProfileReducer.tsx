@@ -8,8 +8,8 @@ export const initialState: IState = {
     email: '',
     data: {
       firstName: 'string',
-      weight: 0,
       height: 0,
+      weight: 0,
       birthDate: 'string',
       gender: 'string',
       country: 'string',
