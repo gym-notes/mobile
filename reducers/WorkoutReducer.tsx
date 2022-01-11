@@ -12,6 +12,13 @@ export const initialState: IState = {
     exercises: [{ id: '', name: '', sets: [{ reps: 0, weight: 0 }] }],
   },
   workoutsHistory: [],
+  latestWorkout: {
+    duration: 0,
+    date: '',
+    id: '',
+    name: '',
+    exercises: [],
+  },
 };
 
 export const WorkoutReducer = (initialState: IState, action: ActionTypes): IState => {
@@ -67,6 +74,25 @@ export const WorkoutReducer = (initialState: IState, action: ActionTypes): IStat
         workoutId: '',
       };
     case ActionType.GET_WORKOUTS_HISTORY_ERROR:
+      return {
+        ...initialState,
+        isLoading: false,
+        message: action.payload.message,
+      };
+    case ActionType.REQUEST_GET_LATEST_WORKOUT:
+      return {
+        ...initialState,
+        isLoading: true,
+        message: null,
+      };
+    case ActionType.GET_LATEST_WORKOUT_SUCCESS:
+      return {
+        ...initialState,
+        latestWorkout: action.payload,
+        isLoading: false,
+        workoutId: '',
+      };
+    case ActionType.GET_LATEST_WORKOUT_ERROR:
       return {
         ...initialState,
         isLoading: false,

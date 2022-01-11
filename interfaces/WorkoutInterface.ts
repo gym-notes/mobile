@@ -10,6 +10,15 @@ export interface IState {
     exercises: Array<IExercisesById>;
   };
   workoutsHistory: Array<IWorkoutsHistoryPayload>;
+  latestWorkout: ILatestWorkout;
+}
+
+export interface ILatestWorkout {
+  id: string;
+  name: string;
+  duration: number;
+  date: string;
+  exercises: Array<IExercisesById>;
 }
 
 export interface IWorkoutsHistoryPayload {
@@ -71,6 +80,9 @@ export enum ActionType {
   REQUEST_GET_WORKOUTS_HISTORY = 'REQUEST_GET_WORKOUTS_HISTORY',
   GET_WORKOUTS_HISTORY_SUCCESS = 'GET_WORKOUTS_HISTORY_SUCCESS',
   GET_WORKOUTS_HISTORY_ERROR = 'GET_WORKOUTS_HISTORY_ERROR',
+  REQUEST_GET_LATEST_WORKOUT = 'REQUEST_GET_LATEST_WORKOUT',
+  GET_LATEST_WORKOUT_SUCCESS = 'GET_LATEST_WORKOUT_SUCCESS',
+  GET_LATEST_WORKOUT_ERROR = 'GET_WORKOUTS_HISTORY_ERROR',
 }
 
 export interface REQUEST_CREATE_WORKOUT {
@@ -115,6 +127,20 @@ export interface GET_WORKOUTS_HISTORY_ERROR {
   payload: IState;
 }
 
+export interface REQUEST_GET_LATEST_WORKOUT {
+  type: ActionType.REQUEST_GET_LATEST_WORKOUT;
+}
+
+export interface GET_LATEST_WORKOUT_SUCCESS {
+  type: ActionType.GET_LATEST_WORKOUT_SUCCESS;
+  payload: ILatestWorkout;
+}
+
+export interface GET_LATEST_WORKOUT_ERROR {
+  type: ActionType.GET_LATEST_WORKOUT_ERROR;
+  payload: IState;
+}
+
 export interface CLEAN_ERROR {
   type: ActionType.CLEAN_ERROR;
 }
@@ -129,6 +155,9 @@ export type ActionTypes =
   | REQUEST_GET_WORKOUTS_HISTORY
   | GET_WORKOUTS_HISTORY_SUCCESS
   | GET_WORKOUTS_HISTORY_ERROR
+  | REQUEST_GET_LATEST_WORKOUT
+  | GET_LATEST_WORKOUT_SUCCESS
+  | GET_LATEST_WORKOUT_ERROR
   | CLEAN_ERROR;
 
 export type Dispatch = (action: ActionTypes) => void;

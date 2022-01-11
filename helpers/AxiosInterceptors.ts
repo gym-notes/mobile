@@ -29,3 +29,4 @@ export const GET_PROFILE = `${BASE_URL}accounts/me`;
 export const UPDATE_PROFILE = `${BASE_URL}accounts/me`;
 export const CREATE_PLAN = `${BASE_URL}plans`;
 export const GET_WORKOUTS_HISTORY = `${BASE_URL}workouts/summaries`;
+export const GET_LATEST_WORKOUT = `${BASE_URL}workouts/latest`;
