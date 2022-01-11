@@ -207,7 +207,7 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
                 errorMessage={errors.height?.message}
               />
             )}
-            name="height"
+            name="weight"
           />
           <Controller
             control={control}
@@ -218,15 +218,15 @@ const RegisterForm: React.FC<IRegisterForm> = ({ currentStep, steps, setCurrentS
               <Input
                 containerStyle={styles.inputContainerStyle}
                 placeholder="Type your height"
-                label="Weight in cm"
+                label="Height in cm"
                 leftIcon={<FontAwesome5Icon name="ruler-vertical" size={20} color="#BCBCC0" />}
                 inputStyle={styles.inputStyle}
                 onChangeText={onChange}
                 value={value}
-                errorMessage={errors.weight?.message}
+                errorMessage={errors.height?.message}
               />
             )}
-            name="weight"
+            name="height"
           />
         </View>
       )}

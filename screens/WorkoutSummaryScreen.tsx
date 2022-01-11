@@ -53,7 +53,7 @@ const WorkoutSummary: React.FC<IWorkoutSummary> = ({ navigation, route }) => {
               nestedScrollEnabled
               data={workoutData?.exercises}
               renderItem={({ item }) => <WorkoutSummaryExercises exercisesData={item} />}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item, index) => index.toString()}
             />
           </>
         )}

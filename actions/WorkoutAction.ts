@@ -5,8 +5,13 @@ import {
   Dispatch,
   ICreateWorkoutPayload,
   IGetWorkoutById,
+  IWorkoutsHistoryPayload,
 } from '../interfaces/WorkoutInterface';
-import { CREATE_WORKOUT, GET_WORKOUT_BY_ID } from '../helpers/AxiosInterceptors';
+import {
+  CREATE_WORKOUT,
+  GET_WORKOUT_BY_ID,
+  GET_WORKOUTS_HISTORY,
+} from '../helpers/AxiosInterceptors';
 
 export const createWorkout = async (dispatch: Dispatch, workoutPayload: ICreateWorkoutPayload) => {
   try {
@@ -42,6 +47,27 @@ export const getWorkoutById = async (dispatch: Dispatch, id: string) => {
     if (error.response) {
       const serverMessages = error.response.data;
       dispatch({ type: ActionType.GET_WORKOUT_BY_ID_ERROR, payload: serverMessages });
+    }
+  }
+};
+
+export const getWorkoutsHistory = async (dispatch: Dispatch) => {
+  try {
+    dispatch({ type: ActionType.REQUEST_GET_WORKOUTS_HISTORY });
+    const response: AxiosResponse<Array<IWorkoutsHistoryPayload>> = await axios.get(
+      GET_WORKOUTS_HISTORY,
+    );
+    const data = response.data;
+
+    if (data) {
+      dispatch({ type: ActionType.GET_WORKOUTS_HISTORY_SUCCESS, payload: data });
+    }
+  } catch (err: unknown) {
+    const error = err as AxiosError<IState>;
+
+    if (error.response) {
+      const serverMessages = error.response.data;
+      dispatch({ type: ActionType.GET_WORKOUTS_HISTORY_ERROR, payload: serverMessages });
     }
   }
 };
