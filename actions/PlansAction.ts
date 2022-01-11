@@ -1,6 +1,12 @@
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { ActionType, IState, Dispatch, IResponseMyPlan } from '../interfaces/PlansInterface';
-import { GET_MY_PLAN_URL, GET_ALL_PLANS_URL } from '../helpers/AxiosInterceptors';
+import {
+  ActionType,
+  IState,
+  Dispatch,
+  IResponseMyPlan,
+  IResponseCreatePlan,
+} from '../interfaces/PlansInterface';
+import { GET_MY_PLAN_URL, GET_ALL_PLANS_URL, CREATE_PLAN } from '../helpers/AxiosInterceptors';
 
 export const getAllPlans = async (dispatch: Dispatch) => {
   try {
@@ -37,6 +43,25 @@ export const getMyPlan = async (dispatch: Dispatch, id: string) => {
     if (error.response) {
       const serverMessages = error.response.data;
       dispatch({ type: ActionType.GET_MY_PLAN_ERROR, payload: serverMessages });
+    }
+  }
+};
+
+export const createPlan = async (dispatch: Dispatch, planPayload: IResponseCreatePlan) => {
+  try {
+    dispatch({ type: ActionType.REQUEST_CREATE_MY_PLAN });
+    const response: AxiosResponse<IResponseCreatePlan> = await axios.post(CREATE_PLAN, {
+      ...planPayload,
+    });
+
+    dispatch({ type: ActionType.CREATE_MY_PLAN_SUCCESS });
+    return response;
+  } catch (err: unknown) {
+    const error = err as AxiosError<IState>;
+
+    if (error.response) {
+      const serverMessages = error.response.data;
+      dispatch({ type: ActionType.CREATE_MY_PLAN_ERROR, payload: serverMessages });
     }
   }
 };

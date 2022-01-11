@@ -5,6 +5,8 @@ export const initialState: IState = {
   isLoading: false,
   myPlan: null,
   planId: '',
+  isSuccess: false,
+  message: '',
 };
 
 export const PlansReducer = (initialState: IState, action: ActionTypes): IState => {
@@ -13,6 +15,7 @@ export const PlansReducer = (initialState: IState, action: ActionTypes): IState 
       return {
         ...initialState,
         isLoading: true,
+        isSuccess: false,
         message: null,
       };
     case ActionType.GET_ALL_PLANS_SUCCESS:
@@ -44,6 +47,24 @@ export const PlansReducer = (initialState: IState, action: ActionTypes): IState 
         ...initialState,
         isLoading: false,
         message: action.payload.message,
+      };
+    case ActionType.REQUEST_CREATE_MY_PLAN:
+      return {
+        ...initialState,
+        isLoading: true,
+        message: null,
+      };
+    case ActionType.CREATE_MY_PLAN_SUCCESS:
+      return {
+        ...initialState,
+        isSuccess: true,
+        isLoading: false,
+      };
+    case ActionType.CREATE_MY_PLAN_ERROR:
+      return {
+        ...initialState,
+        isLoading: false,
+        message: action.payload.errors,
       };
     case ActionType.CLEAN_ERROR:
       return {

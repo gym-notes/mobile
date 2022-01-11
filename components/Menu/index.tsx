@@ -27,12 +27,19 @@ const Menu: React.FC<Props> = ({ navigation }) => {
           <MaterialIcon
             name="book"
             size={25}
-            color={currentRoute === 'PlansScreen' ? '#D44E52' : '#BCBCC0'}
+            color={
+              currentRoute === 'PlansScreen' || currentRoute === 'CreatePlanScreen'
+                ? '#D44E52'
+                : '#BCBCC0'
+            }
           />
           <Text
             style={{
               ...styles.menuTextStyle,
-              color: currentRoute === 'PlansScreen' ? '#D44E52' : '#BCBCC0',
+              color:
+                currentRoute === 'PlansScreen' || currentRoute === 'CreatePlanScreen'
+                  ? '#D44E52'
+                  : '#BCBCC0',
             }}>
             Plans
           </Text>

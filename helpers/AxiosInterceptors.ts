@@ -27,3 +27,4 @@ export const GET_WORKOUT_BY_ID = `${BASE_URL}workouts/`;
 export const GET_EXERCISES = `${BASE_URL}exercises/my`;
 export const GET_PROFILE = `${BASE_URL}accounts/me`;
 export const UPDATE_PROFILE = `${BASE_URL}accounts/me`;
+export const CREATE_PLAN = `${BASE_URL}plans`;
