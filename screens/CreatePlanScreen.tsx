@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, StyleSheet, TouchableOpacity, FlatList, Text } from 'react-native';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import Button from '../components/Button';
 import Menu from '../components/Menu';
@@ -9,6 +9,10 @@ import PlanInput from '../components/PlanInput';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import Modal from '../components/Modal';
+import { createPlan, cleanErrorMessage } from '../actions/PlansAction';
+import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
+import ErrorMessage from '../components/ErrorMessage';
 
 export interface IFormData {
   PlanName: string;
@@ -22,6 +26,14 @@ interface ICreatePlanScreen {
   navigation: NavigationProp<ParamListBase>;
 }
 
+interface IExercisesState {
+  exerciseId: string;
+  series: number;
+  reps: string;
+  weight: string;
+  exerciseName?: string;
+}
+
 const CreatePlanScreen: React.FC<ICreatePlanScreen> = ({ navigation }) => {
   const {
     control,
@@ -29,18 +41,152 @@ const CreatePlanScreen: React.FC<ICreatePlanScreen> = ({ navigation }) => {
     formState: { errors },
   } = useForm<IFormData>({ resolver: yupResolver(schema), mode: 'onChange' });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const [modalVisible, setModalVisible] = useState(false);
+  const [isAddExercise, setIsAddExercise] = useState(true);
+  const [exerciseName, setExerciseName] = useState('');
+  const [exerciseId, setExerciseId] = useState('');
+  const [exerciseIndex, setExerciseIndex] = useState(0);
+  const [exercises, setExercises] = useState<Array<IExercisesState>>([]);
+  const dispatch = usePlansDispatch();
+  const { isSuccess, message } = usePlansState();
+  const [isVisible, setIsVisible] = useState(false);
+
+  const addExercise = () => {
+    const newElement = {
+      exerciseId: exerciseId,
+      exerciseName: exerciseName,
+      series: 4,
+      reps: '10',
+      weight: '10',
+    };
+
+    setExercises((prevState) => [...prevState, newElement]);
+    setModalVisible(!modalVisible);
+    setExerciseName('');
+  };
+
+  const replaceExercise = () => {
+    const newData = [...exercises];
+
+    const newElement = {
+      exerciseId: exerciseId,
+      exerciseName: exerciseName,
+      series: 4,
+      reps: '10',
+      weight: '10',
+    };
+
+    newData[exerciseIndex] = newElement;
+
+    setExercises(newData);
+    setModalVisible(!modalVisible);
+    setExerciseName('');
+  };
+
+  const deleteExercise = (index: number) => {
+    const newData = [...exercises];
+    newData.splice(index, 1);
+    setExercises(newData);
+  };
+
+  const increaseSeries = (index: number) => {
+    const newData = [...exercises];
+    newData[index].series = ++newData[index].series;
+    setExercises(newData);
+  };
+
+  const decreaseSeries = (index: number) => {
+    const newData = [...exercises];
+    if (newData[index].series > 1) {
+      newData[index].series = --newData[index].series;
+    }
+    setExercises(newData);
+  };
+
+  const updateRep = (index: number, rep: string) => {
+    const newData = [...exercises];
+    newData[index].reps = rep;
+    setExercises(newData);
+  };
+
+  const updateWeight = (index: number, weight: string) => {
+    const newData = [...exercises];
+    newData[index].weight = weight;
+    setExercises(newData);
+  };
+
+  const onSubmit = (data: IFormData) => {
+    const filteredExercises = exercises.filter((item) => delete item.exerciseName);
+    return createPlan(dispatch, {
+      name: data.PlanName,
+      exercises: filteredExercises,
+    });
+  };
+
+  useEffect(() => {
+    if (!message) {
+      setIsVisible(false);
+      return;
+    }
+    setIsVisible(true);
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+      cleanErrorMessage(dispatch);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [message, dispatch]);
 
   return (
     <View style={styles.container}>
-      <OptionsMenu />
-      <PlanInput control={control} errors={errors} />
-      <View style={styles.wrapper}>
-        <PlanExercise />
-      </View>
-      <TouchableOpacity onPress={() => onSubmit()} style={styles.buttonwrapper}>
-        <Button title="Add Plan" textColor="white" backgroundColor="#D44E52" />
-      </TouchableOpacity>
+      <OptionsMenu setModalVisible={setModalVisible} setIsAddExercise={setIsAddExercise} />
+      {isSuccess ? (
+        <View style={styles.textWrapper}>
+          <Text style={styles.text}>Your plan has been created successfully.</Text>
+          <TouchableOpacity onPress={() => navigation.navigate('HomeScreen')}>
+            <Text style={styles.subText}>Get back</Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <>
+          <PlanInput control={control} errors={errors} />
+          <View style={styles.wrapper}>
+            {message && isVisible && <ErrorMessage message={message} />}
+            <Modal
+              modalVisible={modalVisible}
+              setModalVisible={setModalVisible}
+              setExerciseName={setExerciseName}
+              exerciseName={exerciseName}
+              setExerciseId={setExerciseId}
+              addExercise={addExercise}
+              isAddExercise={isAddExercise}
+              replaceExercise={replaceExercise}
+            />
+            <FlatList
+              data={exercises}
+              renderItem={({ item, index }) => (
+                <PlanExercise
+                  setIsAddExercise={setIsAddExercise}
+                  setModalVisible={setModalVisible}
+                  modalVisible={modalVisible}
+                  deleteExercise={deleteExercise}
+                  increaseSeries={increaseSeries}
+                  decreaseSeries={decreaseSeries}
+                  exercises={item}
+                  index={index}
+                  setExerciseIndex={setExerciseIndex}
+                  updateRep={updateRep}
+                  updateWeight={updateWeight}
+                />
+              )}
+              keyExtractor={(item, index) => index.toString()}
+              removeClippedSubviews={false}
+            />
+          </View>
+          <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.buttonwrapper}>
+            <Button title="Add Plan" textColor="white" backgroundColor="#D44E52" />
+          </TouchableOpacity>
+        </>
+      )}
       <View style={styles.menuWrapper}>
         <Menu navigation={navigation} />
       </View>
@@ -54,16 +200,32 @@ const styles = StyleSheet.create({
     backgroundColor: '#1B1A22',
   },
   wrapper: {
-    flex: 2,
+    flex: 3,
     alignItems: 'center',
   },
   menuWrapper: {
     paddingHorizontal: 15,
     justifyContent: 'flex-end',
+    flex: 1,
   },
   buttonwrapper: {
     alignSelf: 'center',
     marginVertical: 10,
+  },
+  text: {
+    color: 'green',
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  subText: {
+    fontWeight: 'bold',
+    color: '#D44E52',
+    fontSize: 15,
+  },
+  textWrapper: {
+    marginVertical: 25,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 

@@ -48,22 +48,26 @@ const OptionsMenu: React.FC<IOptionsMenu> = ({
               Add exercise
             </MenuItem>
             <MenuDivider />
-            <MenuItem
-              onPress={() => {
-                setIsAddExercise?.(false);
-                setModalVisible?.(!modalVisible);
-                hideMenu();
-              }}>
-              Replace Exercise
-            </MenuItem>
-            <MenuDivider />
-            <MenuItem
-              onPress={() => {
-                deleteExercise?.();
-                hideMenu();
-              }}>
-              Delete exercise
-            </MenuItem>
+            {currentRoute == 'WorkoutScreen' && (
+              <>
+                <MenuItem
+                  onPress={() => {
+                    setIsAddExercise?.(false);
+                    setModalVisible?.(!modalVisible);
+                    hideMenu();
+                  }}>
+                  Replace Exercise
+                </MenuItem>
+                <MenuDivider />
+                <MenuItem
+                  onPress={() => {
+                    deleteExercise?.();
+                    hideMenu();
+                  }}>
+                  Delete exercise
+                </MenuItem>
+              </>
+            )}
           </>
         ) : (
           <>

@@ -2,8 +2,10 @@ export interface IState {
   plans?: Array<IMyPlans>;
   isLoading: boolean;
   message?: string | null;
+  errors?: string | null;
   myPlan?: { id: string; name: string; exercises: Array<IExercises> } | null;
   planId: string;
+  isSuccess: boolean;
 }
 
 interface IMyPlans {
@@ -26,6 +28,18 @@ export interface IResponseMyPlan {
   exercises: Array<IExercises>;
 }
 
+export interface IResponseCreatePlan {
+  name: string;
+  exercises: Array<IPlanExercises>;
+}
+
+interface IPlanExercises {
+  exerciseId: string;
+  series: number;
+  reps: string;
+  weight: string;
+}
+
 export enum ActionType {
   REQUEST_GET_ALL_PLANS = 'REQUEST_GET_ALL_PLANS',
   GET_ALL_PLANS_SUCCESS = 'GET_ALL_PLANS_SUCCESS',
@@ -34,6 +48,9 @@ export enum ActionType {
   REQUEST_GET_MY_PLAN = 'REQUEST_GET_MY_PLAN',
   GET_MY_PLAN_SUCCESS = ' GET_MY_PLAN_SUCCESS',
   GET_MY_PLAN_ERROR = 'GET_MY_PLAN_ERROR',
+  REQUEST_CREATE_MY_PLAN = 'REQUEST_CREATE_MY_PLAN',
+  CREATE_MY_PLAN_SUCCESS = ' CREATE_MY_PLAN_SUCCESS',
+  CREATE_MY_PLAN_ERROR = 'CREATE_MY_PLAN_ERROR',
   SET_PLAN_ID = 'SET_PLAN_ID ',
 }
 
@@ -74,6 +91,19 @@ export interface SET_PLAN_ID {
   payload: string;
 }
 
+export interface REQUEST_CREATE_MY_PLAN {
+  type: ActionType.REQUEST_CREATE_MY_PLAN;
+}
+
+export interface CREATE_MY_PLAN_SUCCESS {
+  type: ActionType.CREATE_MY_PLAN_SUCCESS;
+}
+
+export interface CREATE_MY_PLAN_ERROR {
+  type: ActionType.CREATE_MY_PLAN_ERROR;
+  payload: IState;
+}
+
 export type ActionTypes =
   | REQUEST_GET_ALL_PLANS
   | GET_ALL_PLANS_SUCCESS
@@ -81,6 +111,9 @@ export type ActionTypes =
   | REQUEST_GET_MY_PLAN
   | GET_MY_PLAN_SUCCESS
   | GET_MY_PLAN_ERROR
+  | REQUEST_CREATE_MY_PLAN
+  | CREATE_MY_PLAN_SUCCESS
+  | CREATE_MY_PLAN_ERROR
   | CLEAN_ERROR
   | SET_PLAN_ID;
 
