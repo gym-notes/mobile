@@ -1,61 +1,35 @@
-import React from 'react';
-import { Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect } from 'react';
+import { Text, StyleSheet, View, FlatList } from 'react-native';
 import LastWorkoutItem from './LastWorkoutItem';
-
-const dummyData = {
-  date: '07.11.2021',
-  exercise: [
-    {
-      id: 1,
-      name: 'Barbell Olympic Squat',
-      series: 2,
-    },
-    {
-      id: 2,
-      name: 'Chest Press',
-      series: 4,
-    },
-    {
-      id: 3,
-      name: 'Barbell Olympic Squat',
-      series: 4,
-    },
-    {
-      id: 4,
-      name: 'Barbell Olympic Squat',
-      series: 4,
-    },
-    {
-      id: 5,
-      name: 'Barbell Olympic Squat',
-      series: 4,
-    },
-    {
-      id: 6,
-      name: 'Barbell Olympic Squat',
-      series: 4,
-    },
-    {
-      id: 7,
-      name: 'Barbell Olympic Squat',
-      series: 4,
-    },
-    {
-      id: 8,
-      name: 'Barbell Olympic Squat',
-      series: 4,
-    },
-  ],
-};
+import { useWorkoutDispatch, useWorkoutState } from '../../contexts/WorkoutContext';
+import { getLatestWorkout } from '../../actions/WorkoutAction';
+import LoadingSpinner from '../LoadingSpinner';
 
 const LastWorkoutPanel = () => {
+  const disptach = useWorkoutDispatch();
+  const { latestWorkout, isLoading } = useWorkoutState();
+
+  useEffect(() => {
+    void getLatestWorkout(disptach);
+  }, [disptach]);
+
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.textStyle}>{dummyData.date}</Text>
-      {dummyData.exercise.map((data) => (
-        <LastWorkoutItem key={data.id} data={data} />
-      ))}
-    </ScrollView>
+    <View style={styles.container}>
+      {isLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <>
+          <Text style={styles.textStyle}>
+            {latestWorkout.name} - {latestWorkout.date}
+          </Text>
+          <FlatList
+            data={latestWorkout.exercises}
+            renderItem={({ item }) => <LastWorkoutItem data={item} />}
+            keyExtractor={(item) => item.id}
+          />
+        </>
+      )}
+    </View>
   );
 };
 

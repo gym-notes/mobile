@@ -5,12 +5,11 @@ import Logotype from '../components/Logotype';
 import Menu from '../components/Menu';
 import LastWorkoutPanel from '../components/LastWorkoutPanel';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
-
-interface Props {
+interface IHomeScreen {
   navigation: NavigationProp<ParamListBase>;
 }
 
-const HomeScreen: React.FC<Props> = ({ navigation }) => {
+const HomeScreen: React.FC<IHomeScreen> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logotypeWrapper}>

@@ -2,21 +2,27 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Divider } from 'react-native-elements';
 
-interface Props {
+interface ILastWorkoutItem {
   data: {
+    id: string;
     name: string;
-    series: number;
+    sets: Array<ISets>;
   };
 }
 
-const LastWorkoutItem: React.FC<Props> = ({ data }) => {
-  const { name, series } = data;
+interface ISets {
+  reps: number;
+  weight: number;
+}
+
+const LastWorkoutItem: React.FC<ILastWorkoutItem> = ({ data }) => {
+  const { name, sets } = data;
 
   return (
     <>
       <View style={styles.container}>
         <Text style={styles.textStyle}>{name}</Text>
-        <Text style={styles.textStyle}>{series} series</Text>
+        <Text style={styles.textStyle}>{sets.length} series</Text>
       </View>
       <Divider orientation="horizontal" width={1} style={styles.divierStyle} />
     </>
