@@ -25,7 +25,7 @@ const LastWorkoutPanel = () => {
           <FlatList
             data={latestWorkout.exercises}
             renderItem={({ item }) => <LastWorkoutItem data={item} />}
-            keyExtractor={(item) => item.id}
+            keyExtractor={(item, index) => index.toString()}
           />
         </>
       )}

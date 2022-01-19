@@ -2,6 +2,7 @@ export interface IState {
   isLoading: boolean;
   message?: string | null;
   exercises: Array<IExercisesPayload>;
+  exerciseId: string;
 }
 
 export interface IExercisesPayload {
@@ -13,6 +14,9 @@ export enum ActionType {
   REQUEST_GET_EXERCISES = 'REQUEST_GET_EXERCISES',
   GET_EXERCISES_SUCCESS = 'GET_EXERCISES_SUCCESS',
   GET_EXERCISES_ERROR = 'GET_EXERCISES_ERROR',
+  REQUEST_CREATE_EXERCISE = 'REQUEST_CREATE_EXERCISE',
+  CREATE_EXERCISE_SUCCESS = 'CREATE_EXERCISE_SUCCESS',
+  CREATE_EXERCISE_ERROR = 'CREATE_EXERCISE_ERROR',
   CLEAN_ERROR = 'CLEAN_ERROR',
 }
 
@@ -30,6 +34,22 @@ export interface GET_EXERCISES_ERROR {
   payload: IState;
 }
 
+export interface REQUEST_CREATE_EXERCISE {
+  type: ActionType.REQUEST_CREATE_EXERCISE;
+}
+
+export interface CREATE_EXERCISE_SUCCESS {
+  type: ActionType.CREATE_EXERCISE_SUCCESS;
+  payload: {
+    exerciseId: string;
+  };
+}
+
+export interface CREATE_EXERCISE_ERROR {
+  type: ActionType.CREATE_EXERCISE_ERROR;
+  payload: IState;
+}
+
 export interface CLEAN_ERROR {
   type: ActionType.CLEAN_ERROR;
 }
@@ -38,6 +58,9 @@ export type ActionTypes =
   | REQUEST_GET_EXERCISES
   | GET_EXERCISES_SUCCESS
   | GET_EXERCISES_ERROR
+  | REQUEST_CREATE_EXERCISE
+  | CREATE_EXERCISE_SUCCESS
+  | CREATE_EXERCISE_ERROR
   | CLEAN_ERROR;
 
 export type Dispatch = (action: ActionTypes) => void;
