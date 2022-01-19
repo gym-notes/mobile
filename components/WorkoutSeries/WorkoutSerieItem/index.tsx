@@ -29,7 +29,15 @@ const WorkoutSerieItem: React.FC<IWorkoutSerieItem> = ({
         <TextInput
           style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}
           keyboardType="numeric"
-          onChangeText={(value) => updateRep(--index, value)}
+          onChangeText={(value) =>
+            updateRep(
+              --index,
+              value
+                .toString()
+                .replace(/^[0]/, '')
+                .replace(/[^0-9]/g, ''),
+            )
+          }
           value={seriesData.reps.toString()}
           maxLength={3}
         />
@@ -39,7 +47,15 @@ const WorkoutSerieItem: React.FC<IWorkoutSerieItem> = ({
         <TextInput
           style={{ color: 'white', fontSize: 16, fontWeight: 'bold' }}
           keyboardType="numeric"
-          onChangeText={(value) => updateWeight(--index, value)}
+          onChangeText={(value) =>
+            updateWeight(
+              --index,
+              value
+                .toString()
+                .replace(/^[0]/, '')
+                .replace(/[^0-9]/g, ''),
+            )
+          }
           value={seriesData.weight.toString()}
           maxLength={3}
         />

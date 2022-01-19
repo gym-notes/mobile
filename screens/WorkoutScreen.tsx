@@ -157,25 +157,48 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
     }
   };
 
-  const replaceExercise = () => {
-    const newData = [...ExerciseData];
+  const replaceExercise = async () => {
+    if (exerciseId) {
+      const newData = [...ExerciseData];
 
-    const newElement = {
-      exerciseName: exerciseName,
-      exerciseId: exerciseId,
-      sets: [
-        {
-          reps: '0',
-          weight: '0',
-        },
-      ],
-    };
+      const newElement = {
+        exerciseName: exerciseName,
+        exerciseId: exerciseId,
+        sets: [
+          {
+            reps: '0',
+            weight: '0',
+          },
+        ],
+      };
 
-    newData[index] = newElement;
+      newData[index] = newElement;
 
-    setExerciseData(newData);
-    setModalVisible(!modalVisible);
-    setExerciseName('');
+      setExerciseData(newData);
+      setModalVisible(!modalVisible);
+      setExerciseName('');
+    } else {
+      await createExercise(exerciseDispatch, exerciseName).then((result) => {
+        const newData = [...ExerciseData];
+
+        const newElement = {
+          exerciseName: exerciseName,
+          exerciseId: result?.exerciseId,
+          sets: [
+            {
+              reps: '0',
+              weight: '0',
+            },
+          ],
+        };
+
+        newData[index] = newElement;
+
+        setExerciseData(newData);
+        setModalVisible(!modalVisible);
+        setExerciseName('');
+      });
+    }
   };
 
   const deleteExercise = () => {
