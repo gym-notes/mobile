@@ -5,7 +5,13 @@ import { useWorkoutDispatch, useWorkoutState } from '../../contexts/WorkoutConte
 import { getLatestWorkout } from '../../actions/WorkoutAction';
 import LoadingSpinner from '../LoadingSpinner';
 
-const LastWorkoutPanel = () => {
+interface ILastWorkoutPanel {
+  latestWorkout: {
+    name: string;
+  };
+}
+
+const LastWorkoutPanel: React.FC<ILastWorkoutPanel> = () => {
   const disptach = useWorkoutDispatch();
   const { latestWorkout, isLoading } = useWorkoutState();
 
@@ -17,7 +23,7 @@ const LastWorkoutPanel = () => {
     <View style={styles.container}>
       {isLoading ? (
         <LoadingSpinner />
-      ) : (
+      ) : latestWorkout ? (
         <>
           <Text style={styles.textStyle}>
             {latestWorkout.name} - {latestWorkout.date}
@@ -28,6 +34,12 @@ const LastWorkoutPanel = () => {
             keyExtractor={(item, index) => index.toString()}
           />
         </>
+      ) : (
+        <View style={styles.warningWrapper}>
+          <Text style={styles.warningText}>
+            You haven not finished any training {String.fromCodePoint(0x1f62c)}
+          </Text>
+        </View>
       )}
     </View>
   );
@@ -45,6 +57,12 @@ const styles = StyleSheet.create({
     color: 'white',
     marginVertical: 10,
   },
+  warningWrapper: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  warningText: { color: 'white' },
 });
 
 export default LastWorkoutPanel;

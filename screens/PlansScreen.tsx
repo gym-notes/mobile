@@ -27,8 +27,14 @@ const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%' }}>
           {isLoading ? (
             <LoadingSpinner />
+          ) : plans ? (
+            plans.map((item) => <PlanItem key={item.id} name={item.name} />)
           ) : (
-            plans?.map((item) => <PlanItem key={item.id} name={item.name} />)
+            <View style={styles.warningWrapper}>
+              <Text style={styles.warningText}>
+                You haven not created any plan {String.fromCodePoint(0x1f4d6)}
+              </Text>
+            </View>
           )}
         </ScrollView>
         <View style={styles.buttonWrapper}>
@@ -66,6 +72,15 @@ const styles = StyleSheet.create({
   menuWrapper: {
     paddingHorizontal: 15,
     justifyContent: 'flex-end',
+  },
+  warningWrapper: {
+    backgroundColor: '#2E2C39',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  warningText: {
+    color: 'white',
   },
 });
 

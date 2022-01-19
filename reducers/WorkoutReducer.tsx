@@ -12,13 +12,7 @@ export const initialState: IState = {
     exercises: [{ id: '', name: '', sets: [{ reps: 0, weight: 0 }] }],
   },
   workoutsHistory: [],
-  latestWorkout: {
-    duration: 0,
-    date: '',
-    id: '',
-    name: '',
-    exercises: [],
-  },
+  latestWorkout: null,
 };
 
 export const WorkoutReducer = (initialState: IState, action: ActionTypes): IState => {

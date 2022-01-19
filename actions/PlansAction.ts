@@ -14,9 +14,7 @@ export const getAllPlans = async (dispatch: Dispatch) => {
     const response: AxiosResponse<IState> = await axios.get(GET_ALL_PLANS_URL);
     const data = response.data;
 
-    if (data.plans) {
-      dispatch({ type: ActionType.GET_ALL_PLANS_SUCCESS, payload: data });
-    }
+    dispatch({ type: ActionType.GET_ALL_PLANS_SUCCESS, payload: data });
   } catch (err: unknown) {
     const error = err as AxiosError<IState>;
 

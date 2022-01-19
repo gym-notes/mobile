@@ -10,7 +10,7 @@ export interface IState {
     exercises: Array<IExercisesById>;
   };
   workoutsHistory: Array<IWorkoutsHistoryPayload>;
-  latestWorkout: ILatestWorkout;
+  latestWorkout: ILatestWorkout | null;
 }
 
 export interface ILatestWorkout {

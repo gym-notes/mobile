@@ -64,8 +64,6 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   const { myPlan, isLoading, planId } = usePlansState();
   const { workoutId } = useWorkoutState();
 
-  console.log(ExerciseData);
-
   useEffect(() => {
     if (planId) {
       void getMyPlan(plansDispatch, planId);
