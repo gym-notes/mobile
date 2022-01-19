@@ -13,6 +13,8 @@ import Modal from '../components/Modal';
 import { createPlan, cleanErrorMessage } from '../actions/PlansAction';
 import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
 import ErrorMessage from '../components/ErrorMessage';
+import { createExercise } from '../actions/ExerciseAtion';
+import { useExerciseDispatch } from '../contexts/ExerciseContext';
 
 export interface IFormData {
   PlanName: string;
@@ -48,39 +50,80 @@ const CreatePlanScreen: React.FC<ICreatePlanScreen> = ({ navigation }) => {
   const [exerciseIndex, setExerciseIndex] = useState(0);
   const [exercises, setExercises] = useState<Array<IExercisesState>>([]);
   const dispatch = usePlansDispatch();
+  const exerciseDispatch = useExerciseDispatch();
   const { isSuccess, message } = usePlansState();
   const [isVisible, setIsVisible] = useState(false);
 
-  const addExercise = () => {
-    const newElement = {
-      exerciseId: exerciseId,
-      exerciseName: exerciseName,
-      series: 4,
-      reps: '10',
-      weight: '10',
-    };
+  const addExercise = async () => {
+    if (exerciseId) {
+      const newElement = {
+        exerciseId: exerciseId,
+        exerciseName: exerciseName,
+        series: 4,
+        reps: '10',
+        weight: '10',
+      };
 
-    setExercises((prevState) => [...prevState, newElement]);
-    setModalVisible(!modalVisible);
-    setExerciseName('');
+      setExercises((prevState) => [...prevState, newElement]);
+      setModalVisible(!modalVisible);
+      setExerciseName('');
+    } else {
+      await createExercise(exerciseDispatch, exerciseName).then((result) => {
+        if (result) {
+          const newElement = {
+            exerciseId: result.exerciseId,
+            exerciseName: exerciseName,
+            series: 4,
+            reps: '10',
+            weight: '10',
+          };
+
+          setExercises((prevState) => [...prevState, newElement]);
+          setModalVisible(!modalVisible);
+          setExerciseName('');
+        }
+      });
+    }
   };
 
-  const replaceExercise = () => {
-    const newData = [...exercises];
+  const replaceExercise = async () => {
+    if (exerciseId) {
+      const newData = [...exercises];
 
-    const newElement = {
-      exerciseId: exerciseId,
-      exerciseName: exerciseName,
-      series: 4,
-      reps: '10',
-      weight: '10',
-    };
+      const newElement = {
+        exerciseId: exerciseId,
+        exerciseName: exerciseName,
+        series: 4,
+        reps: '10',
+        weight: '10',
+      };
 
-    newData[exerciseIndex] = newElement;
+      newData[exerciseIndex] = newElement;
 
-    setExercises(newData);
-    setModalVisible(!modalVisible);
-    setExerciseName('');
+      setExercises(newData);
+      setModalVisible(!modalVisible);
+      setExerciseName('');
+    } else {
+      await createExercise(exerciseDispatch, exerciseName).then((result) => {
+        if (result) {
+          const newData = [...exercises];
+
+          const newElement = {
+            exerciseId: result.exerciseId,
+            exerciseName: exerciseName,
+            series: 4,
+            reps: '10',
+            weight: '10',
+          };
+
+          newData[exerciseIndex] = newElement;
+
+          setExercises(newData);
+          setModalVisible(!modalVisible);
+          setExerciseName('');
+        }
+      });
+    }
   };
 
   const deleteExercise = (index: number) => {
