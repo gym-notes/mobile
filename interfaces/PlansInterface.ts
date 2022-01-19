@@ -1,5 +1,5 @@
 export interface IState {
-  plans?: Array<IMyPlans>;
+  plans: Array<IMyPlans>;
   isLoading: boolean;
   message?: string | null;
   errors?: string | null;

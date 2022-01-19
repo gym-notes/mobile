@@ -5,6 +5,7 @@ import HistoryItem from '../components/HistoryItem';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
 import { getWorkoutsHistory } from '../actions/WorkoutAction';
 import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 interface IHistoryScreen {
   navigation: NavigationProp<ParamListBase>;
@@ -12,7 +13,7 @@ interface IHistoryScreen {
 
 const HistoryScreen: React.FC<IHistoryScreen> = ({ navigation }) => {
   const dispatch = useWorkoutDispatch();
-  const { workoutsHistory } = useWorkoutState();
+  const { workoutsHistory, isLoading } = useWorkoutState();
 
   useEffect(() => {
     void getWorkoutsHistory(dispatch);
@@ -22,18 +23,28 @@ const HistoryScreen: React.FC<IHistoryScreen> = ({ navigation }) => {
     <View style={styles.container}>
       <View style={styles.wrapper}>
         <Text style={styles.textStyle}>History</Text>
-        <FlatList
-          data={workoutsHistory}
-          renderItem={({ item }) => (
-            <HistoryItem
-              workouts={item.workouts}
-              month={item.month}
-              year={item.year}
-              navigation={navigation}
-            />
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : workoutsHistory.length > 0 ? (
+          <FlatList
+            data={workoutsHistory}
+            renderItem={({ item }) => (
+              <HistoryItem
+                workouts={item.workouts}
+                month={item.month}
+                year={item.year}
+                navigation={navigation}
+              />
+            )}
+            keyExtractor={(item, index) => index.toString()}
+          />
+        ) : (
+          <View style={styles.warningWrapper}>
+            <Text style={styles.warningText}>
+              You haven not finished any training {String.fromCodePoint(0x1f62c)}
+            </Text>
+          </View>
+        )}
       </View>
       <View style={styles.menuWrapper}>
         <Menu navigation={navigation} />
@@ -50,7 +61,7 @@ const styles = StyleSheet.create({
   wrapper: {
     alignItems: 'center',
     justifyContent: 'center',
-    paddingHorizontal: 15,
+    padding: 15,
   },
   textStyle: {
     color: 'white',
@@ -63,6 +74,14 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
     marginHorizontal: 15,
   },
+  warningWrapper: {
+    minWidth: '100%',
+    backgroundColor: '#2E2C39',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  warningText: { color: 'white' },
 });
 
 export default HistoryScreen;

@@ -60,10 +60,7 @@ export const getWorkoutsHistory = async (dispatch: Dispatch) => {
       GET_WORKOUTS_HISTORY,
     );
     const data = response.data;
-
-    if (data) {
-      dispatch({ type: ActionType.GET_WORKOUTS_HISTORY_SUCCESS, payload: data });
-    }
+    dispatch({ type: ActionType.GET_WORKOUTS_HISTORY_SUCCESS, payload: data });
   } catch (err: unknown) {
     const error = err as AxiosError<IState>;
 
@@ -80,9 +77,7 @@ export const getLatestWorkout = async (dispatch: Dispatch) => {
     const response: AxiosResponse<ILatestWorkout> = await axios.get(GET_LATEST_WORKOUT);
     const data = response.data;
 
-    if (data) {
-      dispatch({ type: ActionType.GET_LATEST_WORKOUT_SUCCESS, payload: data });
-    }
+    dispatch({ type: ActionType.GET_LATEST_WORKOUT_SUCCESS, payload: data });
   } catch (err: unknown) {
     const error = err as AxiosError<IState>;
 

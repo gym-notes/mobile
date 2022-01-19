@@ -23,18 +23,18 @@ const SelectWorkoutScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Button
+          title="Back"
+          backgroundColor="#D44E52"
+          width={75}
+          height={35}
+          margin={20}
+          iconName="arrow-left"
+          textColor="white"
+        />
+      </TouchableOpacity>
       <View style={styles.contentWrapper}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
-          <Button
-            title="Back"
-            backgroundColor="#D44E52"
-            width={75}
-            height={35}
-            margin={20}
-            iconName="arrow-left"
-            textColor="white"
-          />
-        </TouchableOpacity>
         <Text style={styles.headerText}>Select your workout</Text>
         <ScrollView>
           {isLoading ? (
@@ -44,7 +44,13 @@ const SelectWorkoutScreen: React.FC<Props> = ({ navigation }) => {
               <WorkoutItem key={data.id} id={data.id} title={data.name} navigation={navigation} />
             ))
           ) : (
-            <Text style={styles.warningText}>First create your plan.</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate('PlansScreen')}
+              style={styles.warningWarapper}>
+              <Text style={styles.warningText}>
+                First create your plan {String.fromCodePoint(0x1f3cb)}
+              </Text>
+            </TouchableOpacity>
           )}
         </ScrollView>
         <Menu navigation={navigation} />
@@ -68,9 +74,15 @@ const styles = StyleSheet.create({
     fontSize: 18,
     alignSelf: 'center',
   },
+  warningWarapper: {
+    backgroundColor: '#2E2C39',
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginVertical: 15,
+  },
   warningText: {
     color: 'white',
-    alignSelf: 'center',
   },
 });
 
