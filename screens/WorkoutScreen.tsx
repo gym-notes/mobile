@@ -20,6 +20,8 @@ import { useWorkoutDispatch, useWorkoutState } from '../contexts/WorkoutContext'
 import { createWorkout } from '../actions/WorkoutAction';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { ICreateWorkoutPayload } from '../interfaces/WorkoutInterface';
+import { createExercise } from '../actions/ExerciseAtion';
+import { useExerciseDispatch } from '../contexts/ExerciseContext';
 
 interface IWorkoutScreen {
   viewableItems: Array<IViewableItems>;
@@ -58,8 +60,11 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
 
   const plansDispatch = usePlansDispatch();
   const workoutDispatch = useWorkoutDispatch();
+  const exerciseDispatch = useExerciseDispatch();
   const { myPlan, isLoading, planId } = usePlansState();
   const { workoutId } = useWorkoutState();
+
+  console.log(ExerciseData);
 
   useEffect(() => {
     if (planId) {
@@ -118,21 +123,40 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
     setExerciseData(newData);
   };
 
-  const addExercise = () => {
-    const newElement = {
-      exerciseName: exerciseName,
-      exerciseId: exerciseId,
-      sets: [
-        {
-          reps: '0',
-          weight: '0',
-        },
-      ],
-    };
+  const addExercise = async () => {
+    if (exerciseId) {
+      const newElement = {
+        exerciseName: exerciseName,
+        exerciseId: exerciseId,
+        sets: [
+          {
+            reps: '0',
+            weight: '0',
+          },
+        ],
+      };
 
-    setExerciseData((prevState) => [...prevState, newElement]);
-    setModalVisible(!modalVisible);
-    setExerciseName('');
+      setExerciseData((prevState) => [...prevState, newElement]);
+      setModalVisible(!modalVisible);
+      setExerciseName('');
+    } else {
+      await createExercise(exerciseDispatch, exerciseName).then((result) => {
+        const newElement = {
+          exerciseName: exerciseName,
+          exerciseId: result?.exerciseId,
+          sets: [
+            {
+              reps: '0',
+              weight: '0',
+            },
+          ],
+        };
+
+        setExerciseData((prevState) => [...prevState, newElement]);
+        setModalVisible(!modalVisible);
+        setExerciseName('');
+      });
+    }
   };
 
   const replaceExercise = () => {

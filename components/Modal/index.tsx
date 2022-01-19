@@ -39,10 +39,15 @@ const Modal: React.FC<IModal> = ({
   const [filteredData, setFilteredData] = useState<Array<Exercises>>([]);
 
   const handleFilter = (value: string) => {
+    setExerciseId('');
     const searchWord = value;
     setExerciseName(searchWord);
 
     const newFilter = exercises.filter((item) => {
+      if (item.name === searchWord) {
+        setExerciseName(searchWord);
+        setExerciseId(item.id);
+      }
       return item.name.toLowerCase().includes(exerciseName.toLowerCase());
     });
 

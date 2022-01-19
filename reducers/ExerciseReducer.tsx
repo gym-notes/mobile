@@ -4,6 +4,7 @@ export const initialState: IState = {
   isLoading: false,
   message: null,
   exercises: [{ id: '', name: '' }],
+  exerciseId: '',
 };
 
 export const ExerciseReducer = (initialState: IState, action: ActionTypes): IState => {
@@ -21,6 +22,24 @@ export const ExerciseReducer = (initialState: IState, action: ActionTypes): ISta
         isLoading: false,
       };
     case ActionType.GET_EXERCISES_ERROR:
+      return {
+        ...initialState,
+        isLoading: false,
+        message: action.payload.message,
+      };
+    case ActionType.REQUEST_CREATE_EXERCISE:
+      return {
+        ...initialState,
+        isLoading: true,
+        message: null,
+      };
+    case ActionType.CREATE_EXERCISE_SUCCESS:
+      return {
+        ...initialState,
+        exerciseId: action.payload.exerciseId,
+        isLoading: false,
+      };
+    case ActionType.CREATE_EXERCISE_ERROR:
       return {
         ...initialState,
         isLoading: false,
