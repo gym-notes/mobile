@@ -54,26 +54,17 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   const [exerciseId, setExerciseId] = useState('');
   const [isAddExercise, setIsAddExercise] = useState(true);
   const [ExerciseData, setExerciseData] = useState<IExerciseData[]>([]);
+  const [startDuration, setStartDuration] = useState(0);
 
   const plansDispatch = usePlansDispatch();
   const workoutDispatch = useWorkoutDispatch();
   const { myPlan, isLoading, planId } = usePlansState();
   const { workoutId } = useWorkoutState();
-  const [counter, setCounter] = useState(0);
-  const [startTimer, setStartTimer] = useState(true);
-
-  useEffect(() => {
-    if (startTimer) {
-      if (counter >= 0) {
-        const timer = setTimeout(() => setCounter(counter + 1), 1000);
-        return () => clearInterval(timer);
-      }
-    }
-  }, [counter, startTimer]);
 
   useEffect(() => {
     if (planId) {
       void getMyPlan(plansDispatch, planId);
+      setStartDuration(Date.now);
     }
   }, [plansDispatch, planId]);
 
@@ -197,7 +188,8 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
   };
 
   const handleSubmit = () => {
-    setStartTimer(false);
+    const endDuration = Date.now();
+    const elapsedTime = endDuration - startDuration;
     const newExercisesData = ExerciseData.map((item) => ({
       exerciseId: item.exerciseId,
       sets: item.sets.filter((item) => item.reps > '0' && item.weight > '0'),
@@ -205,7 +197,7 @@ const WorkoutScreen: React.FC<IWorkoutScreen> = ({ navigation }) => {
 
     const workoutData: ICreateWorkoutPayload = {
       planId: planId,
-      duration: counter,
+      duration: Math.floor(elapsedTime / 1000),
       exercises: newExercisesData.filter((item) => item.sets.length > 0),
     };
 
