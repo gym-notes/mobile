@@ -15,6 +15,7 @@ import { usePlansDispatch, usePlansState } from '../contexts/PlansContext';
 import ErrorMessage from '../components/ErrorMessage';
 import { createExercise } from '../actions/ExerciseAtion';
 import { useExerciseDispatch } from '../contexts/ExerciseContext';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export interface IFormData {
   PlanName: string;
@@ -51,7 +52,7 @@ const CreatePlanScreen: React.FC<ICreatePlanScreen> = ({ navigation }) => {
   const [exercises, setExercises] = useState<Array<IExercisesState>>([]);
   const dispatch = usePlansDispatch();
   const exerciseDispatch = useExerciseDispatch();
-  const { isSuccess, message } = usePlansState();
+  const { isSuccess, message, isLoading } = usePlansState();
   const [isVisible, setIsVisible] = useState(false);
 
   const addExercise = async () => {
@@ -189,6 +190,8 @@ const CreatePlanScreen: React.FC<ICreatePlanScreen> = ({ navigation }) => {
             <Text style={styles.subText}>Get back</Text>
           </TouchableOpacity>
         </View>
+      ) : isLoading ? (
+        <LoadingSpinner />
       ) : (
         <>
           <PlanInput control={control} errors={errors} />
