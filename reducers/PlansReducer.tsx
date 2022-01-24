@@ -52,6 +52,7 @@ export const PlansReducer = (initialState: IState, action: ActionTypes): IState 
       return {
         ...initialState,
         isLoading: true,
+        isSuccess: false,
         message: null,
       };
     case ActionType.CREATE_MY_PLAN_SUCCESS:
@@ -64,6 +65,7 @@ export const PlansReducer = (initialState: IState, action: ActionTypes): IState 
       return {
         ...initialState,
         isLoading: false,
+        isSuccess: false,
         message: action.payload.errors,
       };
     case ActionType.CLEAN_ERROR:
@@ -71,6 +73,26 @@ export const PlansReducer = (initialState: IState, action: ActionTypes): IState 
         ...initialState,
         isLoading: false,
         message: null,
+      };
+    case ActionType.REQUEST_DELETE_PLAN:
+      return {
+        ...initialState,
+        isLoading: true,
+        isSuccess: false,
+        message: null,
+      };
+    case ActionType.DELETE_PLAN_SUCCESS:
+      return {
+        ...initialState,
+        isLoading: false,
+        isSuccess: true,
+      };
+    case ActionType.DELETE_PLAN_ERROR:
+      return {
+        ...initialState,
+        isLoading: false,
+        isSuccess: false,
+        message: action.payload.errors,
       };
     case ActionType.SET_PLAN_ID:
       return {

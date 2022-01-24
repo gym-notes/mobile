@@ -14,11 +14,11 @@ interface IPlansScreen {
 
 const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
   const dispatch = usePlansDispatch();
-  const { plans, isLoading } = usePlansState();
+  const { plans, isLoading, isSuccess } = usePlansState();
 
   useEffect(() => {
     void getAllPlans(dispatch);
-  }, [dispatch]);
+  }, [dispatch, isSuccess]);
 
   return (
     <View style={styles.container}>
@@ -28,7 +28,7 @@ const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
           {isLoading ? (
             <LoadingSpinner />
           ) : plans ? (
-            plans.map((item) => <PlanItem key={item.id} name={item.name} />)
+            plans.map((item) => <PlanItem key={item.id} name={item.name} id={item.id} />)
           ) : (
             <View style={styles.warningWrapper}>
               <Text style={styles.warningText}>

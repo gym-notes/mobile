@@ -6,7 +6,12 @@ import {
   IResponseMyPlan,
   IResponseCreatePlan,
 } from '../interfaces/PlansInterface';
-import { GET_MY_PLAN_URL, GET_ALL_PLANS_URL, CREATE_PLAN } from '../helpers/AxiosInterceptors';
+import {
+  GET_MY_PLAN_URL,
+  GET_ALL_PLANS_URL,
+  CREATE_PLAN,
+  DELETE_PLAN,
+} from '../helpers/AxiosInterceptors';
 
 export const getAllPlans = async (dispatch: Dispatch) => {
   try {
@@ -70,4 +75,21 @@ export const cleanErrorMessage = (dispatch: Dispatch) => {
 
 export const setPlanId = (dispatch: Dispatch, planId: string) => {
   dispatch({ type: ActionType.SET_PLAN_ID, payload: planId });
+};
+
+export const deletePlan = async (dispatch: Dispatch, id: string) => {
+  try {
+    dispatch({ type: ActionType.REQUEST_CREATE_MY_PLAN });
+    const response: AxiosResponse<IResponseCreatePlan> = await axios.delete(DELETE_PLAN + id);
+
+    dispatch({ type: ActionType.CREATE_MY_PLAN_SUCCESS });
+    return response;
+  } catch (err: unknown) {
+    const error = err as AxiosError<IState>;
+
+    if (error.response) {
+      const serverMessages = error.response.data;
+      dispatch({ type: ActionType.CREATE_MY_PLAN_ERROR, payload: serverMessages });
+    }
+  }
 };
