@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   buttonwrapper: {
-    marginVertical: 10,
+    marginVertical: 15,
   },
   text: {
     color: 'green',

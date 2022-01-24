@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     alignItems: 'center',
-    padding: 15,
+    paddingHorizontal: 15,
   },
   textStyle: {
     color: 'white',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     marginVertical: 25,
   },
   buttonWrapper: {
-    paddingTop: 25,
+    marginVertical: 15,
   },
   menuWrapper: {
     paddingHorizontal: 15,
