@@ -6,6 +6,7 @@ export interface IState {
   myPlan?: { id: string; name: string; exercises: Array<IExercises> } | null;
   planId: string;
   isSuccess: boolean;
+  isDelete: boolean;
 }
 
 interface IMyPlans {

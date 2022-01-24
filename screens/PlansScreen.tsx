@@ -14,11 +14,11 @@ interface IPlansScreen {
 
 const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
   const dispatch = usePlansDispatch();
-  const { plans, isLoading, isSuccess } = usePlansState();
+  const { plans, isLoading, isDelete } = usePlansState();
 
   useEffect(() => {
     void getAllPlans(dispatch);
-  }, [dispatch, isSuccess]);
+  }, [dispatch, isDelete]);
 
   return (
     <View style={styles.container}>
