@@ -5,6 +5,7 @@ import Logotype from '../components/Logotype';
 import Menu from '../components/Menu';
 import LastWorkoutPanel from '../components/LastWorkoutPanel';
 import { NavigationProp, ParamListBase } from '@react-navigation/native';
+
 interface IHomeScreen {
   navigation: NavigationProp<ParamListBase>;
 }

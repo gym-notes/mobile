@@ -5,13 +5,7 @@ import { useWorkoutDispatch, useWorkoutState } from '../../contexts/WorkoutConte
 import { getLatestWorkout } from '../../actions/WorkoutAction';
 import LoadingSpinner from '../LoadingSpinner';
 
-interface ILastWorkoutPanel {
-  latestWorkout: {
-    name: string;
-  };
-}
-
-const LastWorkoutPanel: React.FC<ILastWorkoutPanel> = () => {
+const LastWorkoutPanel = () => {
   const disptach = useWorkoutDispatch();
   const { latestWorkout, isLoading } = useWorkoutState();
 
