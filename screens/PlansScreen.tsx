@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1B1A22',
   },
   wrapper: {
-    flex: 2,
+    flex: 1,
     alignItems: 'center',
     padding: 15,
   },

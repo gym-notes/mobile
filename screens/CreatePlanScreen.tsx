@@ -224,10 +224,10 @@ const CreatePlanScreen: React.FC<ICreatePlanScreen> = ({ navigation }) => {
               keyExtractor={(item, index) => index.toString()}
               removeClippedSubviews={false}
             />
+            <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.buttonwrapper}>
+              <Button title="Add Plan" textColor="white" backgroundColor="#D44E52" />
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={handleSubmit(onSubmit)} style={styles.buttonwrapper}>
-            <Button title="Add Plan" textColor="white" backgroundColor="#D44E52" />
-          </TouchableOpacity>
         </>
       )}
       <View style={styles.menuWrapper}>
@@ -243,16 +243,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#1B1A22',
   },
   wrapper: {
-    flex: 3,
+    flex: 1,
     alignItems: 'center',
   },
   menuWrapper: {
     paddingHorizontal: 15,
     justifyContent: 'flex-end',
-    flex: 1,
   },
   buttonwrapper: {
-    alignSelf: 'center',
     marginVertical: 10,
   },
   text: {
@@ -266,6 +264,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   textWrapper: {
+    flex: 1,
     marginVertical: 25,
     alignItems: 'center',
     justifyContent: 'center',
