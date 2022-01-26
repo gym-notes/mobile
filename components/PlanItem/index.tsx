@@ -1,32 +1,44 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, View, ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { deletePlan } from '../../actions/PlansAction';
-import { usePlansDispatch } from '../../contexts/PlansContext';
+import { usePlansDispatch, usePlansState } from '../../contexts/PlansContext';
+import Animated, { Layout, LightSpeedOutRight, LightSpeedInLeft } from 'react-native-reanimated';
 
 interface IPlanItem {
   name: string;
   id: string;
+  remove: (id: string) => void;
 }
 
-const PlanItem: React.FC<IPlanItem> = ({ name, id }) => {
+const PlanItem: React.FC<IPlanItem> = ({ name, id, remove }) => {
   const dispatch = usePlansDispatch();
+  const { isDelete } = usePlansState();
 
   const handleDeletePlan = async (id: string) => {
-    await deletePlan(dispatch, id);
+    await deletePlan(dispatch, id).then(() => remove(id));
   };
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      entering={LightSpeedInLeft}
+      layout={Layout.springify()}
+      exiting={LightSpeedOutRight}
+      style={styles.container}>
       <View style={[styles.wrapper, { flex: 0.9 }]}>
         <Text style={styles.textStyle}>{name}</Text>
       </View>
       <TouchableOpacity
+        disabled={!isDelete}
         onPress={() => handleDeletePlan(id)}
         style={[styles.wrapper, { flex: 0.1, backgroundColor: '#D44E52' }]}>
-        <Icon name="trash-alt" size={20} color="white" />
+        {isDelete ? (
+          <Icon name="trash-alt" size={20} color="white" />
+        ) : (
+          <ActivityIndicator size="small" color="" />
+        )}
       </TouchableOpacity>
-    </View>
+    </Animated.View>
   );
 };
 

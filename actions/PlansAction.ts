@@ -20,6 +20,7 @@ export const getAllPlans = async (dispatch: Dispatch) => {
     const data = response.data;
 
     dispatch({ type: ActionType.GET_ALL_PLANS_SUCCESS, payload: data });
+    return data;
   } catch (err: unknown) {
     const error = err as AxiosError<IState>;
 
@@ -80,10 +81,9 @@ export const setPlanId = (dispatch: Dispatch, planId: string) => {
 export const deletePlan = async (dispatch: Dispatch, id: string) => {
   try {
     dispatch({ type: ActionType.REQUEST_DELETE_PLAN });
-    const response: AxiosResponse<IResponseCreatePlan> = await axios.delete(DELETE_PLAN + id);
+    await axios.delete(DELETE_PLAN + id);
 
     dispatch({ type: ActionType.DELETE_PLAN_SUCCESS });
-    return response;
   } catch (err: unknown) {
     const error = err as AxiosError<IState>;
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import Button from '../components/Button';
 import Menu from '../components/Menu';
@@ -12,13 +12,30 @@ interface IPlansScreen {
   navigation: NavigationProp<ParamListBase>;
 }
 
+interface IPlans {
+  name: string;
+  id: string;
+}
+
 const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
   const dispatch = usePlansDispatch();
-  const { plans, isLoading, isDelete } = usePlansState();
+  const { isLoading } = usePlansState();
+  const [plans, setPlans] = useState<Array<IPlans>>([]);
 
   useEffect(() => {
-    void getAllPlans(dispatch);
-  }, [dispatch, isDelete]);
+    const getPlans = async () => {
+      await getAllPlans(dispatch).then((res) => {
+        if (res) {
+          setPlans(res.plans);
+        }
+      });
+    };
+    void getPlans();
+  }, [dispatch]);
+
+  const remove = (id: string) => {
+    setPlans(plans.filter((item) => item.id !== id));
+  };
 
   return (
     <View style={styles.container}>
@@ -27,8 +44,10 @@ const PlansScreen: React.FC<IPlansScreen> = ({ navigation }) => {
         <ScrollView showsVerticalScrollIndicator={false} style={{ width: '100%' }}>
           {isLoading ? (
             <LoadingSpinner />
-          ) : plans ? (
-            plans.map((item) => <PlanItem key={item.id} name={item.name} id={item.id} />)
+          ) : plans.length > 0 ? (
+            plans.map((item) => (
+              <PlanItem key={item.id} name={item.name} id={item.id} remove={remove} />
+            ))
           ) : (
             <View style={styles.warningWrapper}>
               <Text style={styles.warningText}>
