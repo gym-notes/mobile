@@ -128,12 +128,14 @@ See the [open issues](https://github.com/github_username/repo_name/issues) for a
 ## About UX/UI
 
 Fima project: <a href="https://www.figma.com/file/tRgrxMM6VpePHbGgyy4J66/gym-notes?node-id=2%3A156">click here</a>
-
-<img src="https://i.imgur.com/vP5Cix2.gif" alt="this slowpoke moves"  width="250" />
-<img src="https://i.imgur.com/1hzApsH.gif" alt="this slowpoke moves"  width="250" />
-<br>
-<img src="https://i.imgur.com/YlGgJe1.gif" alt="this slowpoke moves"  width="250" />
-<img src="https://i.imgur.com/YSlDzHQ.gif" alt="this slowpoke moves"  width="250" />
+<div style="display: flex; padding-bottom: 10px">
+<img style="padding-right: 10px" src="https://i.imgur.com/vP5Cix2.gif" alt="register gif"  width="250" height='550' />
+<img src="https://i.imgur.com/1hzApsH.gif" alt="create plan gif"  width="250" height='550' />
+</div>
+<div style="display: flex; padding-bottom: 10px">
+<img style="padding-right: 10px" src="https://i.imgur.com/YlGgJe1.gif" alt="delete plan gif"  width="250" height='550' />
+<img src="https://i.imgur.com/0dltGQq.gif" alt="history gif"  width="250" height='550' />
+</div>
 
 
 <p align="right">(<a href="#top">back to top</a>)</p>
