@@ -79,13 +79,13 @@ export const PlansReducer = (initialState: IState, action: ActionTypes): IState 
     case ActionType.REQUEST_DELETE_PLAN:
       return {
         ...initialState,
-        isDelete: false,
+        isDelete: true,
         message: null,
       };
     case ActionType.DELETE_PLAN_SUCCESS:
       return {
         ...initialState,
-        isDelete: true,
+        isDelete: false,
       };
     case ActionType.DELETE_PLAN_ERROR:
       return {

@@ -16,7 +16,7 @@ axios.interceptors.request.use(
   },
 );
 
-const BASE_URL = 'http://10.0.2.2:3000/api/';
+const BASE_URL = 'http://gymnotesapi.herokuapp.com/api/';
 
 export const LOGIN_URL = `${BASE_URL}auth/login`;
 export const REGISTER_URL = `${BASE_URL}auth/register`;

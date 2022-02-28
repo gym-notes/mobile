@@ -29,10 +29,10 @@ const PlanItem: React.FC<IPlanItem> = ({ name, id, remove }) => {
         <Text style={styles.textStyle}>{name}</Text>
       </View>
       <TouchableOpacity
-        disabled={!isDelete}
+        disabled={isDelete}
         onPress={() => handleDeletePlan(id)}
         style={[styles.wrapper, { flex: 0.1, backgroundColor: '#D44E52' }]}>
-        {isDelete ? (
+        {!isDelete ? (
           <Icon name="trash-alt" size={20} color="white" />
         ) : (
           <ActivityIndicator size="small" color="" />
